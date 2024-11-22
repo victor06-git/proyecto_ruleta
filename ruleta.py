@@ -51,7 +51,6 @@ rad_num = ((360 / 37) * (math.pi / 180) * 5) / 2
 rad_num1 = ((360 / 37) * (math.pi / 180) * 3) / 2
 
 
-change = False
 
 # Bucle de l'aplicació
 def main():
@@ -251,6 +250,7 @@ def table():
                                       (850 + (100 / 4), (380 + (180 / 2))), 
                                       (900, (380 + 3 * (180 / 4) + 25)),
                                       (950 - ((100 / 4)), (380 + (180 / 2)))])
+    
     #EVEN/ODD
     font = pygame.font.SysFont(None, 35)
     text = font.render(str("PAR"), True, WHITE)
@@ -289,8 +289,9 @@ def table():
             
 
             #Casillas apuestas números
-            pygame.draw.rect(screen, BLACK, (950 + (columna * width_casella), 100 + (fila * height_casella), width_casella, height_casella), 3) #Contorno casilla
             pygame.draw.rect(screen, color, (950 + (columna * width_casella), 100 + (fila * height_casella), width_casella, height_casella)) #Relleno de color la casilla
+            pygame.draw.rect(screen, WHITE, (950 + (columna * width_casella), 100 + (fila * height_casella), width_casella, height_casella), 1) #Contorno casilla
+            
             
             #Números casillas
             numbers = chips[column_number][fila]
@@ -299,7 +300,8 @@ def table():
             text_rect = (950 + (columna * width_casella) + 50, 100 + ( fila * height_casella) + 15) #Posicion de texto
             screen.blit(text, text_rect)
     
-
+def banca():    
+    pass
 
 #graellas
 def draw_grid():
