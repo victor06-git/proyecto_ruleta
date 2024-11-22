@@ -222,10 +222,14 @@ def table():
     pygame.draw.rect(screen, BLACK, (950 + (width_casella), 100 + (600 / 13) * 12, width_casella, height_casella), 3)
     pygame.draw.rect(screen, BLACK, (950 - 3 , 100 + (600 / 13) * 12, width_casella + 3, height_casella), 3)
     pygame.draw.rect(screen, BLACK, (950 + (2 * width_casella), 100 + (600 / 13) * 12, width_casella, height_casella), 3)
-    font = pygame.font.SysFont(None, 60)
+    font = pygame.font.SysFont(None, 30)
     text = font.render(str("2 to 1"), True, WHITE)
-    text_rect = (((950 + 1250) / 2 - 4) , 70) #Posicion de texto 0 centrado
+    text_rect = (((950 - 24) + (width_casella // 2)) , 665) 
     screen.blit(text, text_rect)
+    text_rect2 = (((1025) + (width_casella // 2)) , 665) 
+    screen.blit(text, text_rect2)
+    text_rect3 = (((1125) + (width_casella // 2)) , 665) 
+    screen.blit(text, text_rect3)
     
     #Pares/ Impares/ Rojo/ Negro
     pygame.draw.rect(screen, DARK_GREEN, (850, 100 ,100, 100))
@@ -255,17 +259,17 @@ def table():
         for fila in range(12):
             
             if columna == 0:
-                if fila == 0 or  fila ==2 or  fila ==5 or fila == 6 or  fila ==8 or fila ==11:
+                if fila == 0 or  fila == 2 or  fila == 5 or fila == 6 or  fila == 8 or fila == 11:
                     color = RED
                 else: 
                     color = BLACK
             if columna == 1:
-                if fila == 0 or fila == 2 or fila ==3 or  fila ==5 or fila ==6 or fila ==8 or fila == 9 or fila ==11:
+                if fila == 0 or fila == 2 or fila == 3 or  fila == 5 or fila == 6 or fila ==8 or fila == 9 or fila == 11:
                     color = BLACK
                 else:
                     color = RED
             if columna == 2:
-                if fila == 0 or fila == 2 or fila ==3 or fila ==5 or  fila ==6 or  fila ==8 or  fila ==9 or  fila ==11:
+                if fila == 0 or fila == 2 or fila == 3 or fila == 5 or  fila == 6 or  fila == 8 or  fila == 9 or  fila == 11:
                     color = RED
                 else:
                     color = BLACK
@@ -317,6 +321,8 @@ def draw_grid():
         font = pygame.font.Font(None, 20)
         text = font.render(str(y), True, (200, 200, 200))
         screen.blit(text, (2, y + 2))
+
+#Lógica
 players = {
     "player_purple":{
         "color": "purple",
