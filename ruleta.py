@@ -101,6 +101,7 @@ def app_draw():
     
     draw_roulette() #Función draw ruleta
     table() #Función dibujar tabla
+    banca()
     
     pygame.display.update()
 
@@ -301,6 +302,17 @@ def table():
             screen.blit(text, text_rect)
     
 def banca():    
+    pygame.draw.rect(screen, DARK_GREEN, (50, 550, 350, 150))
+    pygame.draw.rect(screen, YELLOW, (50, 550, 350, 150), 3)
+    pygame.draw.rect(screen, GREEN, (53, 553, 97, 47))
+    font = pygame.font.SysFont(None, 27)
+    text = font.render(str("BANCA"), True, BLACK)
+    text_rect = (60, 570)
+    screen.blit(text, text_rect)
+    pygame.draw.line(screen, YELLOW, (50, 600), (150, 600), 3)
+    pygame.draw.line(screen, YELLOW, (150, 550), (150, 600), 3)
+
+def fichas():
     pass
 
 #graellas
