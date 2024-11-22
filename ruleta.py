@@ -251,8 +251,14 @@ def table():
                                       (850 + (100 / 4), (380 + (180 / 2))), 
                                       (900, (380 + 3 * (180 / 4) + 25)),
                                       (950 - ((100 / 4)), (380 + (180 / 2)))])
-    
-
+    #EVEN/ODD
+    font = pygame.font.SysFont(None, 35)
+    text = font.render(str("PAR"), True, WHITE)
+    text_rect = (((877) , 140))
+    screen.blit(text, text_rect)
+    text2 = font.render(str("IMPAR"), True, WHITE)
+    text_rect2 = (((865) , 595))
+    screen.blit(text2, text_rect2)  
 
 
     for  columna in range(3):
