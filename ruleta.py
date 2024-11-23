@@ -152,6 +152,23 @@ def app_events():
 def app_run():
     global rad_first, rad_second
     mouse_x, mouse_y = pygame.mouse.get_pos()
+    
+    """Aqui tengo que hacer varias cosas para mejorar la logica:
+
+    1. Si clicked == True  
+       - Identificar el puntero en que ficha esta. Por ejemplo si está haciendo click en una ficha de 100, que automáticamente reconozca
+         la ficha de 100 (if clicked == true and mouse_x and mouse_y in circle_100:
+         --> Arrastramos la ficha de 100
+
+    2. Si clicked == False
+        - Guardar la posición --> --> if circle_x in (cuadrado de apuestas) and circle_y in (cuadrado de apuestas)... ejecutamos la función de la apuesta específica)
+        - Si el circulo está en la casilla --> (Cuantas fichas quieres apostar ?)
+        - Si el circulo no está en la casilla, se vuelve a la posición inicial
+         --> if circle_x in (cuadrado de apuestas) and circle_y in (cuadrado de apuestas)... ejecutamos la función de la apuesta específica)
+    ***3***
+        - En este punto se tiene que ejecutar la ruleta
+
+    """
     pass
 
     
