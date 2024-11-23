@@ -114,6 +114,7 @@ font_chip = pygame.font.SysFont("Arial",18,bold=True) #--> El bold=True es para 
 
 
 clicked = False
+dragging = False
 mouse_x, mouse_y = -1, -1
 
 rad_first = ((360 / 37) * (math.pi / 180)) #First angle
@@ -159,8 +160,11 @@ def app_events():
 
 # Fer càlculs
 def app_run():
-    global rad_first, rad_second
+    global rad_first, rad_second, clicked, draw_chips, dragging
     mouse_x, mouse_y = pygame.mouse.get_pos()
+
+    offset_x = 0
+    offset_y = 0
 
     """Aqui tengo que hacer varias cosas para mejorar la logica:
 
@@ -176,13 +180,46 @@ def app_run():
          --> if circle_x in (cuadrado de apuestas) and circle_y in (cuadrado de apuestas)... ejecutamos la función de la apuesta específica)
     ***3***
         - En este punto se tiene que ejecutar la ruleta
-
+        - Una vez ejecutada la ruleta las fichas vuelven a su posicón original
+    
     """
-    pass
+    for ficha in draw_chips:
 
-    
-    
-        
+        puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)
+
+        if clicked and puntero <= ficha["radius"]:#--> es la formula para poder clickar encima de la redonda
+            
+            if not dragging:
+
+                dragging = True
+                offset_x = mouse_x - ficha["x"]
+                offset_y = mouse_y - ficha["y"]
+
+            if dragging:
+
+                ficha["x"] = mouse_x - offset_x
+                ficha["y"] = mouse_y - offset_y
+
+                if ficha["value"] == 100:
+                    
+                    print(f"Has clickado la ficha {ficha["value"]}")
+            
+                elif ficha["value"] == 50:
+                    print(f"Has clickado la ficha {ficha["value"]}")
+            
+                elif ficha["value"] == 20:
+                    print(f"Has clickado la ficha {ficha["value"]}")
+            
+                elif ficha["value"] == 10:
+                    print(f"Has clickado la ficha {ficha["value"]}")
+
+                elif ficha["value"] == 5:
+                    print(f"Has clickado la ficha {ficha["value"]}")
+
+        elif not clicked and dragging:
+            dragging = False
+
+     
 # Dibuixar
 def app_draw():
 
