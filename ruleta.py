@@ -203,16 +203,16 @@ def draw_flecha():
     pygame.draw.polygon(screen, YELLOW, points, 2)
 #Roulette
 def draw_roulette():
-    global rad_first, rad_second
+    global rad_first, rad_second, spin_angle
     
-    rad_first = ((360 / 37) * (math.pi / 180)) #First angle
+    rad_first = ((360 / 37) * (math.pi / 180)) - (spin_angle * (math.pi / 180)) #First angle
     rad_second = ((360 / 37) * (math.pi / 180) + (rad_first)) #Second angle
 
     rad_1 = rad_second
     rad_2 = ((360 / 37) * (math.pi / 180) + (rad_1))
 
-    rad_num = ((360 / 37) * (math.pi / 180) * 5) / 2
-    rad_num1 = ((360 / 37) * (math.pi / 180) * 3) / 2
+    rad_num = ((360 / 37) * (math.pi / 180) * 5) / 2 - (spin_angle * (math.pi / 180))
+    rad_num1 = ((360 / 37) * (math.pi / 180) * 3) / 2 - (spin_angle * (math.pi / 180))
    
     
     #Ruleta parte verde del 0
