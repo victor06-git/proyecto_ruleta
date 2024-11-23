@@ -101,6 +101,8 @@ def app_events():
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
+            click(event.pos, button_rect)
+    update_spin()
         
     return True
 
