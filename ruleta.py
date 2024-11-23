@@ -50,7 +50,22 @@ rad_2 = ((360 / 37) * (math.pi / 180) + (rad_1))
 rad_num = ((360 / 37) * (math.pi / 180) * 5) / 2
 rad_num1 = ((360 / 37) * (math.pi / 180) * 3) / 2
 
+winning_number = None #El número ganador elegido
+show_winner = False #Enseñar número ganador
+spinning = False #Verdadero/Falso inicio spin
+spin_angle = 0 #ángulo de rotación
+spin_speed = 0 #Velocidad de rotación
+friction = 0.98 #Número para que la ruleta se detenga
+min_speed = 0.01 #Mínima velocidad para que la ruleta siga girando
+initial_speed = 25 #Velocidad inicial de giro
 
+#Botón girar
+button_width = 200
+button_height = 50
+button_x  = 150
+button_y = 700
+button_color = RED
+button_hover_color = (255, 0, 0, 128)
 
 # Bucle de l'aplicació
 def main():
@@ -107,6 +122,19 @@ def app_draw():
     
     pygame.display.update()
 
+
+def draw_button(mouse_pos):
+    button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
+
+    if button_rect.collidepoint(mouse_pos):
+        color = button_color
+    else:
+        color = button_hover_color
+    
+    pygame.draw.rect(screen, color, button_rect) #Draw button
+    pygame.draw.rect(screen, WHITE, button_rect, 2) #Draw border
+
+    
 
 def draw_flecha():
     center_x = screen_width  // 2 / 2
