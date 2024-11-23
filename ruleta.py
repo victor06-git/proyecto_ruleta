@@ -102,6 +102,13 @@ screen_height = 750
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Ruleta')
 
+draw_chips = [
+    {"x": 545, "y":650, "radius":30, "color":BLUE, "value":100, "width":5},
+    {"x": 645, "y":650, "radius":30, "color":PURPLE, "value":100, "width":5},
+    {"x": 745, "y":650, "radius":30, "color":RED, "value":100, "width":5},
+    {"x": 645, "y":550, "radius":30, "color":ORANGE, "value":100, "width":5},
+    {"x": 745, "y":550, "radius":30, "color":YELLOW, "value":100, "width":5}
+]
 
 
 clicked = False
@@ -152,7 +159,7 @@ def app_events():
 def app_run():
     global rad_first, rad_second
     mouse_x, mouse_y = pygame.mouse.get_pos()
-    
+
     """Aqui tengo que hacer varias cosas para mejorar la logica:
 
     1. Si clicked == True  
@@ -176,7 +183,8 @@ def app_run():
         
 # Dibuixar
 def app_draw():
-    
+
+    global draw_chips
     # Pintar el fons de blanc
     screen.fill(GREY)
 
@@ -186,6 +194,9 @@ def app_draw():
     table() #Función dibujar tabla
     banca()
     fichas()
+
+    for ficha in draw_chips:
+        pygame.draw.circle(screen, ficha["color"],(ficha["x"], ficha["y"]),ficha["radius"])
     
     pygame.display.update()
 
