@@ -103,12 +103,14 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Ruleta')
 
 draw_chips = [
-    {"x": 545, "y":650, "radius":30, "color":BLUE, "value":100, "width":5},
-    {"x": 645, "y":650, "radius":30, "color":PURPLE, "value":100, "width":5},
-    {"x": 745, "y":650, "radius":30, "color":RED, "value":100, "width":5},
-    {"x": 645, "y":550, "radius":30, "color":ORANGE, "value":100, "width":5},
-    {"x": 745, "y":550, "radius":30, "color":YELLOW, "value":100, "width":5}
+    {"x": 545, "y":650, "radius":35, "color":BLUE, "value":100, "width":5},
+    {"x": 645, "y":650, "radius":35, "color":PURPLE, "value":50, "width":5},
+    {"x": 745, "y":650, "radius":35, "color":RED, "value":20, "width":5},
+    {"x": 645, "y":550, "radius":35, "color":ORANGE, "value":10, "width":5},
+    {"x": 745, "y":550, "radius":35, "color":GRAY, "value":5, "width":5}
 ]
+
+font_chip = pygame.font.SysFont("Arial",18,bold=True) #--> El bold=True es para hacerlo en negrita
 
 
 clicked = False
@@ -184,7 +186,7 @@ def app_run():
 # Dibuixar
 def app_draw():
 
-    global draw_chips
+    global draw_chips,font_chip
     # Pintar el fons de blanc
     screen.fill(GREY)
 
@@ -196,8 +198,14 @@ def app_draw():
     fichas()
 
     for ficha in draw_chips:
-        pygame.draw.circle(screen, ficha["color"],(ficha["x"], ficha["y"]),ficha["radius"])
-    
+
+        pygame.draw.circle(screen,WHITE,(ficha["x"], ficha["y"]),ficha["radius"])
+        pygame.draw.circle(screen, ficha["color"],(ficha["x"], ficha["y"]),ficha["radius"],ficha["width"])
+
+        valor_ficha = font_chip.render(str(ficha["value"]),True,(BLACK))
+        pos_ficha = valor_ficha.get_rect(center=(ficha["x"],ficha["y"]))
+        screen.blit(valor_ficha,pos_ficha)
+
     pygame.display.update()
 
 
