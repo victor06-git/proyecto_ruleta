@@ -65,7 +65,7 @@ button_height = 50
 button_x  = 600
 button_y = 100
 button_color = RED
-button_hover_color = (255, 0, 0, 128)
+button_hover_color = YELLOW
 
 #lista números ruleta
 roulette_numbers = [32, 15, 19, 4, 21, 2, 25,
@@ -174,9 +174,9 @@ def draw_button(mouse_pos):
     button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
 
     if button_rect.collidepoint(mouse_pos):
-        color = button_color
-    else:
         color = button_hover_color
+    else:
+        color = button_color
     
     pygame.draw.rect(screen, color, button_rect) #Draw button
     pygame.draw.rect(screen, WHITE, button_rect, 2) #Draw border
