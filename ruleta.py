@@ -201,7 +201,7 @@ def app_run():
                 ficha["y"] = mouse_y - offset_y
 
                 if ficha["value"] == 100:
-                    
+
                     print(f"Has clickado la ficha {ficha["value"]}")
             
                 elif ficha["value"] == 50:
@@ -467,7 +467,7 @@ def fichas():
     text = font.render(str("FICHAS"), True, BLACK)
     text_rect = (520, 520)
     screen.blit(text, text_rect)
-    pass
+
 
 #graellas
 def draw_grid():
