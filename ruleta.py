@@ -51,7 +51,7 @@ rad_num = ((360 / 37) * (math.pi / 180) * 5) / 2
 rad_num1 = ((360 / 37) * (math.pi / 180) * 3) / 2
 
 winning_number = None #El número ganador elegido
-show_winner = False #Enseñar número ganador
+show_win_number = False #Enseñar número ganador
 spinning = False #Verdadero/Falso inicio spin
 spin_angle = 0 #ángulo de rotación
 spin_speed = 0 #Velocidad de rotación
@@ -66,6 +66,13 @@ button_x  = 600
 button_y = 100
 button_color = RED
 button_hover_color = (255, 0, 0, 128)
+
+#lista números ruleta
+roulette_numbers = [32, 15, 19, 4, 21, 2, 25,
+                        17, 34, 6, 27, 13, 36, 11,
+                        30, 8, 23, 10, 5, 24, 16, 
+                        33, 1, 20, 14, 31, 9, 22, 
+                        18, 29, 7, 28, 12, 35, 3, 26]
 
 # Bucle de l'aplicació
 def main():
@@ -94,8 +101,7 @@ def app_events():
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
-        elif event.type == pygame.MOUSEBUTTONUP:
-            clicked = False
+        
     return True
 
 # Fer càlculs
@@ -119,9 +125,46 @@ def app_draw():
     table() #Función dibujar tabla
     banca() #Función dibujar banca
     fichas() #Función dibujar fichas
+    draw_win_number() #Función dibuja número elegido
     
     pygame.display.update()
+def is_click_on_button(pos, button_rect):
+    return button_rect.collidepoint(pos)
 
+def click(pos, button_rect):
+    global spinning, spin_speed, show_win_number
+    if is_click_on_button(pos, button_rect):
+        spinning = True
+        show_win_number = False
+        spin_speed = initial_speed
+
+def draw_win_number():
+    if show_win_number and winning_number is not None:
+        font = pygame.font.Font(None, 64)
+        text = font.render(f"Número ganador: {winning_number}", True, WHITE)
+        text_rect = text.get_rect(center=(screen_width // 2 + 200, 50))
+
+        panel_rect = text_rect.copy()
+        panel_rect.inflate_ip(20, 20)
+        pygame.draw.rect(screen, BLACK, panel_rect)
+        pygame.draw.rect(screen, YELLOW, panel_rect, 2)
+
+        screen.blit(text, text_rect)
+
+def update_spin():
+    global spinning, spin_angle, spin_speed, winning_number, show_win_number
+    if spinning:
+        spin_angle += spin_speed
+        spin_speed *= friction
+
+        if spin_speed < min_speed:
+            spinning = False
+            spin_speed = 0
+
+            current_angle = spin_angle % 360
+            sector = int((current_angle / (360 / 37)) % 37)
+            winning_number = roulette_numbers[sector]
+            show_win_number = True
 
 def draw_button(mouse_pos):
     button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
@@ -222,13 +265,6 @@ def draw_roulette():
 
     pygame.draw.line(screen, YELLOW, (screen_width // 2 / 2, screen_height // 2 - 100), (screen_width // 2 / 2 - 70, screen_height // 2 - 100), 5)
     pygame.draw.circle(screen, YELLOW, (screen_width // 2 / 2 - 70, screen_height // 2 - 100), 10)
-    
-    #lista números ruleta
-    roulette_numbers = [32, 15, 19, 4, 21, 2, 25,
-                        17, 34, 6, 27, 13, 36, 11,
-                        30, 8, 23, 10, 5, 24, 16, 
-                        33, 1, 20, 14, 31, 9, 22, 
-                        18, 29, 7, 28, 12, 35, 3, 26]
     
     x0 = (screen_width // 2 / 2 ) + (215 * math.cos(rad_num1))
     y0 = screen_height // 2  + (215 * math.sin(rad_num1)) - 100
