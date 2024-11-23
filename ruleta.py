@@ -6,6 +6,72 @@ import pygame
 import sys
 import random
 
+#Lógica variables
+players = {
+    "player_purple":{
+        "color": "purple",
+        "money": 100,
+        "your_turn":False,
+        "chips":{
+            "fitxa_100":90,
+            "fitxa_50":0,
+            "fitxa_20":0,
+            "fitxa_10":0,
+            "fitxa_5":0
+        },
+        "bet":{
+            "odd_even":"",
+            "column":"",
+            "number":"",
+            "color":"",
+        }
+    },
+    "player_blue":{
+        "color": "blue",
+        "money": 100,
+        "your_turn":False,
+        "chips":{
+            "fitxa_100":0,
+            "fitxa_50":0,
+            "fitxa_20":0,
+            "fitxa_10":0,
+            "fitxa_5":0
+        },
+        "bet":{
+            "odd_even":"",
+            "column":"",
+            "number":"",
+            "color":"",
+        }
+    },
+    "player_orange":{
+        "color": "orange",
+        "money": 100,
+        "your_turn":False,
+        "chips":{
+            "fitxa_100":90,
+            "fitxa_50":0,
+            "fitxa_20":0,
+            "fitxa_10":0,
+            "fitxa_5":0
+        },
+        "bet":{
+            "odd_even":"",
+            "column":"",
+            "number":"",
+            "color":"",
+        }
+
+    }
+}
+
+chips = [[1,4,7,10,13,16,19,22,25,28,31,34],
+         [2,5,8,11,14,17,20,23,26,29,32,35],
+         [3,6,9,12,15,18,21,24,27,30,33,36]]
+
+numbers = list(range(37))
+
+chip_0 = 0
 
 # Definir colors
 WHITE = (255, 255, 255)
@@ -262,6 +328,7 @@ def table():
     text_rect2 = (((865) , 595))
     screen.blit(text2, text_rect2)  
 
+    tablero = [] #--> Creo esta lista vacia para despues poder hacer las apuestas por colores
 
     for  columna in range(3):
         for fila in range(12):
@@ -301,7 +368,11 @@ def table():
             text = font.render(str(numbers), True, WHITE)
             text_rect = (950 + (columna * width_casella) + 50, 100 + ( fila * height_casella) + 15) #Posicion de texto
             screen.blit(text, text_rect)
-    
+
+            tablero.append({"numero":numbers , "color":color})
+
+    return tablero
+
 def banca():    
     pygame.draw.rect(screen, DARK_GREEN, (50, 550, 350, 150))
     pygame.draw.rect(screen, YELLOW, (50, 550, 350, 150), 3)
@@ -352,72 +423,6 @@ def draw_grid():
         text = font.render(str(y), True, (200, 200, 200))
         screen.blit(text, (2, y + 2))
 
-#Lógica
-players = {
-    "player_purple":{
-        "color": "purple",
-        "money": 100,
-        "your_turn":False,
-        "chips":{
-            "fitxa_100":90,
-            "fitxa_50":0,
-            "fitxa_20":0,
-            "fitxa_10":0,
-            "fitxa_5":0
-        },
-        "bet":{
-            "odd_even":"",
-            "column":"",
-            "number":"",
-            "color":"",
-        }
-    },
-    "player_blue":{
-        "color": "blue",
-        "money": 100,
-        "your_turn":False,
-        "chips":{
-            "fitxa_100":0,
-            "fitxa_50":0,
-            "fitxa_20":0,
-            "fitxa_10":0,
-            "fitxa_5":0
-        },
-        "bet":{
-            "odd_even":"",
-            "column":"",
-            "number":"",
-            "color":"",
-        }
-    },
-    "player_orange":{
-        "color": "orange",
-        "money": 100,
-        "your_turn":False,
-        "chips":{
-            "fitxa_100":90,
-            "fitxa_50":0,
-            "fitxa_20":0,
-            "fitxa_10":0,
-            "fitxa_5":0
-        },
-        "bet":{
-            "odd_even":"",
-            "column":"",
-            "number":"",
-            "color":"",
-        }
-
-    }
-}
-
-chips = [[1,4,7,10,13,16,19,22,25,28,31,34],
-         [2,5,8,11,14,17,20,23,26,29,32,35],
-         [3,6,9,12,15,18,21,24,27,30,33,36]]
-
-numbers = list(range(37))
-
-chip_0 = 0
 
 #def lost_money(player) --> maneja la logica de la perdida de diner0
 #def gain_money(player) --> maneja la logica de la ganancia de dinero
@@ -495,88 +500,7 @@ def buy_chips(player):
                 break
 
 
-def manage_bet(player):
-    ask_bet = input("A que deseas apostar ? [1. Pares o Impares // 2. Columnas // 3. Numeros // 4. Color] ")
 
-    if ask_bet == "1":
-
-        while True:
-            ask_chips = input("Cuantas fichas deseas apostar ? [1. Fitxas 100 // 2. Fitxas 50 // 3. Fitxas 20 // 4. Fitxas 10 // 5. Fitxas 5] ")
-
-            if ask_chips == "1":
-                ask_chips_100 = int(input("Cuantas fitxas de 100 quieres apostar ? \n"))
-
-                if players[player]["chips"]["fitxa_100"] < ask_chips_100:
-                    print("Error: no dispones de tantas fitxas")
-                    buy_chips(player)
-
-                elif players[player]["chips"]["fitxa_100"] >= ask_chips_100:
-
-                    players[player]["bet"]["odd_even"] = True
-                    players[player]["chips"]["fitxa_100"] -= ask_chips_100
-
-                    print(f"Has apostado {ask_chips_100} de 100 a 'Pares o Impares'")
-                    """AQUI SE PODRIA LLAMAR A UNA FUNCIÓN QUE DIGA BET_SUCCESFULL = TRUE OR FALSE, SI ES TRUE SE GANA EL DINERO SI ES FALSE SE PIERDE EL DINERO"""
-
-            if ask_chips == "2":
-                ask_chips_100 = int(input("Cuantas fitxas de 50 quieres apostar ?\n "))
-
-                if players[player]["chips"]["fitxa_50"] < ask_chips_100:
-                    print("Error: no dispones de tantas fitxas")
-                    buy_chips(player)
-
-                elif player[player]["chips"]["fitxa_50"] >= ask_chips_100:
-
-                    players[player]["bet"]["odd_even"] = True
-                    player[player]["chips"]["fitxa_50"] -= ask_chips_100
-
-                    print(f"Has apostado {ask_chips_100} de 50 a 'Pares o Impares'")
-            
-            if ask_chips == "3":
-                ask_chips_100 = int(input("Cuantas fitxas de 20 quieres apostar ?\n "))
-
-                if players[player]["chips"]["fitxa_20"] < ask_chips_100:
-                    print("Error: no dispones de tantas fitxas")
-                    buy_chips(player)
-
-                elif player[player]["chips"]["fitxa_20"] >= ask_chips_100:
-
-                    players[player]["bet"]["odd_even"] = True
-                    players[player]["chips"]["fitxa_20"] -= ask_chips_100
-
-                    print(f"Has apostado {ask_chips_100} de 20 a 'Pares o Impares'")
-            
-            if ask_chips == "4":
-                ask_chips_100 = int(input("Cuantas fitxas de 10 quieres apostar ?\n "))
-
-                if players[player]["chips"]["fitxa_10"] < ask_chips_100:
-                    print("Error: no dispones de tantas fitxas")
-                    buy_chips(player)
-
-                elif player[player]["chips"]["fitxa_10"] >= ask_chips_100:
-
-                    players[player]["bet"]["odd_even"] = True
-                    players[player]["chips"]["fitxa_10"] -= ask_chips_100
-
-                    print(f"Has apostado {ask_chips_100} de 10 a 'Pares o Impares'")
-            
-            if ask_chips == "5":
-                ask_chips_100 = int(input("Cuantas fitxas de 5 quieres apostar ?\n "))
-
-                if players[player]["chips"]["fitxa_5"] < ask_chips_100:
-                    print("Error: no dispones de tantas fitxas")
-                    buy_chips(player)
-
-                elif player[player]["chips"]["fitxa_5"] >= ask_chips_100:
-
-                    players[player]["bet"]["odd_even"] = True
-                    players[player]["chips"]["fitxa_5"] -= ask_chips_100
-
-                    print(f"Has apostado {ask_chips_100} de 5 a 'Pares o Impares'")
-
-            ask_for_betting = input("Deseas seguir apostando ? [y/n] ")
-            if ask_for_betting == "no":
-                break
                 
         
     #for player in player:
