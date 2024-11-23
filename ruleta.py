@@ -167,7 +167,9 @@ def update_spin():
             sector = int((current_angle / (360 / 37)) % 37)
             winning_number = roulette_numbers[sector]
             show_win_number = True
+            
 
+           
 def draw_button(mouse_pos):
     button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
 
