@@ -100,14 +100,26 @@ def app_draw():
     draw_grid()
     
     draw_roulette() #Función draw ruleta
+    draw_flecha() #Función dibujar flecha
     table() #Función dibujar tabla
-    banca()
-    fichas()
+    banca() #Función dibujar banca
+    fichas() #Función dibujar fichas
     
     pygame.display.update()
 
 
+def draw_flecha():
+    center_x = screen_width  // 2 / 2
+    center_y = screen_height // 2 - 100
 
+    points = [
+        (center_x + 265, center_y),
+        (center_x + 285, center_y - 10),
+        (center_x + 285, center_y + 10),
+    ]
+
+    pygame.draw.polygon(screen, RED, points)
+    pygame.draw.polygon(screen, YELLOW, points, 2)
 #Roulette
 def draw_roulette():
     global rad_first, rad_second
@@ -323,7 +335,7 @@ def fichas():
     text = font.render(str("FICHAS"), True, BLACK)
     text_rect = (520, 520)
     screen.blit(text, text_rect)
-    pass
+    
 
 #graellas
 def draw_grid():
