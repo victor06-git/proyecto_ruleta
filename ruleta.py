@@ -62,20 +62,20 @@ initial_speed = 25 #Velocidad inicial de giro
 #Botón girar
 button_width = 200
 button_height = 50
-button_x  = 150
-button_y = 700
+button_x  = 600
+button_y = 100
 button_color = RED
 button_hover_color = (255, 0, 0, 128)
 
 # Bucle de l'aplicació
 def main():
     is_looping = True
-
+    
     while is_looping:
         is_looping = app_events()
         app_run()
         app_draw()
-
+        
         clock.tick(60) # Limitar a 60 FPS
 
     # Fora del bucle, tancar l'aplicació
@@ -85,14 +85,15 @@ def main():
 # Gestionar events
 # Gestionar events
 def app_events():
-    global clicked, rotation, change
+    global clicked, mouse_pos, button_rect
 
     for event in pygame.event.get():
+        mouse_pos = pygame.mouse.get_pos()
         if event.type == pygame.QUIT:  # Botón cerrar ventana
-            rotation = False
-            return False
+            pygame.quit()
+            sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            clicked = True
+            button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
         elif event.type == pygame.MOUSEBUTTONUP:
             clicked = False
     return True
@@ -103,12 +104,10 @@ def app_run():
     mouse_x, mouse_y = pygame.mouse.get_pos()
     pass
 
-    
-    
         
 # Dibuixar
 def app_draw():
-    
+    global button_rect
     # Pintar el fons de blanc
     screen.fill(GREY)
 
@@ -116,6 +115,7 @@ def app_draw():
     
     draw_roulette() #Función draw ruleta
     draw_flecha() #Función dibujar flecha
+    button_rect = draw_button(mouse_pos)
     table() #Función dibujar tabla
     banca() #Función dibujar banca
     fichas() #Función dibujar fichas
@@ -134,7 +134,13 @@ def draw_button(mouse_pos):
     pygame.draw.rect(screen, color, button_rect) #Draw button
     pygame.draw.rect(screen, WHITE, button_rect, 2) #Draw border
 
-    
+    #Texto button
+    font = pygame.font.Font(None, 36)
+    text = font.render("GIRAR", True, WHITE)
+    text_rect = text.get_rect(center=(button_x + button_width / 2, button_y + button_height / 2))
+    screen.blit(text, text_rect)
+
+    return button_rect  
 
 def draw_flecha():
     center_x = screen_width  // 2 / 2
