@@ -11,13 +11,13 @@ players = {
     "player_purple":{
         "color": "purple",
         "money": 100,
-        "your_turn":False,
+        "your_turn":True,
         "chips":{
-            "fitxa_100":90,
-            "fitxa_50":0,
-            "fitxa_20":0,
-            "fitxa_10":0,
-            "fitxa_5":0
+            "fitxa_100":0,
+            "fitxa_50":1,
+            "fitxa_20":1,
+            "fitxa_10":2,
+            "fitxa_5":2
         },
         "bet":{
             "odd_even":"",
@@ -32,10 +32,10 @@ players = {
         "your_turn":False,
         "chips":{
             "fitxa_100":0,
-            "fitxa_50":0,
-            "fitxa_20":0,
-            "fitxa_10":0,
-            "fitxa_5":0
+            "fitxa_50":1,
+            "fitxa_20":1,
+            "fitxa_10":2,
+            "fitxa_5":2
         },
         "bet":{
             "odd_even":"",
@@ -49,11 +49,11 @@ players = {
         "money": 100,
         "your_turn":False,
         "chips":{
-            "fitxa_100":90,
-            "fitxa_50":0,
-            "fitxa_20":0,
-            "fitxa_10":0,
-            "fitxa_5":0
+            "fitxa_100":0,
+            "fitxa_50":1,
+            "fitxa_20":1,
+            "fitxa_10":2,
+            "fitxa_5":2
         },
         "bet":{
             "odd_even":"",
@@ -106,8 +106,8 @@ draw_chips = [
     {"x": 545, "y":650, "radius":35, "color":BLUE, "value":100, "width":5},
     {"x": 645, "y":650, "radius":35, "color":PURPLE, "value":50, "width":5},
     {"x": 745, "y":650, "radius":35, "color":RED, "value":20, "width":5},
-    {"x": 645, "y":550, "radius":35, "color":ORANGE, "value":10, "width":5},
-    {"x": 745, "y":550, "radius":35, "color":GRAY, "value":5, "width":5}
+    {"x": 595, "y":595, "radius":35, "color":ORANGE, "value":10, "width":5},
+    {"x": 695, "y":595, "radius":35, "color":GRAY, "value":5, "width":5}
 ]
 
 font_chip = pygame.font.SysFont("Arial",18,bold=True) #--> El bold=True es para hacerlo en negrita
@@ -185,9 +185,9 @@ def app_run():
     """
     for ficha in draw_chips:
 
-        puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)
+        puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)#--> es la formula para poder clickar encima de la redonda
 
-        if clicked and puntero <= ficha["radius"]:#--> es la formula para poder clickar encima de la redonda
+        if clicked and puntero <= ficha["radius"]:
             
             if not dragging:
 
@@ -201,7 +201,6 @@ def app_run():
                 ficha["y"] = mouse_y - offset_y
 
                 if ficha["value"] == 100:
-
                     print(f"Has clickado la ficha {ficha["value"]}")
             
                 elif ficha["value"] == 50:
@@ -219,7 +218,6 @@ def app_run():
         elif not clicked and dragging:
             dragging = False
 
-     
 # Dibuixar
 def app_draw():
 
@@ -232,16 +230,7 @@ def app_draw():
     draw_roulette() #Función draw ruleta
     table() #Función dibujar tabla
     banca()
-    fichas()
-
-    for ficha in draw_chips:
-
-        pygame.draw.circle(screen,WHITE,(ficha["x"], ficha["y"]),ficha["radius"])
-        pygame.draw.circle(screen, ficha["color"],(ficha["x"], ficha["y"]),ficha["radius"],ficha["width"])
-
-        valor_ficha = font_chip.render(str(ficha["value"]),True,(BLACK))
-        pos_ficha = valor_ficha.get_rect(center=(ficha["x"],ficha["y"]))
-        screen.blit(valor_ficha,pos_ficha)
+    tablero_fichas("player_purple")
 
     pygame.display.update()
 
@@ -457,16 +446,45 @@ def banca():
     pygame.draw.line(screen, YELLOW, (50, 600), (150, 600), 3)
     pygame.draw.line(screen, YELLOW, (150, 550), (150, 600), 3)
 
-def fichas():
-    pygame.draw.rect(screen, DARK_GREEN, (500, 500, 300, 200))
-    pygame.draw.rect(screen, YELLOW, (500, 500, 300, 200), 3)
-    pygame.draw.rect(screen, GREEN, (503, 503, 97, 47))
-    pygame.draw.line(screen, YELLOW, (500, 550), (600, 550), 3)
-    pygame.draw.line(screen, YELLOW, (600, 550), (600, 500), 3)
-    font = pygame.font.SysFont(None, 27)
-    text = font.render(str("FICHAS"), True, BLACK)
-    text_rect = (520, 520)
-    screen.blit(text, text_rect)
+def tablero_fichas(player):
+
+    y_offset = 0
+
+    for player in players:
+
+        if players[player]["your_turn"] == True:
+
+            pygame.draw.rect(screen, DARK_GREEN, (500, 500, 300, 200))
+            pygame.draw.rect(screen, YELLOW, (500, 500, 300, 200), 3)
+            pygame.draw.rect(screen, GREEN, (503, 503, 97, 47))
+            pygame.draw.line(screen, YELLOW, (500, 550), (600, 550), 3)
+            pygame.draw.line(screen, YELLOW, (600, 550), (600, 500), 3)
+            pygame.draw.line(screen, YELLOW, (600, 550), (799, 550), 3)
+            pygame.draw.rect(screen, GREEN, (603, 503, 97*2, 47))
+            
+            font_text = pygame.font.SysFont(None, 27)
+            text_fichas = font_text.render(str("FICHAS"), True, BLACK)
+            text_player = font_text.render(str(player),True, BLACK)
+            text_rect = (520, 520)
+            player_rect = (640,517)
+            screen.blit(text_fichas, text_rect)
+            screen.blit(text_player,player_rect)
+
+            for ficha in draw_chips:
+
+                for i in range(players[player]["chips"]["fitxa_50"]):
+
+                    y_offset = ficha["y"] - i * (ficha["radius"] * 2 + 5) 
+
+                    pygame.draw.circle(screen, ficha["color"],(ficha["x"], y_offset),ficha["radius"])
+
+                    valor_ficha = font_chip.render(str(ficha["value"]),True,(BLACK))
+                    pos_ficha = valor_ficha.get_rect(center=(ficha["x"],ficha["y"]))
+                    screen.blit(valor_ficha,pos_ficha)
+                
+
+            
+            #players[player]["your_turn"] = False
 
 
 #graellas
