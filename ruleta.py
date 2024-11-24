@@ -481,10 +481,8 @@ def tablero_fichas(player):
 
                         y_offset = ficha["y"] - i * (ficha["radius"] * 1.2 + 2)
 
-                        # Dibujar el círculo
                         pygame.draw.circle(screen, ficha["color"], (ficha["x"], y_offset), ficha["radius"])
 
-                        # Dibujar el valor de la ficha centrado
                         valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
                         pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
                         screen.blit(valor_ficha, pos_ficha)
