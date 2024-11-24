@@ -94,7 +94,14 @@ GRAY = (128,128,128)
 
 pygame.init()
 clock = pygame.time.Clock()
-
+#Estas son las variables para detrerminar el area de apuestas
+bet_even = pygame.Rect(850,100,100,100)
+bet_odd = pygame.Rect(850,555,100,100)
+bet_red = pygame.Rect(850,200,100,180)
+bet_black = pygame.Rect(850,380,100,180)
+bet_column_1 = pygame.Rect(950,650,50,50)
+bet_column_2 = pygame.Rect(1050,650,50,50)
+bet_column_3 = pygame.Rect(1150,650,50,50)
 
 # Definir la finestra
 screen_width = 1400
@@ -103,11 +110,11 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Ruleta')
 
 draw_chips = [
-    {"x": 545, "y":650, "radius":35, "color":BLUE, "value":100, "width":5},
-    {"x": 645, "y":650, "radius":35, "color":PURPLE, "value":50, "width":5},
-    {"x": 745, "y":650, "radius":35, "color":RED, "value":20, "width":5},
-    {"x": 595, "y":595, "radius":35, "color":ORANGE, "value":10, "width":5},
-    {"x": 695, "y":595, "radius":35, "color":GRAY, "value":5, "width":5}
+    {"x": 545, "y":650, "radius":35, "color":"", "value":100, "width":5},
+    {"x": 645, "y":650, "radius":35, "color":"", "value":50, "width":5},
+    {"x": 745, "y":650, "radius":35, "color":"", "value":20, "width":5},
+    {"x": 595, "y":595, "radius":35, "color":"", "value":10, "width":5},
+    {"x": 695, "y":595, "radius":35, "color":"", "value":5, "width":5}
 ]
 
 font_chip = pygame.font.SysFont("Arial",18,bold=True) #--> El bold=True es para hacerlo en negrita
@@ -183,6 +190,7 @@ def app_run():
         - Una vez ejecutada la ruleta las fichas vuelven a su posicón original
     
     """
+    
     for ficha in draw_chips:
 
         puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)#--> es la formula para poder clickar encima de la redonda
@@ -195,27 +203,55 @@ def app_run():
                 offset_x = mouse_x - ficha["x"]
                 offset_y = mouse_y - ficha["y"]
 
+                print(f"Has clickado la ficha {ficha["value"]}")
+
             if dragging:
 
                 ficha["x"] = mouse_x - offset_x
                 ficha["y"] = mouse_y - offset_y
 
-                if ficha["value"] == 100:
-                    print(f"Has clickado la ficha {ficha["value"]}")
-            
-                elif ficha["value"] == 50:
-                    print(f"Has clickado la ficha {ficha["value"]}")
-            
-                elif ficha["value"] == 20:
-                    print(f"Has clickado la ficha {ficha["value"]}")
-            
-                elif ficha["value"] == 10:
-                    print(f"Has clickado la ficha {ficha["value"]}")
-
-                elif ficha["value"] == 5:
-                    print(f"Has clickado la ficha {ficha["value"]}")
-
         elif not clicked and dragging:
+
+            for ficha in draw_chips:
+
+                if bet_even.collidepoint(ficha["x"],ficha["y"]):
+                    print("Has apostado a par")
+                
+                elif bet_odd.collidepoint(ficha["x"],ficha["y"]):
+                    print("Has apostado a impar")
+                
+                elif bet_red.collidepoint(ficha["x"],ficha["y"]):
+                    print("Has apostado al rojo")
+                
+                elif bet_black.collidepoint(ficha["x"],ficha["y"]):
+                    print("Has apostado al negro")
+                
+                elif bet_column_1.collidepoint(ficha["x"],ficha["y"]):
+                    print("Has apostado a la primera columna")
+                
+                elif bet_column_2.collidepoint(ficha["x"],ficha["y"]):
+                    print("Has apostado a la segunda columna")
+
+                elif bet_column_3.collidepoint(ficha["x"],ficha["y"]):
+                    print("Has apostado a la tercera columna")
+
+                else:
+
+                    if ficha["value"] == 100:
+                        ficha["x"], ficha["y"] = 545, 650
+                    
+                    elif ficha["value"] == 50:
+                        ficha["x"], ficha["y"] = 645, 650
+                    
+                    elif ficha["value"] == 20:
+                        ficha["x"], ficha["y"] = 745, 650
+                    
+                    elif ficha["value"] == 10:
+                        ficha["x"], ficha["y"] = 595, 595
+
+                    elif ficha["value"] == 5:
+                        ficha["x"], ficha["y"] = 695, 595
+
             dragging = False
 
 # Dibuixar
@@ -361,10 +397,10 @@ def table():
     screen.blit(text, text_rect3)
     
     #Pares/ Impares/ Rojo/ Negro
-    pygame.draw.rect(screen, DARK_GREEN, (850, 100 ,100, 100))
-    pygame.draw.rect(screen, DARK_GREEN, (850 , 200, 100, 180))
-    pygame.draw.rect(screen, DARK_GREEN, (850 , 380, 100, 180))
-    pygame.draw.rect(screen, DARK_GREEN, (850 ,555, 100, 100))
+    pygame.draw.rect(screen, DARK_GREEN, (850, 100 ,100, 100)) #--> area para apostar en PAR
+    pygame.draw.rect(screen, DARK_GREEN, (850 , 200, 100, 180))#--> area para apostar al color rojo
+    pygame.draw.rect(screen, DARK_GREEN, (850 , 380, 100, 180))#--> area para apostar al color negro
+    pygame.draw.rect(screen, DARK_GREEN, (850 ,555, 100, 100)) #--> area para apostar a Impar
     pygame.draw.rect(screen, BLACK, (850, 100 ,100, 100), 3)
     pygame.draw.rect(screen, BLACK, (850 , 200, 100, 180), 3)
     pygame.draw.rect(screen, BLACK, (850 , 380, 100, 180), 3)
@@ -474,6 +510,7 @@ def tablero_fichas(player):
 
                 chip_type = f"fitxa_{ficha['value']}" #--> Aquí lo que hago es, el valor de las fihcas en value, lo inserto a la cadena de string de fitxa_... // Es decir, si el value = 100, se formarà la cadena de strings de "fitxa_100"
                 chip_cantidad = players[player]["chips"].get(chip_type)#--> con esto obtengo el valor de la ficha  
+                color = players[player]["color"]
 
                 if chip_cantidad > 0:
                     
@@ -481,8 +518,10 @@ def tablero_fichas(player):
 
                         y_offset = ficha["y"] - i * (ficha["radius"] * 1.2 + 2)
 
-                        pygame.draw.circle(screen, ficha["color"], (ficha["x"], y_offset), ficha["radius"])
+                        pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset), ficha["radius"])
+                        pygame.draw.circle(screen, color, (ficha["x"], y_offset), ficha["radius"],ficha["width"])
 
+                        
                         valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
                         pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
                         screen.blit(valor_ficha, pos_ficha)
