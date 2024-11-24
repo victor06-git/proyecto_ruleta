@@ -108,8 +108,6 @@ def app_events():
 
 # Fer càlculs
 def app_run():
-    global rad_first, rad_second
-    mouse_x, mouse_y = pygame.mouse.get_pos()
     pass
 
         
