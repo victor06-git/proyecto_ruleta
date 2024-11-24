@@ -115,6 +115,7 @@ font_chip = pygame.font.SysFont("Arial",18,bold=True) #--> El bold=True es para 
 
 clicked = False
 dragging = False
+dragging_ficha = None
 mouse_x, mouse_y = -1, -1
 
 rad_first = ((360 / 37) * (math.pi / 180)) #First angle
@@ -160,9 +161,10 @@ def app_events():
 
 # Fer càlculs
 def app_run():
-    global rad_first, rad_second, clicked, draw_chips, dragging
+    global rad_first, rad_second, clicked, draw_chips, dragging, dragging_ficha
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
+    
     offset_x = 0
     offset_y = 0
 
@@ -183,7 +185,7 @@ def app_run():
         - Una vez ejecutada la ruleta las fichas vuelven a su posicón original
     
     """
-    for ficha in draw_chips:
+    for ficha in reversed(draw_chips):
 
         puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)#--> es la formula para poder clickar encima de la redonda
 
@@ -192,15 +194,18 @@ def app_run():
             if not dragging:
 
                 dragging = True
+                dragging_ficha = ficha
                 offset_x = mouse_x - ficha["x"]
                 offset_y = mouse_y - ficha["y"]
 
-            if dragging:
+            if dragging_ficha == ficha and dragging:
 
                 ficha["x"] = mouse_x - offset_x
                 ficha["y"] = mouse_y - offset_y
 
-                if ficha["value"] == 100:
+                print(f"Has clickado la ficha {ficha['value']}")
+
+                """if ficha["value"] == 100:
                     print(f"Has clickado la ficha {ficha["value"]}")
             
                 elif ficha["value"] == 50:
@@ -213,10 +218,11 @@ def app_run():
                     print(f"Has clickado la ficha {ficha["value"]}")
 
                 elif ficha["value"] == 5:
-                    print(f"Has clickado la ficha {ficha["value"]}")
+                    print(f"Has clickado la ficha {ficha["value"]}")"""
 
         elif not clicked and dragging:
             dragging = False
+            dragging_ficha = None
 
 # Dibuixar
 def app_draw():
@@ -479,10 +485,11 @@ def tablero_fichas(player):
                     
                     for i in range(chip_cantidad):
 
-                        y_offset = ficha["y"] - i * (ficha["radius"] * 2 + 2)
+                        y_offset = ficha["y"]- i * (ficha["radius"] * 0.3 + 5) #El 0.3, es el numero para superponer las fichas una encima de otra
 
                         # Dibujar el círculo
-                        pygame.draw.circle(screen, ficha["color"], (ficha["x"], y_offset), ficha["radius"])
+                        pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset), ficha["radius"])
+                        pygame.draw.circle(screen, ficha["color"], (ficha["x"], y_offset), ficha["radius"],ficha["width"])
 
                         # Dibujar el valor de la ficha centrado
                         valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
