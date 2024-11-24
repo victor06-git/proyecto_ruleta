@@ -67,6 +67,11 @@ button_y = 100
 button_color = RED
 button_hover_color = YELLOW
 
+surface = pygame.Surface((screen_width - 20, 400))
+show_numbers = False
+numbers = []
+
+
 #lista números ruleta
 roulette_numbers = [32, 15, 19, 4, 21, 2, 25,
                     17, 34, 6, 27, 13, 36, 11,
@@ -92,7 +97,7 @@ def main():
 # Gestionar events
 # Gestionar events
 def app_events():
-    global clicked, mouse_pos, button_rect
+    global clicked, mouse_pos, button_rect, button_rect2
 
     for event in pygame.event.get():
         mouse_pos = pygame.mouse.get_pos()
@@ -101,19 +106,24 @@ def app_events():
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
+            button_rect2 = pygame.Rect(button_x, button_y - 50, button_width, button_height)
             click(event.pos, button_rect)
+            if button_rect.collidepoint(mouse_pos):
+                show_numbers = not show_numbers
+
     update_spin()
         
     return True
 
 # Fer càlculs
 def app_run():
-    pass
+    global button
+    button = "NUMBERS" if show_numbers else "OCULTAR"
 
         
 # Dibuixar
 def app_draw():
-    global button_rect
+    global button_rect, button_rect2
     # Pintar el fons de blanc
     screen.fill(GREY)
 
@@ -122,6 +132,7 @@ def app_draw():
     draw_roulette() #Función draw ruleta
     draw_flecha() #Función dibujar flecha
     button_rect = draw_button(mouse_pos)
+    button_rect2 = draw_button2(mouse_pos)
     table() #Función dibujar tabla
     banca() #Función dibujar banca
     fichas() #Función dibujar fichas
@@ -166,7 +177,24 @@ def update_spin():
             winning_number = roulette_numbers[sector - 2]
             show_win_number = True
             
+def draw_button2(mouse_pos):
+    button_rect2 = pygame.Rect(button_x, button_y - 55, button_width, button_height)
 
+    if button_rect2.collidepoint(mouse_pos):
+        color = DARK_GREEN
+    else:
+        color = BLUE
+    
+    pygame.draw.rect(screen, color, button_rect2) #Draw button
+    pygame.draw.rect(screen, WHITE, button_rect2, 2) #Draw border
+    
+    font = pygame.font.Font(None, 36)
+    text2 = font.render("LISTA", True, WHITE)
+    text_rect = text2.get_rect(center=(button_x + button_width / 2, button_y + button_height / 2 - 50))
+    screen.blit(text2, text_rect)
+
+    return button_rect2
+    
            
 def draw_button(mouse_pos):
     button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
