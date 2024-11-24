@@ -122,6 +122,7 @@ font_chip = pygame.font.SysFont("Arial",18,bold=True) #--> El bold=True es para 
 
 clicked = False
 dragging = False
+dragging_chip = None
 mouse_x, mouse_y = -1, -1
 
 rad_first = ((360 / 37) * (math.pi / 180)) #First angle
@@ -200,15 +201,15 @@ def app_run():
             if not dragging:
 
                 dragging = True
+                dragging_chip = ficha
                 offset_x = mouse_x - ficha["x"]
                 offset_y = mouse_y - ficha["y"]
 
                 print(f"Has clickado la ficha {ficha["value"]}")
 
-            if dragging:
-
-                ficha["x"] = mouse_x - offset_x
-                ficha["y"] = mouse_y - offset_y
+            if dragging and dragging_chip == ficha:
+                dragging_chip["x"] = mouse_x - offset_x
+                dragging_chip["y"] = mouse_y - offset_y
 
         elif not clicked and dragging:
 
@@ -236,23 +237,24 @@ def app_run():
                     print("Has apostado a la tercera columna")
 
                 else:
+                    if ficha == dragging_chip:
+                        if ficha["value"] == 100:
+                            ficha["x"], ficha["y"] = 545, 650
+                        
+                        elif ficha["value"] == 50:
+                            ficha["x"], ficha["y"] = 645, 650
+                        
+                        elif ficha["value"] == 20:
+                            ficha["x"], ficha["y"] = 745, 650
+                        
+                        elif ficha["value"] == 10:
+                            ficha["x"], ficha["y"] = 595, 595
 
-                    if ficha["value"] == 100:
-                        ficha["x"], ficha["y"] = 545, 650
-                    
-                    elif ficha["value"] == 50:
-                        ficha["x"], ficha["y"] = 645, 650
-                    
-                    elif ficha["value"] == 20:
-                        ficha["x"], ficha["y"] = 745, 650
-                    
-                    elif ficha["value"] == 10:
-                        ficha["x"], ficha["y"] = 595, 595
-
-                    elif ficha["value"] == 5:
-                        ficha["x"], ficha["y"] = 695, 595
+                        elif ficha["value"] == 5:
+                            ficha["x"], ficha["y"] = 695, 595
 
             dragging = False
+            dragging_chip = None
 
 # Dibuixar
 def app_draw():
