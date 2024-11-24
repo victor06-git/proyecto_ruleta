@@ -57,7 +57,7 @@ spin_angle = random.randint(0, 360) #ángulo de rotación (Hacer que salga segú
 spin_speed = 0 #Velocidad de rotación
 friction = 0.98 #Número para que la ruleta se detenga
 min_speed = 0.01 #Mínima velocidad para que la ruleta siga girando
-initial_speed = 20 #Velocidad inicial de giro
+initial_speed = 15 #Velocidad inicial de giro
 
 #Botón girar
 button_width = 200
