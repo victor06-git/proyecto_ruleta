@@ -472,16 +472,22 @@ def tablero_fichas(player):
 
             for ficha in draw_chips:
 
-                for i in range(players[player]["chips"]["fitxa_50"]):
+                chip_type = ficha["value"]
+                chip_cantidad = players[player]["chip"].get(chip_type)#--> con esto obtengo el valor de la ficha  
 
-                    y_offset = ficha["y"] - i * (ficha["radius"] * 2 + 5) 
+                if chip_cantidad > 0:
+                    
+                    for i in range(chip_cantidad):
 
-                    pygame.draw.circle(screen, ficha["color"],(ficha["x"], y_offset),ficha["radius"])
+                        y_offset = ficha["y"] - i * (ficha["radius"] * 2 + 5)
 
-                    valor_ficha = font_chip.render(str(ficha["value"]),True,(BLACK))
-                    pos_ficha = valor_ficha.get_rect(center=(ficha["x"],ficha["y"]))
-                    screen.blit(valor_ficha,pos_ficha)
-                
+                        # Dibujar el círculo
+                        pygame.draw.circle(screen, ficha["color"], (ficha["x"], y_offset), ficha["radius"])
+
+                        # Dibujar el valor de la ficha centrado
+                        valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
+                        pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
+                        screen.blit(valor_ficha, pos_ficha)
 
             
             #players[player]["your_turn"] = False
