@@ -53,11 +53,11 @@ rad_num1 = ((360 / 37) * (math.pi / 180) * 3) / 2
 winning_number = None #El número ganador elegido
 show_win_number = False #Enseñar número ganador
 spinning = False #Verdadero/Falso inicio spin
-spin_angle = 0 #ángulo de rotación
+spin_angle = random.randint(0, 360) #ángulo de rotación (Hacer que salga según la probabilidad de 1.27%)
 spin_speed = 0 #Velocidad de rotación
 friction = 0.98 #Número para que la ruleta se detenga
 min_speed = 0.01 #Mínima velocidad para que la ruleta siga girando
-initial_speed = 25 #Velocidad inicial de giro
+initial_speed = random.randint(10, 50) #Velocidad inicial de giro
 
 #Botón girar
 button_width = 200
@@ -69,10 +69,10 @@ button_hover_color = YELLOW
 
 #lista números ruleta
 roulette_numbers = [32, 15, 19, 4, 21, 2, 25,
-                        17, 34, 6, 27, 13, 36, 11,
-                        30, 8, 23, 10, 5, 24, 16, 
-                        33, 1, 20, 14, 31, 9, 22, 
-                        18, 29, 7, 28, 12, 35, 3, 26]
+                    17, 34, 6, 27, 13, 36, 11,
+                    30, 8, 23, 10, 5, 24, 16, 
+                    33, 1, 20, 14, 31, 9, 22, 
+                    18, 29, 7, 28, 12, 35, 3, 26]
 
 # Bucle de l'aplicació
 def main():
@@ -165,7 +165,7 @@ def update_spin():
 
             current_angle = spin_angle % 360
             sector = int((current_angle / (360 / 37)) % 37)
-            winning_number = roulette_numbers[sector]
+            winning_number = roulette_numbers[sector - 2]
             show_win_number = True
             
 
