@@ -479,7 +479,7 @@ def tablero_fichas(player):
                     
                     for i in range(chip_cantidad):
 
-                        y_offset = ficha["y"] - i * (ficha["radius"] * 2 + 2)
+                        y_offset = ficha["y"] - i * (ficha["radius"] * 1.2 + 2)
 
                         # Dibujar el círculo
                         pygame.draw.circle(screen, ficha["color"], (ficha["x"], y_offset), ficha["radius"])
