@@ -6,6 +6,20 @@ import pygame
 import sys
 import random
 
+# Definir colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE  = (0, 0, 255)
+PURPLE = (128, 0, 128)
+ORANGE = (255, 165, 0) 
+DARK_GREEN = (0, 180, 0)
+GREY = (120,120,120)
+YELLOW = (243,228,67)
+BROWN = (98,52,18)
+GRAY = (128,128,128)
+
 #Lógica variables
 players = {
     "player_purple":{
@@ -13,11 +27,20 @@ players = {
         "money": 100,
         "your_turn":True,
         "chips":{
-            "fitxa_100":0,
-            "fitxa_50":1,
-            "fitxa_20":1,
-            "fitxa_10":2,
-            "fitxa_5":2
+            "fitxa_100":[],
+            "fitxa_50":[{"x": 645, "y":650, "radius":35, "color":PURPLE, "value":50, "width":5, "id":1}],
+            "fitxa_20":[
+                {"x": 745, "y":650, "radius":35, "color":RED, "value":20, "width":5, "id":0},
+                {"x": 745, "y":650, "radius":35, "color":RED, "value":20, "width":5, "id":1}
+            ],
+            "fitxa_10":[
+                {"x": 595, "y":595, "radius":35, "color":ORANGE, "value":10, "width":5, "id":0},
+                {"x": 595, "y":595, "radius":35, "color":ORANGE, "value":10, "width":5, "id":1}
+            ],
+            "fitxa_5":[
+                {"x": 695, "y":595, "radius":35, "color":GRAY, "value":5, "width":5, "id":0},
+                {"x": 695, "y":595, "radius":35, "color":GRAY, "value":5, "width":5, "id":1}
+            ]
         },
         "bet":{
             "odd_even":"",
@@ -31,11 +54,16 @@ players = {
         "money": 100,
         "your_turn":False,
         "chips":{
-            "fitxa_100":0,
-            "fitxa_50":1,
-            "fitxa_20":1,
-            "fitxa_10":2,
-            "fitxa_5":2
+            "fitxa_100":[],
+            "fitxa_50":[{"x": 645, "y":650, "radius":35, "color":PURPLE, "value":50, "width":5, "id":1}],
+            "fitxa_20":[
+                {"x": 595, "y":595, "radius":35, "color":ORANGE, "value":10, "width":5, "id":0},
+                {"x": 595, "y":595, "radius":35, "color":ORANGE, "value":10, "width":5, "id":1}
+            ],
+            "fitxa_5":[
+                {"x": 695, "y":595, "radius":35, "color":GRAY, "value":5, "width":5, "id":0},
+                {"x": 695, "y":595, "radius":35, "color":GRAY, "value":5, "width":5, "id":1}
+            ]
         },
         "bet":{
             "odd_even":"",
@@ -49,11 +77,16 @@ players = {
         "money": 100,
         "your_turn":False,
         "chips":{
-            "fitxa_100":0,
-            "fitxa_50":1,
-            "fitxa_20":1,
-            "fitxa_10":2,
-            "fitxa_5":2
+            "fitxa_100":[],
+            "fitxa_50":[{"x": 645, "y":650, "radius":35, "color":PURPLE, "value":50, "width":5, "id":1}],
+            "fitxa_20":[
+                {"x": 595, "y":595, "radius":35, "color":ORANGE, "value":10, "width":5, "id":0},
+                {"x": 595, "y":595, "radius":35, "color":ORANGE, "value":10, "width":5, "id":1}
+            ],
+            "fitxa_5":[
+                {"x": 695, "y":595, "radius":35, "color":GRAY, "value":5, "width":5, "id":0},
+                {"x": 695, "y":595, "radius":35, "color":GRAY, "value":5, "width":5, "id":1}
+            ]
         },
         "bet":{
             "odd_even":"",
@@ -73,23 +106,6 @@ numbers = list(range(37))
 
 chip_0 = 0
 
-# Definir colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE  = (0, 0, 255)
-PURPLE = (128, 0, 128)
-ORANGE = (255, 165, 0) 
-DARK_GREEN = (0, 180, 0)
-GREY = (120,120,120)
-YELLOW = (243,228,67)
-BROWN = (98,52,18)
-GRAY = (128,128,128)
-
-
-
-
 #Para saber como va a girar la ruleta y definir el angulo que lleva cada número para mostrarlo
 
 pygame.init()
@@ -103,11 +119,11 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Ruleta')
 
 draw_chips = [
-    {"x": 545, "y":650, "radius":35, "color":BLUE, "value":100, "width":5},
-    {"x": 645, "y":650, "radius":35, "color":PURPLE, "value":50, "width":5},
-    {"x": 745, "y":650, "radius":35, "color":RED, "value":20, "width":5},
-    {"x": 595, "y":595, "radius":35, "color":ORANGE, "value":10, "width":5},
-    {"x": 695, "y":595, "radius":35, "color":GRAY, "value":5, "width":5}
+    {"x": 545, "y":650, "radius":35, "color":BLUE, "value":100, "width":5, "id":0},
+    {"x": 645, "y":650, "radius":35, "color":PURPLE, "value":50, "width":5, "id":1},
+    {"x": 745, "y":650, "radius":35, "color":RED, "value":20, "width":5, "id":2},
+    {"x": 595, "y":595, "radius":35, "color":ORANGE, "value":10, "width":5, "id":3},
+    {"x": 695, "y":595, "radius":35, "color":GRAY, "value":5, "width":5, "id":4}
 ]
 
 font_chip = pygame.font.SysFont("Arial",18,bold=True) #--> El bold=True es para hacerlo en negrita
@@ -185,44 +201,33 @@ def app_run():
         - Una vez ejecutada la ruleta las fichas vuelven a su posicón original
     
     """
-    for ficha in reversed(draw_chips):
+    for tipo_ficha in players["player_purple"]["chips"]:
 
-        puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)#--> es la formula para poder clickar encima de la redonda
-
-        if clicked and puntero <= ficha["radius"]:
+        fichas = players["player_purple"]["chips"][tipo_ficha]
+        
+        for ficha in fichas:
             
-            if not dragging:
+            puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)#--> es la formula para poder clickar encima de la redonda
 
-                dragging = True
-                dragging_ficha = ficha
-                offset_x = mouse_x - ficha["x"]
-                offset_y = mouse_y - ficha["y"]
+            if clicked and puntero <= ficha["radius"]:
+        
+                if not dragging:
 
-            if dragging_ficha == ficha and dragging:
+                    dragging = True
+                    dragging_ficha = ficha["id"]
+                    offset_x = mouse_x - ficha["x"]
+                    offset_y = mouse_y - ficha["y"]
+
+            if dragging_ficha == ficha["id"] and dragging:
 
                 ficha["x"] = mouse_x - offset_x
                 ficha["y"] = mouse_y - offset_y
 
                 print(f"Has clickado la ficha {ficha['value']}")
 
-                """if ficha["value"] == 100:
-                    print(f"Has clickado la ficha {ficha["value"]}")
-            
-                elif ficha["value"] == 50:
-                    print(f"Has clickado la ficha {ficha["value"]}")
-            
-                elif ficha["value"] == 20:
-                    print(f"Has clickado la ficha {ficha["value"]}")
-            
-                elif ficha["value"] == 10:
-                    print(f"Has clickado la ficha {ficha["value"]}")
-
-                elif ficha["value"] == 5:
-                    print(f"Has clickado la ficha {ficha["value"]}")"""
-
-        elif not clicked and dragging:
-            dragging = False
-            dragging_ficha = None
+    if not clicked and dragging:
+        dragging = False
+        dragging_ficha = None
 
 # Dibuixar
 def app_draw():
@@ -454,7 +459,7 @@ def banca():
 
 def tablero_fichas(player):
 
-    y_offset = 0
+    y_offset = {"fitxa_100": 0, "fitxa_50": 0, "fitxa_20": 0, "fitxa_10": 0, "fitxa_5": 0}
 
     for player in players:
 
@@ -476,25 +481,20 @@ def tablero_fichas(player):
             screen.blit(text_fichas, text_rect)
             screen.blit(text_player,player_rect)
 
-            for ficha in draw_chips:
+            for tipo_ficha in players[player]["chips"]:
+                fichas = players[player]["chips"][tipo_ficha]
+                y_offset_actual = y_offset[tipo_ficha]
 
-                chip_type = f"fitxa_{ficha['value']}" #--> Aquí lo que hago es, el valor de las fihcas en value, lo inserto a la cadena de string de fitxa_... // Es decir, si el value = 100, se formarà la cadena de strings de "fitxa_100"
-                chip_cantidad = players[player]["chips"].get(chip_type)#--> con esto obtengo el valor de la ficha  
-
-                if chip_cantidad > 0:
+                for ficha in fichas:
+                    y_offset[tipo_ficha] = y_offset_actual
+                    y_offset_actual += ficha["radius"]*1.2 + 5
                     
-                    for i in range(chip_cantidad):
+                    pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset[tipo_ficha]), ficha["radius"])
+                    pygame.draw.circle(screen, ficha["color"], (ficha["x"], y_offset[tipo_ficha]), ficha["radius"],ficha["width"])
 
-                        y_offset = ficha["y"]- i * (ficha["radius"] * 0.3 + 5) #El 0.3, es el numero para superponer las fichas una encima de otra
-
-                        # Dibujar el círculo
-                        pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset), ficha["radius"])
-                        pygame.draw.circle(screen, ficha["color"], (ficha["x"], y_offset), ficha["radius"],ficha["width"])
-
-                        # Dibujar el valor de la ficha centrado
-                        valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
-                        pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
-                        screen.blit(valor_ficha, pos_ficha)
+                    valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
+                    pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset[tipo_ficha]))
+                    screen.blit(valor_ficha, pos_ficha)
 
             
             #players[player]["your_turn"] = False
