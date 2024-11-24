@@ -472,14 +472,14 @@ def tablero_fichas(player):
 
             for ficha in draw_chips:
 
-                chip_type = ficha["value"]
-                chip_cantidad = players[player]["chip"].get(chip_type)#--> con esto obtengo el valor de la ficha  
+                chip_type = f"fitxa_{ficha['value']}" #--> Aquí lo que hago es, el valor de las fihcas en value, lo inserto a la cadena de string de fitxa_... // Es decir, si el value = 100, se formarà la cadena de strings de "fitxa_100"
+                chip_cantidad = players[player]["chips"].get(chip_type)#--> con esto obtengo el valor de la ficha  
 
                 if chip_cantidad > 0:
                     
                     for i in range(chip_cantidad):
 
-                        y_offset = ficha["y"] - i * (ficha["radius"] * 2 + 5)
+                        y_offset = ficha["y"] - i * (ficha["radius"] * 2 + 2)
 
                         # Dibujar el círculo
                         pygame.draw.circle(screen, ficha["color"], (ficha["x"], y_offset), ficha["radius"])
