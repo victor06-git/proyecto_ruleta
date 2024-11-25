@@ -234,6 +234,7 @@ def app_events():
     update_spin()
         
     return True
+
 def cambiar_turno(players):
 
     jugadores = list(players.keys())
@@ -253,18 +254,8 @@ def cambiar_turno(players):
 
 # Fer càlculs
 def app_run():
-    global lista, clicked, draw_chips, dragging, dragging_chip, mouse_pos, key_space
+    global lista, clicked, dragging, dragging_chip, mouse_pos, key_space
 
-    if  show_numbers: lista = "OCULTAR LISTA" 
-    if not show_numbers: lista = "MOSTRAR LISTA"
-    
-
-    if show_numbers: #Mostrar surface con lista números orden
-        surface_x = 10
-        surface_y = 100
-        screen.blit(surface,(surface_x, surface_y))
-        surface_numbers()
-    
     if show_numbers and len(numbers3) >= 1:
         numbers_surface = surface_numbers(numbers3)
         screen.blit(numbers_surface, (600, 50))
