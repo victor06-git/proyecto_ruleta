@@ -5,15 +5,14 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 import sys
 import random
-
 #Lógica variables
 players = {
     "player_purple":{
         "color": "purple",
         "money": 100,
-        "your_turn":True,
+        "your_turn":False,
         "chips":{
-            "fitxa_100":0,
+            "fitxa_100":3,
             "fitxa_50":1,
             "fitxa_20":1,
             "fitxa_10":2,
@@ -29,7 +28,7 @@ players = {
     "player_blue":{
         "color": "blue",
         "money": 100,
-        "your_turn":False,
+        "your_turn":True,
         "chips":{
             "fitxa_100":0,
             "fitxa_50":1,
@@ -70,7 +69,6 @@ chips = [[1,4,7,10,13,16,19,22,25,28,31,34],
          [3,6,9,12,15,18,21,24,27,30,33,36]]
 
 numbers = list(range(37))
-hola = 0 
 chip_0 = 0
 
 # Definir colors
@@ -87,9 +85,6 @@ YELLOW = (243,228,67)
 BROWN = (98,52,18)
 GRAY = (128,128,128)
 
-
-
-
 #Para saber como va a girar la ruleta y definir el angulo que lleva cada número para mostrarlo
 
 pygame.init()
@@ -104,7 +99,7 @@ bet_column_2 = pygame.Rect(1050,650,50,50)
 bet_column_3 = pygame.Rect(1150,650,50,50)
 
 # Definir la finestra
-screen_width = 1400
+screen_width = 1495
 screen_height = 750
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Ruleta')
@@ -117,6 +112,9 @@ draw_chips = [
     {"x": 695, "y":595, "radius":25, "color":"", "value":5, "width":5}
 ]
 
+dragg_draw_chips = [
+    
+]
 registro_apuestas = {
     "par":{},
     "impar":{},
@@ -187,6 +185,9 @@ def registrar_apuestas(tipo_apuesta, tipo_ficha):
     
     print(f"Has apostado {registro_apuestas[tipo_apuesta][tipo_ficha]+1} fichas de valor {tipo_ficha} a {tipo_apuesta.capitalize()}")
 
+def odd_even_event(player):
+    oange = 1
+
 # Fer càlculs
 def app_run():
     global rad_first, rad_second, clicked, draw_chips, dragging, dragging_chip
@@ -199,23 +200,11 @@ def app_run():
     apuesta_done = {} #--> Para guardar las apuestas
 
     """Aqui tengo que hacer varias cosas para mejorar la logica:
-
-    1. Si clicked == True  
-       - Identificar el puntero en que ficha esta. Por ejemplo si está haciendo click en una ficha de 100, que automáticamente reconozca
-         la ficha de 100 (if clicked == true and mouse_x and mouse_y in circle_100:
-         --> Arrastramos la ficha de 100
-
-    2. Si clicked == False
-        - Guardar la posición --> --> if circle_x in (cuadrado de apuestas) and circle_y in (cuadrado de apuestas)... ejecutamos la función de la apuesta específica)
-        - Si el circulo está en la casilla --> (Cuantas fichas quieres apostar ?)
-        - Si el circulo no está en la casilla, se vuelve a la posición inicial
-         --> if circle_x in (cuadrado de apuestas) and circle_y in (cuadrado de apuestas)... ejecutamos la función de la apuesta específica)
     ***3***
         - En este punto se tiene que ejecutar la ruleta
         - Una vez ejecutada la ruleta las fichas vuelven a su posicón original
     
     """
-    
     for ficha in draw_chips:
 
         puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)#--> es la formula para poder clickar encima de la redonda
@@ -321,21 +310,11 @@ def app_draw():
     draw_roulette() #Función draw ruleta
     table() #Función dibujar tabla
     banca()
-    tablero_fichas("player_purple")
+    tablero_fichas()
 
     pygame.display.update()
 
 #Logica de apuesta: def even_odd_event  () // def red_black_event () // def bet_number_table () // def column_event () // (PROVISIONAL) --> def number_roullette () ; return number
-
-def spin_ruleta ():
-
-    roulette_numbers = [32, 15, 19, 4, 21, 2, 25,
-                        17, 34, 6, 27, 13, 36, 11,
-                        30, 8, 23, 10, 5, 24, 16, 
-                        33, 1, 20, 14, 31, 9, 22, 
-                        18, 29, 7, 28, 12, 35, 3, 26]
-
-    return random.choice(roulette_numbers)
         
 def draw_roulette():
     global rad_first, rad_second
@@ -531,7 +510,7 @@ def table():
             text_rect = (950 + (columna * width_casella) + 50, 100 + ( fila * height_casella) + 15) #Posicion de texto
             screen.blit(text, text_rect)
 
-            tablero.append({"numero":numbers , "color":color})
+            tablero.append({"numero":numbers , "color":color}) #--> Esto servirá para las apuestas de colores
 
     return tablero
 
@@ -546,7 +525,7 @@ def banca():
     pygame.draw.line(screen, YELLOW, (50, 600), (150, 600), 3)
     pygame.draw.line(screen, YELLOW, (150, 550), (150, 600), 3)
 
-def tablero_fichas(player):
+def tablero_fichas():
 
     y_offset = 0
 
@@ -579,21 +558,23 @@ def tablero_fichas(player):
 
                 if chip_cantidad > 0:
 
-                    #for i in range(chip_cantidad): 
-                    #- i * (ficha["radius"] * 1.2 + 2) --> este es bloque de codigo que haga que salgan apiladas por cada moneda del mismo tipo que tengamos
+                #for i in range(chip_cantidad): 
+                #icha["y"]- i * (ficha["radius"] * 1.2 + 2)
 
-                    y_offset = ficha["y"]
-                    text_cantidad = font_text_cantidad.render("x"+ str(chip_cantidad),True, WHITE)
-                    text_cantidad_rect = (ficha["x"]+30, y_offset)
+                        #--> este es bloque de codigo que haga que salgan apiladas por cada moneda del mismo tipo que tengamos
 
-                    pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset), ficha["radius"])
-                    pygame.draw.circle(screen, color, (ficha["x"], y_offset), ficha["radius"],ficha["width"])
-                    screen.blit(text_cantidad,text_cantidad_rect)
+                        y_offset = ficha["y"]
+                        text_cantidad = font_text_cantidad.render("x"+ str(chip_cantidad),True, WHITE)
+                        text_cantidad_rect = (ficha["x"]+30, y_offset)
 
-                    
-                    valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
-                    pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
-                    screen.blit(valor_ficha, pos_ficha)
+                        pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset), ficha["radius"])
+                        pygame.draw.circle(screen, color, (ficha["x"], y_offset), ficha["radius"],ficha["width"])
+                        screen.blit(text_cantidad,text_cantidad_rect)
+
+                        
+                        valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
+                        pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
+                        screen.blit(valor_ficha, pos_ficha)
 
             
             #players[player]["your_turn"] = False
@@ -632,83 +613,6 @@ def draw_grid():
 #def manage_money(player) --> en función de si gana o pierde, se añade a player["dinero"]
 #def banca_rota(player)--> maneja la logica de cuando te quedas en banca rota
 #def comprar fichas (player) --> Esta funcion permite comprar fichas
-"""
-def buy_chips(player):
-
-    ask_to_buy = input("Deseas comprar mas fitxas? [y/n] ").lower()
-
-    if ask_to_buy == "yes":
-        how_many = input("Select the chips to buy: [1. for 100 // 2. for 50 // 3: for 20 // 4. for 10 // 5. for 5] ")
-
-        cuantity = int(input("How many do you want to buy ? "))
-
-        while True:
-            if how_many == "1":
-
-                if players[player]["money"] >= (cuantity*100):
-
-                    players[player]["money"] -= (cuantity*100)
-                    players[player]["chips"]["fitxa_100"] += cuantity
-                    print(f"Has adquirido {cuantity} fitxas de 100")
-
-                else:
-                    print("You do not have enough money")
-
-            elif how_many == "2":
-
-                if players[player]["money"] >= (cuantity*50):
-
-                    players[player]["money"] -= (cuantity*50)
-                    players[player]["chips"]["fitxa_50"] += cuantity
-                    print(f"Has adquirido {cuantity} fitxas de 50")
-
-                else:
-                    print("You do not have enough money")
-
-            elif how_many == "3":
-
-                if players[player]["money"] >= (cuantity*20):
-
-                    players[player]["money"] -= (cuantity*20)
-                    players[player]["chips"]["fitxa_20"] += cuantity
-                    print(f"Has adquirido {cuantity} fitxas de 20")
-
-                else:
-                    print("You do not have enough money")
-            
-            elif how_many == "4":
-
-                if players[player]["money"] >= (cuantity*10):
-
-                    players[player]["money"] -= (cuantity*10)
-                    players[player]["chips"]["fitxa_10"] += cuantity
-                    print(f"Has adquirido {cuantity} fitxas de 10")
-
-                else:
-                    print("You do not have enough money")
-            
-            elif how_many == "5":
-
-                if players[player]["money"] >= (cuantity*5):
-
-                    players[player]["money"] -= (cuantity*5)
-                    players[player]["chips"]["fitxa_5"] += cuantity
-                    print(f"Has adquirido {cuantity} fitxas de 5")
-                else:
-                    print("You do not have enough money")
-
-            continue_to_purchase = input("Desas seguir comprando ? [y/no] ").lower()
-
-            if continue_to_purchase == "no":
-                break
-
-
-
-                
-        
-    #for player in player:
-
-#print(manage_bet("player_purple"))"""
 
 if __name__ == "__main__":
     main()
