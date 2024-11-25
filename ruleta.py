@@ -363,7 +363,7 @@ def app_draw():
     banca() #Función dibujar banca
     tablero_fichas() #Función dibujar fichas
     draw_win_number() #Función dibuja número elegido
-    #tablero_fichas() #Función fichas tablero
+    tablero_fichas() #Función fichas tablero
     
     pygame.display.update()
 
