@@ -205,15 +205,14 @@ def app_events():
     global clicked, button_rect, button_rect2, show_numbers
 
     for event in pygame.event.get():
-        
         if event.type == pygame.QUIT:  # Botón cerrar ventana
             pygame.quit()
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
             button_rect2 = pygame.Rect(button_x, button_y - 50, button_width, button_height)
-            click(event.pos, button_rect)
-            click2(event.pos, button_rect2)
+            click(event.pos, button_rect) #click botón girar ruleta
+            click2(event.pos) #click botón mostrar lista números rondas
             clicked = True
 
         elif event.type == pygame.MOUSEBUTTONUP:
@@ -363,7 +362,7 @@ def app_draw():
     banca() #Función dibujar banca
     tablero_fichas() #Función dibujar fichas
     draw_win_number() #Función dibuja número elegido
-    tablero_fichas() #Función fichas tablero
+    
     
     pygame.display.update()
 
@@ -387,10 +386,10 @@ def is_click_on_button(pos, button_rect):
 def is_click_on_button2(pos, button_rect2):
     return button_rect2.collidepoint(pos)
 
-def click2(pos, button_rect2):
+def click2(pos):
     global show_numbers
-    if is_click_on_button2(pos, button_rect2):
-        show_numbers = False
+    if button_rect2.collidepoint(pos):
+        show_numbers = not show_numbers
 
 def click(pos, button_rect):
     global spinning, spin_speed, show_win_number
