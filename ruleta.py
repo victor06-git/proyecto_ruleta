@@ -34,13 +34,13 @@ players = {
     "player_purple":{
         "color": "purple",
         "money": 100,
-        "your_turn":False,
+        "your_turn":True,
         "chips":{
             "fitxa_100":90,
-            "fitxa_50":0,
-            "fitxa_20":0,
-            "fitxa_10":0,
-            "fitxa_5":0
+            "fitxa_50":1,
+            "fitxa_20":1,
+            "fitxa_10":2,
+            "fitxa_5":2
         },
         "bet":{
             "odd_even":"",
@@ -104,7 +104,7 @@ draw_chips = [
     {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
 ]
 
-ragistro_apuestas = {
+registro_apuestas = {
     "par": {},
     "impar": {},
     "rojo": {},
@@ -115,6 +115,7 @@ ragistro_apuestas = {
     "numbers": {}
     }
 
+font_chip = pygame.font.SysFont("Arial", 18, bold = True)
 
 # Definir la finestra
 screen_width = 1400
@@ -201,10 +202,10 @@ def main():
 
 # Gestionar events
 def app_events():
-    global clicked, mouse_pos, button_rect, button_rect2, show_numbers
+    global clicked, button_rect, button_rect2, show_numbers
 
     for event in pygame.event.get():
-        mouse_pos = pygame.mouse.get_pos()
+        
         if event.type == pygame.QUIT:  # Botón cerrar ventana
             pygame.quit()
             sys.exit()
@@ -213,17 +214,18 @@ def app_events():
             button_rect2 = pygame.Rect(button_x, button_y - 50, button_width, button_height)
             click(event.pos, button_rect)
             clicked = True
-            
+
             if button_rect2.collidepoint(mouse_pos):
                 show_numbers = not show_numbers
-
+        elif event.type == pygame.MOUSEBUTTONUP:
+            clicked = False
     update_spin()
         
     return True
 
 # Fer càlculs
 def app_run():
-    global lista, clicked, draw_chips, dragging, dragging_chip
+    global lista, clicked, draw_chips, dragging, dragging_chip, mouse_pos
 
     if show_numbers:
         lista = "OCULTAR LISTA"
@@ -236,7 +238,11 @@ def app_run():
         surface_y = 100
         screen.blit(surface, (surface_x, surface_y))
     
-    mouse_x, mouse_y = pygame.mouse.get_pos()
+    
+    mouse_pos = pygame.mouse.get_pos()
+    mouse_x = mouse_pos[0]
+    mouse_y = mouse_pos[1]
+  
 
     offset_x = 0
     offset_y = 0
@@ -248,7 +254,6 @@ def app_run():
     ***3***
         - En este punto se tiene que ejecutar la ruleta
         - Una vez ejecutada la ruleta las fichas vuelven a su posicón original
-    
     """
     for ficha in draw_chips:
 
@@ -358,7 +363,7 @@ def app_draw():
     button_rect2 = draw_button2(mouse_pos)
     table() #Función dibujar tabla
     banca() #Función dibujar banca
-    fichas() #Función dibujar fichas
+    tablero_fichas() #Función dibujar fichas
     draw_win_number() #Función dibuja número elegido
     #tablero_fichas() #Función fichas tablero
     
@@ -672,16 +677,61 @@ def banca():
     pygame.draw.line(screen, YELLOW, (150, 550), (150, 600), 3)
 
 #FÚNCION tablero fichas (cambiar)
-def fichas():
-    pygame.draw.rect(screen, DARK_GREEN, (500, 500, 300, 200))
-    pygame.draw.rect(screen, YELLOW, (500, 500, 300, 200), 3)
-    pygame.draw.rect(screen, GREEN, (503, 503, 97, 47))
-    pygame.draw.line(screen, YELLOW, (500, 550), (600, 550), 3)
-    pygame.draw.line(screen, YELLOW, (600, 550), (600, 500), 3)
-    font = pygame.font.SysFont(None, 27)
-    text = font.render(str("FICHAS"), True, BLACK)
-    text_rect = (520, 520)
-    screen.blit(text, text_rect)
+def tablero_fichas():
+
+    y_offset = 0
+
+    for player in players:
+
+        if players[player]["your_turn"] == True:
+
+            pygame.draw.rect(screen, DARK_GREEN, (500, 500, 300, 200))
+            pygame.draw.rect(screen, YELLOW, (500, 500, 300, 200), 3)
+            pygame.draw.rect(screen, GREEN, (503, 503, 97, 47))
+            pygame.draw.line(screen, YELLOW, (500, 550), (600, 550), 3)
+            pygame.draw.line(screen, YELLOW, (600, 550), (600, 500), 3)
+            pygame.draw.line(screen, YELLOW, (600, 550), (799, 550), 3)
+            pygame.draw.rect(screen, GREEN, (603, 503, 97*2, 47))
+            
+            font_text = pygame.font.SysFont(None, 27)
+            text_fichas = font_text.render(str("FICHAS"), True, BLACK)
+            text_player = font_text.render(str(player),True, BLACK)
+            font_text_cantidad = pygame.font.SysFont("Arial", 14, bold=True)
+            text_rect = (520, 520)
+            player_rect = (640,517)
+            screen.blit(text_fichas, text_rect)
+            screen.blit(text_player,player_rect)
+
+            for ficha in draw_chips:
+
+                chip_type = f"fitxa_{ficha['value']}" #--> Aquí lo que hago es, el valor de las fihcas en value, lo inserto a la cadena de string de fitxa_... // Es decir, si el value = 100, se formarà la cadena de strings de "fitxa_100"
+                chip_cantidad = players[player]["chips"].get(chip_type)#--> con esto obtengo las cantidades de el valor de la ficha  
+                color = players[player]["color"]
+
+                if chip_cantidad > 0:
+
+                #for i in range(chip_cantidad): 
+                #icha["y"]- i * (ficha["radius"] * 1.2 + 2)
+
+                        #--> este es bloque de codigo que haga que salgan apiladas por cada moneda del mismo tipo que tengamos
+
+                        y_offset = ficha["y"]
+                        text_cantidad = font_text_cantidad.render("x"+ str(chip_cantidad),True, WHITE)
+                        text_cantidad_rect = (ficha["x"]+30, y_offset)
+
+                        pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset), ficha["radius"])
+                        pygame.draw.circle(screen, color, (ficha["x"], y_offset), ficha["radius"],ficha["width"])
+                        screen.blit(text_cantidad,text_cantidad_rect)
+
+                        
+                        valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
+                        pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
+                        screen.blit(valor_ficha, pos_ficha)
+
+            
+            #players[player]["your_turn"] = False
+
+
 
 def registrar_apuestas(tipo_apuesta, tipo_ficha):
 
