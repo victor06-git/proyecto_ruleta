@@ -164,9 +164,8 @@ button_color = RED
 button_hover_color = YELLOW
 
 #surface lista
-surface = pygame.Surface((screen_width - 20, 400))
 show_numbers = False
-numbers3 = []
+numbers3 = [2, 4, 5, 6, 7]
 
 
 #lista números ruleta
@@ -214,15 +213,14 @@ def app_events():
     global clicked, button_rect, button_rect2, show_numbers
 
     for event in pygame.event.get():
-        
         if event.type == pygame.QUIT:  # Botón cerrar ventana
             pygame.quit()
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
             button_rect2 = pygame.Rect(button_x, button_y - 50, button_width, button_height)
-            click(event.pos, button_rect)
-            click2(event.pos, button_rect2)
+            click(event.pos, button_rect) #click botón girar ruleta
+            click2(event.pos) #click botón mostrar lista números rondas
             clicked = True
 
         elif event.type == pygame.MOUSEBUTTONUP:
@@ -267,12 +265,14 @@ def app_run():
         screen.blit(surface, (surface_x, surface_y))
         surface_numbers()
     
+    if show_numbers and len(numbers3) >= 1:
+        numbers_surface = surface_numbers(numbers3)
+        screen.blit(numbers_surface, (600, 50))
     
     mouse_pos = pygame.mouse.get_pos()
     mouse_x = mouse_pos[0]
     mouse_y = mouse_pos[1]
   
-
     offset_x = 0
     offset_y = 0
     height_casilla = (600 / 13)
@@ -394,34 +394,37 @@ def app_draw():
     banca() #Función dibujar banca
     tablero_fichas()
     draw_win_number() #Función dibuja número elegido
-    #tablero_fichas() #Función fichas tablero
+    
     
     pygame.display.update()
 
-def surface_numbers():
-    surface.fill(GREEN)
+def surface_numbers(numbers3):
+    
+    space = 30
+    width = 200
+    height = 500
 
-    if len(numbers) >= 1:
-        space = 30
-        height = len(numbers) * space
-        start_y = int((surface.get_height() - height) // 2)
-        font = pygame.font.SysFont(None, 24)
-        for j in range(len(numbers)):
-            text = font.render(str(j), True, WHITE)
-            text_x = (surface.get_width() - text.get_width()) // 2
-            text_y = start_y + (j * space)
-            surface.blit(text, (text_x, text_y))
+    numbers_surface = pygame.Surface((width, height))
+    numbers_surface.fill(GREEN)
+
+    font = pygame.font.SysFont(None, 24)
+
+    for j, number in enumerate(numbers3):
+        text = font.render(f"{j}: {number}", True, WHITE)
+        numbers_surface.blit(text, (10, j * space))
+
+    return numbers_surface
+
+    
 
 def is_click_on_button(pos, button_rect):
     return button_rect.collidepoint(pos)
 
-def is_click_on_button2(pos, button_rect2):
-    return button_rect2.collidepoint(pos)
 
-def click2(pos, button_rect2):
+def click2(pos):
     global show_numbers
-    if is_click_on_button2(pos, button_rect2):
-        show_numbers = False
+    if button_rect2.collidepoint(pos):
+        show_numbers = not show_numbers
 
 def click(pos, button_rect):
     global spinning, spin_speed, show_win_number
@@ -459,7 +462,7 @@ def update_spin():
             show_win_number = True
             
 def draw_button2(mouse_pos):
-    global lista
+
     button_rect2 = pygame.Rect(button_x, button_y - 55, button_width, button_height)
 
     if button_rect2.collidepoint(mouse_pos):
@@ -467,9 +470,16 @@ def draw_button2(mouse_pos):
     else:
         color = BLUE
     
+    if  show_numbers == True: 
+        
+        lista = "OCULTAR LISTA"
+
+    elif show_numbers == False: 
+        
+        lista = "MOSTRAR LISTA"
+    
     pygame.draw.rect(screen, color, button_rect2) #Draw button
     pygame.draw.rect(screen, WHITE, button_rect2, 2) #Draw border
-    lista = "MOSTRAR LISTA"
     font = pygame.font.Font(None, 36)
     text2 = font.render(lista, True, WHITE)
     text_rect = text2.get_rect(center=(button_x + button_width / 2, button_y + button_height / 2 - 50))
@@ -501,13 +511,14 @@ def draw_flecha():
     center_y = screen_height // 2 - 100
 
     points = [
-        (center_x + 265, center_y),
+        (center_x + 250, center_y),
         (center_x + 285, center_y - 10),
         (center_x + 285, center_y + 10),
     ]
 
     pygame.draw.polygon(screen, RED, points)
     pygame.draw.polygon(screen, YELLOW, points, 2)
+
 #Roulette
 def draw_roulette():
     global rad_first, rad_second, spin_angle
