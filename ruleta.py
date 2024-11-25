@@ -110,11 +110,11 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Ruleta')
 
 draw_chips = [
-    {"x": 545, "y":650, "radius":35, "color":"", "value":100, "width":5},
-    {"x": 645, "y":650, "radius":35, "color":"", "value":50, "width":5},
-    {"x": 745, "y":650, "radius":35, "color":"", "value":20, "width":5},
-    {"x": 595, "y":595, "radius":35, "color":"", "value":10, "width":5},
-    {"x": 695, "y":595, "radius":35, "color":"", "value":5, "width":5}
+    {"x": 545, "y":650, "radius":25, "color":"", "value":100, "width":5},
+    {"x": 645, "y":650, "radius":25, "color":"", "value":50, "width":5},
+    {"x": 745, "y":650, "radius":25, "color":"", "value":20, "width":5},
+    {"x": 595, "y":595, "radius":25, "color":"", "value":10, "width":5},
+    {"x": 695, "y":595, "radius":25, "color":"", "value":5, "width":5}
 ]
 
 font_chip = pygame.font.SysFont("Arial",18,bold=True) #--> El bold=True es para hacerlo en negrita
@@ -168,11 +168,13 @@ def app_events():
 
 # Fer càlculs
 def app_run():
-    global rad_first, rad_second, clicked, draw_chips, dragging
+    global rad_first, rad_second, clicked, draw_chips, dragging, dragging_chip
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
     offset_x = 0
     offset_y = 0
+    height_casilla = (600 / 13)
+    width_casilla = (300 / 3)
 
     """Aqui tengo que hacer varias cosas para mejorar la logica:
 
@@ -237,7 +239,28 @@ def app_run():
                     print("Has apostado a la tercera columna")
 
                 else:
-                    if ficha == dragging_chip:
+
+                    bet_number = None
+
+                    for columna in range(3):
+                        for fila in range(12):
+
+                            pos_x = 950 + columna*width_casilla
+                            pos_y = 100 + fila*height_casilla
+                            rect_casilla = pygame.Rect(pos_x, pos_y, width_casilla, height_casilla)
+
+                            if rect_casilla.collidepoint(ficha["x"], ficha["y"]):
+                                ficha["x"] = pos_x + width_casilla // 2
+                                ficha["y"] = pos_y + height_casilla // 2
+                                bet_number = chips[columna][fila]
+                                break#--> aquí paro el bucle cuando bet_number tiene un valor
+                        
+                        if bet_number is not None:#--> Lo pongo asi porque sin ome continuaria el bucle aun que ya tubiera valor
+                            print(f"Has apostado al numero: {bet_number}")
+                            break
+
+                    if bet_number is None and ficha == dragging_chip:
+
                         if ficha["value"] == 100:
                             ficha["x"], ficha["y"] = 545, 650
                         
@@ -272,7 +295,17 @@ def app_draw():
 
     pygame.display.update()
 
+#Logica de apuesta: def even_odd_event  () // def red_black_event () // def bet_number_table () // def column_event () // (PROVISIONAL) --> def number_roullette () ; return number
 
+def spin_ruleta ():
+
+    roulette_numbers = [32, 15, 19, 4, 21, 2, 25,
+                        17, 34, 6, 27, 13, 36, 11,
+                        30, 8, 23, 10, 5, 24, 16, 
+                        33, 1, 20, 14, 31, 9, 22, 
+                        18, 29, 7, 28, 12, 35, 3, 26]
+
+    return random.choice(roulette_numbers)
 
 #Roulette
 def draw_roulette():
@@ -565,7 +598,7 @@ def draw_grid():
 #def manage_money(player) --> en función de si gana o pierde, se añade a player["dinero"]
 #def banca_rota(player)--> maneja la logica de cuando te quedas en banca rota
 #def comprar fichas (player) --> Esta funcion permite comprar fichas
-
+"""
 def buy_chips(player):
 
     ask_to_buy = input("Deseas comprar mas fitxas? [y/n] ").lower()
@@ -641,7 +674,7 @@ def buy_chips(player):
         
     #for player in player:
 
-#print(manage_bet("player_purple"))
+#print(manage_bet("player_purple"))"""
 
 if __name__ == "__main__":
     main()
