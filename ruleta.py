@@ -124,6 +124,8 @@ def app_run():
     else:
         lista = "MOSTRAR LISTA"
 
+    if show_numbers: #Mostrar surface con lista números orden
+        pass
         
 # Dibuixar
 def app_draw():
