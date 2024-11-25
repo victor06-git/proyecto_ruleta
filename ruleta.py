@@ -156,9 +156,8 @@ button_color = RED
 button_hover_color = YELLOW
 
 #surface lista
-surface = pygame.Surface((screen_width - 20, 400))
 show_numbers = False
-numbers3 = []
+numbers3 = [2, 4, 5, 6, 7]
 
 
 #lista números ruleta
@@ -217,32 +216,23 @@ def app_events():
 
         elif event.type == pygame.MOUSEBUTTONUP:
             clicked = False
+
     update_spin()
         
     return True
 
 # Fer càlculs
 def app_run():
-    global lista, clicked, draw_chips, dragging, dragging_chip, mouse_pos
-
-    if  show_numbers == True: 
-        lista = "OCULTAR LISTA" 
-    elif show_numbers == False: 
-        lista = "MOSTRAR LISTA"
+    global clicked, draw_chips, dragging, dragging_chip, mouse_pos
     
-
-    if show_numbers: #Mostrar surface con lista números orden
-        surface_x = 10
-        surface_y = 100
-        screen.blit(surface, (surface_x, surface_y))
-        surface_numbers()
-    
+    if show_numbers and len(numbers3) >= 1:
+        numbers_surface = surface_numbers(numbers3)
+        screen.blit(numbers_surface, (600, 50))
     
     mouse_pos = pygame.mouse.get_pos()
     mouse_x = mouse_pos[0]
     mouse_y = mouse_pos[1]
   
-
     offset_x = 0
     offset_y = 0
     height_casilla = (600 / 13)
@@ -368,19 +358,24 @@ def app_draw():
     
     pygame.display.update()
 
-def surface_numbers():
-    surface.fill(GREEN)
+def surface_numbers(numbers3):
+    
+    space = 30
+    width = 200
+    height = 500
 
-    if len(numbers) >= 1:
-        space = 30
-        height = len(numbers) * space
-        start_y = int((surface.get_height() - height) // 2)
-        font = pygame.font.SysFont(None, 24)
-        for j in range(len(numbers)):
-            text = font.render(str(j), True, WHITE)
-            text_x = (surface.get_width() - text.get_width()) // 2
-            text_y = start_y + (j * space)
-            surface.blit(text, (text_x, text_y))
+    numbers_surface = pygame.Surface((width, height))
+    numbers_surface.fill(GREEN)
+
+    font = pygame.font.SysFont(None, 24)
+
+    for j, number in enumerate(numbers3):
+        text = font.render(f"{j}: {number}", True, WHITE)
+        numbers_surface.blit(text, (10, j * space))
+
+    return numbers_surface
+
+    
 
 def is_click_on_button(pos, button_rect):
     return button_rect.collidepoint(pos)
@@ -427,7 +422,7 @@ def update_spin():
             show_win_number = True
             
 def draw_button2(mouse_pos):
-    global lista
+
     button_rect2 = pygame.Rect(button_x, button_y - 55, button_width, button_height)
 
     if button_rect2.collidepoint(mouse_pos):
@@ -435,9 +430,16 @@ def draw_button2(mouse_pos):
     else:
         color = BLUE
     
+    if  show_numbers == True: 
+        
+        lista = "OCULTAR LISTA"
+
+    elif show_numbers == False: 
+        
+        lista = "MOSTRAR LISTA"
+    
     pygame.draw.rect(screen, color, button_rect2) #Draw button
     pygame.draw.rect(screen, WHITE, button_rect2, 2) #Draw border
-    lista = None
     font = pygame.font.Font(None, 36)
     text2 = font.render(lista, True, WHITE)
     text_rect = text2.get_rect(center=(button_x + button_width / 2, button_y + button_height / 2 - 50))
