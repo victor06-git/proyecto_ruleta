@@ -385,8 +385,6 @@ def surface_numbers():
 def is_click_on_button(pos, button_rect):
     return button_rect.collidepoint(pos)
 
-def is_click_on_button2(pos, button_rect2):
-    return button_rect2.collidepoint(pos)
 
 def click2(pos):
     global show_numbers
@@ -472,13 +470,14 @@ def draw_flecha():
     center_y = screen_height // 2 - 100
 
     points = [
-        (center_x + 265, center_y),
+        (center_x + 250, center_y),
         (center_x + 285, center_y - 10),
         (center_x + 285, center_y + 10),
     ]
 
     pygame.draw.polygon(screen, RED, points)
     pygame.draw.polygon(screen, YELLOW, points, 2)
+
 #Roulette
 def draw_roulette():
     global rad_first, rad_second, spin_angle
