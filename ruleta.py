@@ -217,6 +217,7 @@ def app_events():
 
             if button_rect2.collidepoint(mouse_pos):
                 show_numbers = not show_numbers
+        
         elif event.type == pygame.MOUSEBUTTONUP:
             clicked = False
     update_spin()
