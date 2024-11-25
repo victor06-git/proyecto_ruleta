@@ -165,7 +165,8 @@ button_hover_color = YELLOW
 
 #surface lista
 show_numbers = False
-numbers3 = [2, 4, 5, 6, 7]
+numbers3 = []
+show_surface = False
 
 
 #lista números ruleta
@@ -254,11 +255,7 @@ def cambiar_turno(players):
 
 # Fer càlculs
 def app_run():
-    global lista, clicked, dragging, dragging_chip, mouse_pos, key_space
-
-    if show_numbers and len(numbers3) >= 1:
-        numbers_surface = surface_numbers(numbers3)
-        screen.blit(numbers_surface, (600, 50))
+    global clicked, dragging, dragging_chip, mouse_pos, key_space
     
     mouse_pos = pygame.mouse.get_pos()
     mouse_x = mouse_pos[0]
@@ -386,36 +383,41 @@ def app_draw():
     tablero_fichas()
     draw_win_number() #Función dibuja número elegido
     
+    if show_surface:
+        draw_surface()
     
     pygame.display.update()
 
-def surface_numbers(numbers3):
+
+def draw_surface():
     
-    space = 30
-    width = 200
-    height = 500
+    surface_width = screen_width // 2
+    surface_height = screen_height 
+    overlay_surface = pygame.Surface((surface_width, surface_height))
+    overlay_surface.fill(GREEN)
 
-    numbers_surface = pygame.Surface((width, height))
-    numbers_surface.fill(GREEN)
+    screen.blit(overlay_surface, (50, 50))
 
-    font = pygame.font.SysFont(None, 24)
+    font = pygame.font.SysFont(None, 36)
+    text = font.render("Lista", True, WHITE)
+    text_rect = text.get_rect(center=(150,  100))
+    screen.blit(text, text_rect)
 
     for j, number in enumerate(numbers3):
-        text = font.render(f"{j}: {number}", True, WHITE)
-        numbers_surface.blit(text, (10, j * space))
+        text_number = font.render(str(number), True, WHITE)
+        text_rect_number = text_number.get_rect(center=(150, 150 + (j * 30)))
+        screen.blit(text_number, text_rect_number)
 
-    return numbers_surface
-
-    
 
 def is_click_on_button(pos, button_rect):
     return button_rect.collidepoint(pos)
 
 
 def click2(pos):
-    global show_numbers
+    global show_numbers,show_surface
     if button_rect2.collidepoint(pos):
         show_numbers = not show_numbers
+        show_surface = show_numbers
 
 def click(pos, button_rect):
     global spinning, spin_speed, show_win_number
@@ -425,10 +427,13 @@ def click(pos, button_rect):
         spin_speed = initial_speed
 
 def draw_win_number():
+
     if show_win_number and winning_number is not None:
         font = pygame.font.Font(None, 32)
         text = font.render(f"Número ganador: {winning_number}", True, WHITE)
+        numbers3.append(winning_number)
         text_rect = text.get_rect(center=(350, 150))
+        
 
         panel_rect = text_rect.copy()
         panel_rect.inflate_ip(20, 20) #Aumentar el rectángulo para que se vea mejor el texto
@@ -436,6 +441,7 @@ def draw_win_number():
         pygame.draw.rect(screen, YELLOW, panel_rect, 2)
 
         screen.blit(text, text_rect)
+    
 #Gira la ruleta con la velocidad inicial y muestra el número ganador
 def update_spin():
     global spinning, spin_angle, spin_speed, winning_number, show_win_number
@@ -451,6 +457,7 @@ def update_spin():
             sector = int((current_angle / (360 / 37)) % 37)
             winning_number = roulette_numbers2[sector - 1]
             show_win_number = True
+    
             
 def draw_button2(mouse_pos):
 
