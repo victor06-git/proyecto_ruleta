@@ -95,6 +95,7 @@ chips = [[1,4,7,10,13,16,19,22,25,28,31,34],
 numbers = list(range(37))
 
 chip_0 = 0
+
 draw_chips = [
     {"x": 545, "y": 650, "radius": 25, "color": "", "value": 100, "width": 5},
     {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
@@ -103,6 +104,16 @@ draw_chips = [
     {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
 ]
 
+ragistro_apuestas = {
+    "par": {},
+    "impar": {},
+    "rojo": {},
+    "negro" : {},
+    "columna_1": {},
+    "columna_2": {},
+    "columna_3": {},
+    "numbers": {}
+    }
 
 
 # Definir la finestra
@@ -112,8 +123,9 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Ruleta')
 
 
-
 clicked = False
+dragging = False
+dragging_chip = None
 mouse_x, mouse_y = -1, -1
 
 rad_first = ((360 / 37) * (math.pi / 180)) #First angle
@@ -177,7 +189,7 @@ def main():
     pygame.quit()
     sys.exit()
 
-# Gestionar events
+
 # Gestionar events
 def app_events():
     global clicked, mouse_pos, button_rect, button_rect2, show_numbers
