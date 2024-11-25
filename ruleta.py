@@ -29,6 +29,73 @@ GRAY = (128,128,128)
 pygame.init()
 clock = pygame.time.Clock()
 
+#Lógica
+players = {
+    "player_purple":{
+        "color": "purple",
+        "money": 100,
+        "your_turn":False,
+        "chips":{
+            "fitxa_100":90,
+            "fitxa_50":0,
+            "fitxa_20":0,
+            "fitxa_10":0,
+            "fitxa_5":0
+        },
+        "bet":{
+            "odd_even":"",
+            "column":"",
+            "number":"",
+            "color":"",
+        }
+    },
+    "player_blue":{
+        "color": "blue",
+        "money": 100,
+        "your_turn":False,
+        "chips":{
+            "fitxa_100":0,
+            "fitxa_50":0,
+            "fitxa_20":0,
+            "fitxa_10":0,
+            "fitxa_5":0
+        },
+        "bet":{
+            "odd_even":"",
+            "column":"",
+            "number":"",
+            "color":"",
+        }
+    },
+    "player_orange":{
+        "color": "orange",
+        "money": 100,
+        "your_turn":False,
+        "chips":{
+            "fitxa_100":90,
+            "fitxa_50":0,
+            "fitxa_20":0,
+            "fitxa_10":0,
+            "fitxa_5":0
+        },
+        "bet":{
+            "odd_even":"",
+            "column":"",
+            "number":"",
+            "color":"",
+        }
+
+    }
+}
+
+chips = [[1,4,7,10,13,16,19,22,25,28,31,34],
+         [2,5,8,11,14,17,20,23,26,29,32,35],
+         [3,6,9,12,15,18,21,24,27,30,33,36]]
+
+numbers = list(range(37))
+
+chip_0 = 0
+
 
 # Definir la finestra
 screen_width = 1400
@@ -502,72 +569,7 @@ def draw_grid():
         text = font.render(str(y), True, (200, 200, 200))
         screen.blit(text, (2, y + 2))
 
-#Lógica
-players = {
-    "player_purple":{
-        "color": "purple",
-        "money": 100,
-        "your_turn":False,
-        "chips":{
-            "fitxa_100":90,
-            "fitxa_50":0,
-            "fitxa_20":0,
-            "fitxa_10":0,
-            "fitxa_5":0
-        },
-        "bet":{
-            "odd_even":"",
-            "column":"",
-            "number":"",
-            "color":"",
-        }
-    },
-    "player_blue":{
-        "color": "blue",
-        "money": 100,
-        "your_turn":False,
-        "chips":{
-            "fitxa_100":0,
-            "fitxa_50":0,
-            "fitxa_20":0,
-            "fitxa_10":0,
-            "fitxa_5":0
-        },
-        "bet":{
-            "odd_even":"",
-            "column":"",
-            "number":"",
-            "color":"",
-        }
-    },
-    "player_orange":{
-        "color": "orange",
-        "money": 100,
-        "your_turn":False,
-        "chips":{
-            "fitxa_100":90,
-            "fitxa_50":0,
-            "fitxa_20":0,
-            "fitxa_10":0,
-            "fitxa_5":0
-        },
-        "bet":{
-            "odd_even":"",
-            "column":"",
-            "number":"",
-            "color":"",
-        }
 
-    }
-}
-
-chips = [[1,4,7,10,13,16,19,22,25,28,31,34],
-         [2,5,8,11,14,17,20,23,26,29,32,35],
-         [3,6,9,12,15,18,21,24,27,30,33,36]]
-
-numbers = list(range(37))
-
-chip_0 = 0
 
 
 
