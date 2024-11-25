@@ -158,7 +158,7 @@ button_hover_color = YELLOW
 #surface lista
 surface = pygame.Surface((screen_width - 20, 400))
 show_numbers = False
-numbers = []
+numbers3 = []
 
 
 #lista números ruleta
@@ -213,12 +213,9 @@ def app_events():
             button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
             button_rect2 = pygame.Rect(button_x, button_y - 50, button_width, button_height)
             click(event.pos, button_rect)
-
+            click2(event.pos, button_rect2)
             clicked = True
 
-            if button_rect2.collidepoint(mouse_pos):
-                show_numbers = not show_numbers
-        
         elif event.type == pygame.MOUSEBUTTONUP:
             clicked = False
     update_spin()
@@ -229,16 +226,15 @@ def app_events():
 def app_run():
     global lista, clicked, draw_chips, dragging, dragging_chip, mouse_pos
 
-    if show_numbers:
-        lista = "OCULTAR LISTA"
-    else:
-        lista = "MOSTRAR LISTA"
+    if  show_numbers: lista = "OCULTAR LISTA" 
+    if not show_numbers: lista = "MOSTRAR LISTA"
+    
 
     if show_numbers: #Mostrar surface con lista números orden
-        surface_numbers()
         surface_x = 10
         surface_y = 100
         screen.blit(surface, (surface_x, surface_y))
+        surface_numbers()
     
     
     mouse_pos = pygame.mouse.get_pos()
@@ -390,6 +386,11 @@ def is_click_on_button(pos, button_rect):
 
 def is_click_on_button2(pos, button_rect2):
     return button_rect2.collidepoint(pos)
+
+def click2(pos, button_rect2):
+    global show_numbers
+    if is_click_on_button2(pos, button_rect2):
+        show_numbers = False
 
 def click(pos, button_rect):
     global spinning, spin_speed, show_win_number
