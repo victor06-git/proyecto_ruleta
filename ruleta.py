@@ -244,6 +244,7 @@ def app_draw():
     banca() #Función dibujar banca
     fichas() #Función dibujar fichas
     draw_win_number() #Función dibuja número elegido
+    #tablero_fichas() #Función fichas tablero
     
     pygame.display.update()
 
@@ -497,6 +498,9 @@ def table():
     text_rect2 = (((865) , 595))
     screen.blit(text2, text_rect2)  
 
+
+    tablero = []
+
     #FILAS--COLUMNAS TABLERO APUESTAS
     for  columna in range(3):
         for fila in range(12):
@@ -537,6 +541,8 @@ def table():
             text_rect = (950 + (columna * width_casella) + 50, 100 + ( fila * height_casella) + 15) #Posicion de texto
             screen.blit(text, text_rect)
 
+            tablero.append({"numero": numbers, "color": color})
+
 #FÚNCION FICHAS
 def banca():    
     pygame.draw.rect(screen, DARK_GREEN, (50, 550, 350, 150))
@@ -549,7 +555,7 @@ def banca():
     pygame.draw.line(screen, YELLOW, (50, 600), (150, 600), 3)
     pygame.draw.line(screen, YELLOW, (150, 550), (150, 600), 3)
 
-#FÚNCION FICHAS
+#FÚNCION tablero fichas (cambiar)
 def fichas():
     pygame.draw.rect(screen, DARK_GREEN, (500, 500, 300, 200))
     pygame.draw.rect(screen, YELLOW, (500, 500, 300, 200), 3)
