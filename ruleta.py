@@ -35,6 +35,13 @@ players = {
         "color": "purple",
         "money": 100,
         "your_turn":True,
+        "draw_chips" : [
+                    {"x": 545, "y": 650, "radius": 25, "color": "", "value": 100, "width": 5},
+                    {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
+                    {"x": 745, "y": 650, "radius": 25, "color": "", "value": 20, "width": 5},
+                    {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
+                    {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
+                ],
         "chips":{
             "fitxa_100":90,
             "fitxa_50":1,
@@ -53,6 +60,13 @@ players = {
         "color": "blue",
         "money": 100,
         "your_turn":False,
+         "draw_chips" : [
+                    {"x": 545, "y": 650, "radius": 25, "color": "", "value": 100, "width": 5},
+                    {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
+                    {"x": 745, "y": 650, "radius": 25, "color": "", "value": 20, "width": 5},
+                    {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
+                    {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
+                ],
         "chips":{
             "fitxa_100":0,
             "fitxa_50":1,
@@ -71,6 +85,13 @@ players = {
         "color": "orange",
         "money": 100,
         "your_turn":False,
+         "draw_chips" : [
+                    {"x": 545, "y": 650, "radius": 25, "color": "", "value": 100, "width": 5},
+                    {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
+                    {"x": 745, "y": 650, "radius": 25, "color": "", "value": 20, "width": 5},
+                    {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
+                    {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
+                ],
         "chips":{
             "fitxa_100":90,
             "fitxa_50":0,
@@ -96,21 +117,6 @@ numbers = list(range(37))
 
 chip_0 = 0
 
-draw_chips_purple= [
-    {"x": 545, "y": 650, "radius": 25, "color": "", "value": 100, "width": 5},
-    {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
-    {"x": 745, "y": 650, "radius": 25, "color": "", "value": 20, "width": 5},
-    {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
-    {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
-]
-
-draw_chips_blue= [
-    {"x": 545, "y": 650, "radius": 25, "color": "", "value": 100, "width": 5},
-    {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
-    {"x": 745, "y": 650, "radius": 25, "color": "", "value": 20, "width": 5},
-    {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
-    {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
-]
 
 registro_apuestas = {
     "par": {},
@@ -255,127 +261,113 @@ def cambiar_turno(players):
 def app_run():
     global lista, clicked, draw_chips, dragging, dragging_chip, mouse_pos, key_space
 
-    if  show_numbers: lista = "OCULTAR LISTA" 
-    if not show_numbers: lista = "MOSTRAR LISTA"
-    
+    if show_numbers: 
+        lista = "OCULTAR LISTA" 
+    if not show_numbers: 
+        lista = "MOSTRAR LISTA"
 
-    if show_numbers: #Mostrar surface con lista números orden
-        surface_x = 10
-        surface_y = 100
-        screen.blit(surface,(surface_x, surface_y))
+    # Mostrar la lista de números si está activa
+    if show_numbers: 
+        surface_x, surface_y = 10, 100
+        screen.blit(surface, (surface_x, surface_y))
         surface_numbers()
-    
+
     if show_numbers and len(numbers3) >= 1:
         numbers_surface = surface_numbers(numbers3)
         screen.blit(numbers_surface, (600, 50))
-    
+
     mouse_pos = pygame.mouse.get_pos()
-    mouse_x = mouse_pos[0]
-    mouse_y = mouse_pos[1]
-  
+    mouse_x, mouse_y = mouse_pos
+
     offset_x = 0
     offset_y = 0
-    height_casilla = (600 / 13)
-    width_casilla = (300 / 3)
-    apuesta_done = {} #--> Para guardar las apuestas
+    height_casilla = 600 / 13
+    width_casilla = 300 / 3
+    apuesta_done = {}  # Registro de apuestas
 
-    """Aqui tengo que hacer varias cosas para mejorar la logica:
-    ***3***
-        - En este punto se tiene que ejecutar la ruleta
-        - Una vez ejecutada la ruleta las fichas vuelven a su posicón original
-    """
-    for ficha in draw_chips_purple:
+    for player in players:
+        jugador = players[player]
 
-        puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)#--> es la formula para poder clickar encima de la redonda
+        if jugador["your_turn"]:
+            for ficha in jugador["draw_chips"]:
+                puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)
 
-        if clicked and puntero <= ficha["radius"]:
-            
-            if not dragging:
+                if clicked and puntero <= ficha["radius"]:
+                    if not dragging:
+                        dragging = True
+                        dragging_chip = ficha
+                        offset_x = mouse_x - ficha["x"]
+                        offset_y = mouse_y - ficha["y"]
+                        print(f"Has pulsado sobre la ficha {ficha['value']}")
 
-                dragging = True
-                dragging_chip = ficha
-                offset_x = mouse_x - ficha["x"]
-                offset_y = mouse_y - ficha["y"]
-
-                print(f"Has clickado la ficha {ficha["value"]}")
-
-            if dragging and dragging_chip == ficha:
-                dragging_chip["x"] = mouse_x - offset_x
-                dragging_chip["y"] = mouse_y - offset_y
-
-        elif not clicked and dragging:
-
-            for ficha in draw_chips_purple:
-
-                if bet_even.collidepoint(ficha["x"],ficha["y"]):
-                    registrar_apuestas("par", ficha["value"])
-                    apuesta_done["par"] = ficha
+                    if dragging and dragging_chip == ficha:
+                        dragging_chip["x"] = mouse_x - offset_x
+                        dragging_chip["y"] = mouse_y - offset_y
                 
-                elif bet_odd.collidepoint(ficha["x"],ficha["y"]):
-                    registrar_apuestas("impar", ficha["value"])
-                    apuesta_done["impar"] = ficha
-                
-                elif bet_red.collidepoint(ficha["x"],ficha["y"]):
-                    registrar_apuestas("rojo", ficha["value"])
-                    apuesta_done["rojo"] = ficha
-                
-                elif bet_black.collidepoint(ficha["x"],ficha["y"]):
-                    registrar_apuestas("negro", ficha["value"])
-                    apuesta_done["negro"] = ficha
-                
-                elif bet_column_1.collidepoint(ficha["x"],ficha["y"]):
-                    registrar_apuestas("columna_1", ficha["value"])
-                    apuesta_done["columna_1"] = ficha
-                
-                elif bet_column_2.collidepoint(ficha["x"],ficha["y"]):
-                    registrar_apuestas("columna_2", ficha["value"])
-                    apuesta_done["columna_2"] = ficha
+                elif not clicked and dragging:
+                    if bet_even.collidepoint(ficha["x"], ficha["y"]):
+                        registrar_apuestas("par", ficha["value"])
+                        apuesta_done["par"] = ficha
+                    
+                    elif bet_odd.collidepoint(ficha["x"], ficha["y"]):
+                        registrar_apuestas("impar", ficha["value"])
+                        apuesta_done["impar"] = ficha
+                    
+                    elif bet_red.collidepoint(ficha["x"], ficha["y"]):
+                        registrar_apuestas("rojo", ficha["value"])
+                        apuesta_done["rojo"] = ficha
+                    
+                    elif bet_black.collidepoint(ficha["x"], ficha["y"]):
+                        registrar_apuestas("negro", ficha["value"])
+                        apuesta_done["negro"] = ficha
+                    
+                    elif bet_column_1.collidepoint(ficha["x"], ficha["y"]):
+                        registrar_apuestas("columna_1", ficha["value"])
+                        apuesta_done["columna_1"] = ficha
+                    
+                    elif bet_column_2.collidepoint(ficha["x"], ficha["y"]):
+                        registrar_apuestas("columna_2", ficha["value"])
+                        apuesta_done["columna_2"] = ficha
+                    
+                    elif bet_column_3.collidepoint(ficha["x"], ficha["y"]):
+                        registrar_apuestas("columna_3", ficha["value"])
+                        apuesta_done["columna_3"] = ficha
+                    
+                    else:
+                        bet_number = None
 
-                elif bet_column_3.collidepoint(ficha["x"],ficha["y"]):
-                    registrar_apuestas("columna_3", ficha["value"])
-                    apuesta_done["columna_3"] = ficha
+                        for columna in range(3):
+                            for fila in range(12):
+                                pos_x = 950 + columna * width_casilla
+                                pos_y = 100 + fila * height_casilla
+                                rect_casilla = pygame.Rect(pos_x, pos_y, width_casilla, height_casilla)
 
-                else:
-
-                    bet_number = None
-
-                    for columna in range(3):
-                        for fila in range(12):
-
-                            pos_x = 950 + columna*width_casilla
-                            pos_y = 100 + fila*height_casilla
-                            rect_casilla = pygame.Rect(pos_x, pos_y, width_casilla, height_casilla)
-
-                            if rect_casilla.collidepoint(ficha["x"], ficha["y"]):
-                                ficha["x"] = pos_x + width_casilla // 2
-                                ficha["y"] = pos_y + height_casilla // 2
-                                bet_number = chips[columna][fila]
-                                break#--> aquí paro el bucle cuando bet_number tiene un valor
-                        
-                        if bet_number is not None:#--> Lo pongo asi porque sin ome continuaria el bucle aun que ya tubiera valor
-                            print(f"Has apostado al numero: {bet_number}")
-                            registrar_apuestas("numbers",ficha["value"])
-                            break
+                                if rect_casilla.collidepoint(ficha["x"], ficha["y"]):
+                                    ficha["x"] = pos_x + width_casilla // 2
+                                    ficha["y"] = pos_y + height_casilla // 2
+                                    bet_number = chips[columna][fila]
+                            
+                            if bet_number is not None:
+                                print(f"Has apostado al número: {bet_number}")
+                                registrar_apuestas("numbers", ficha["value"])
+                                break
 
                     if bet_number is None and ficha == dragging_chip:
-
                         if ficha["value"] == 100:
                             ficha["x"], ficha["y"] = 545, 650
-                        
                         elif ficha["value"] == 50:
                             ficha["x"], ficha["y"] = 645, 650
-                        
                         elif ficha["value"] == 20:
                             ficha["x"], ficha["y"] = 745, 650
-                        
                         elif ficha["value"] == 10:
                             ficha["x"], ficha["y"] = 595, 595
-
                         elif ficha["value"] == 5:
                             ficha["x"], ficha["y"] = 695, 595
 
-            dragging = False
-            dragging_chip = None
+                    dragging = False
+                    dragging_chip = None
+
+
 
         
 # Dibuixar
@@ -725,80 +717,44 @@ def banca():
 
 #FÚNCION tablero fichas (cambiar)
 def tablero_fichas():
-
-    y_offset = 0
     font_text_cantidad = pygame.font.SysFont("Arial", 14, bold=True)
+    font_text = pygame.font.SysFont(None, 27)
 
     for player in players:
-
-        if players[player]["your_turn"] == True:
-
+        info = players[player]
+        if info["your_turn"]:
+            # Dibujar el marco del tablero
             pygame.draw.rect(screen, DARK_GREEN, (500, 500, 300, 200))
             pygame.draw.rect(screen, YELLOW, (500, 500, 300, 200), 3)
             pygame.draw.rect(screen, GREEN, (503, 503, 97, 47))
             pygame.draw.line(screen, YELLOW, (500, 550), (600, 550), 3)
             pygame.draw.line(screen, YELLOW, (600, 550), (600, 500), 3)
             pygame.draw.line(screen, YELLOW, (600, 550), (799, 550), 3)
-            pygame.draw.rect(screen, GREEN, (603, 503, 97*2, 47))
-            
-            font_text = pygame.font.SysFont(None, 27)
-            text_fichas = font_text.render(str("FICHAS"), True, BLACK)
-            text_player = font_text.render(str(player),True, BLACK)
-            text_rect = (520, 520)
-            player_rect = (640,517)
-            screen.blit(text_fichas, text_rect)
-            screen.blit(text_player,player_rect)
+            pygame.draw.rect(screen, GREEN, (603, 503, 97 * 2, 47))
 
-            for ficha in draw_chips_purple:
+            # Textos
+            text_fichas = font_text.render("FICHAS", True, BLACK)
+            text_player = font_text.render(player, True, BLACK)
+            screen.blit(text_fichas, (520, 520))
+            screen.blit(text_player, (640, 517))
 
-                chip_type = f"fitxa_{ficha['value']}" #--> Aquí lo que hago es, el valor de las fihcas en value, lo inserto a la cadena de string de fitxa_... // Es decir, si el value = 100, se formarà la cadena de strings de "fitxa_100"
-                chip_cantidad = players[player]["chips"].get(chip_type)#--> con esto obtengo las cantidades de el valor de la ficha  
-                color = players[player]["color"]
+            # Dibujar las fichas
+            for ficha in info["draw_chips"]:
+                chip_type = f"fitxa_{ficha['value']}"
+                chip_cantidad = info["chips"].get(chip_type, 0)
 
                 if chip_cantidad > 0:
+                    text_cantidad = font_text_cantidad.render(f"x{chip_cantidad}", True, WHITE)
+                    text_cantidad_rect = (ficha["x"] + 30, ficha["y"])
 
-                #for i in range(chip_cantidad): 
-                #icha["y"]- i * (ficha["radius"] * 1.2 + 2)
+                    pygame.draw.circle(screen, WHITE, (ficha["x"], ficha["y"]), ficha["radius"])
+                    pygame.draw.circle(screen, info["color"], (ficha["x"], ficha["y"]), ficha["radius"], ficha["width"])
+                    screen.blit(text_cantidad, text_cantidad_rect)
 
-                        #--> este es bloque de codigo que haga que salgan apiladas por cada moneda del mismo tipo que tengamos
+                    valor_ficha = font_text_cantidad.render(str(ficha["value"]), True, BLACK)
+                    pos_ficha = valor_ficha.get_rect(center=(ficha["x"], ficha["y"]))
+                    screen.blit(valor_ficha, pos_ficha)
 
-                        y_offset = ficha["y"]
-                        text_cantidad = font_text_cantidad.render("x"+ str(chip_cantidad),True, WHITE)
-                        text_cantidad_rect = (ficha["x"]+30, y_offset)
-
-                        pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset), ficha["radius"])
-                        pygame.draw.circle(screen, color, (ficha["x"], y_offset), ficha["radius"],ficha["width"])
-                        screen.blit(text_cantidad,text_cantidad_rect)
-
-                        
-                        valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
-                        pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
-                        screen.blit(valor_ficha, pos_ficha)
-
-                elif player == "player_blue":
-                    chip_type = f"fitxa_{ficha['value']}" #--> Aquí lo que hago es, el valor de las fihcas en value, lo inserto a la cadena de string de fitxa_... // Es decir, si el value = 100, se formarà la cadena de strings de "fitxa_100"
-                    chip_cantidad = players[player]["chips"].get(chip_type)#--> con esto obtengo las cantidades de el valor de la ficha  
-                    color = players[player]["color"]
-
-                if chip_cantidad > 0:
-
-                #for i in range(chip_cantidad): 
-                #icha["y"]- i * (ficha["radius"] * 1.2 + 2)
-
-                        #--> este es bloque de codigo que haga que salgan apiladas por cada moneda del mismo tipo que tengamos
-
-                        y_offset = ficha["y"]
-                        text_cantidad = font_text_cantidad.render("x"+ str(chip_cantidad),True, WHITE)
-                        text_cantidad_rect = (ficha["x"]+30, y_offset)
-
-                        pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset), ficha["radius"])
-                        pygame.draw.circle(screen, color, (ficha["x"], y_offset), ficha["radius"],ficha["width"])
-                        screen.blit(text_cantidad,text_cantidad_rect)
-
-                        
-                        valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
-                        pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
-                        screen.blit(valor_ficha, pos_ficha)
 
 
 
