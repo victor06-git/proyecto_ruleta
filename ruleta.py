@@ -95,6 +95,14 @@ chips = [[1,4,7,10,13,16,19,22,25,28,31,34],
 numbers = list(range(37))
 
 chip_0 = 0
+draw_chips = [
+    {"x": 545, "y": 650, "radius": 25, "color": "", "value": 100, "width": 5},
+    {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
+    {"x": 745, "y": 650, "radius": 25, "color": "", "value": 20, "width": 5},
+    {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
+    {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
+]
+
 
 
 # Definir la finestra
