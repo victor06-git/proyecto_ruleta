@@ -262,7 +262,7 @@ def app_run():
     if show_numbers: #Mostrar surface con lista números orden
         surface_x = 10
         surface_y = 100
-        screen.blit(surface, (surface_x, surface_y))
+        screen.blit(surface,(surface_x, surface_y))
         surface_numbers()
     
     if show_numbers and len(numbers3) >= 1:
