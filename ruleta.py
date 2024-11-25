@@ -55,10 +55,10 @@ players = {
         "your_turn":False,
         "chips":{
             "fitxa_100":0,
-            "fitxa_50":0,
-            "fitxa_20":0,
-            "fitxa_10":0,
-            "fitxa_5":0
+            "fitxa_50":1,
+            "fitxa_20":1,
+            "fitxa_10":2,
+            "fitxa_5":2
         },
         "bet":{
             "odd_even":"",
@@ -96,7 +96,15 @@ numbers = list(range(37))
 
 chip_0 = 0
 
-draw_chips = [
+draw_chips_purple= [
+    {"x": 545, "y": 650, "radius": 25, "color": "", "value": 100, "width": 5},
+    {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
+    {"x": 745, "y": 650, "radius": 25, "color": "", "value": 20, "width": 5},
+    {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
+    {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
+]
+
+draw_chips_blue= [
     {"x": 545, "y": 650, "radius": 25, "color": "", "value": 100, "width": 5},
     {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
     {"x": 745, "y": 650, "radius": 25, "color": "", "value": 20, "width": 5},
@@ -182,6 +190,7 @@ bet_column_1 = pygame.Rect(950, 650, 50, 50)
 bet_column_2 = pygame.Rect(1050, 650, 50, 50)
 bet_column_3 = pygame.Rect(1150, 650, 50, 50)
     
+key_space = False
 
                 
 # Bucle de l'aplicació
@@ -218,13 +227,35 @@ def app_events():
 
         elif event.type == pygame.MOUSEBUTTONUP:
             clicked = False
+        
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                cambiar_turno(players)
+
+
     update_spin()
         
     return True
+def cambiar_turno(players):
+
+    jugadores = list(players.keys())
+
+    for i in range(len(jugadores)):
+        jugador = jugadores[i]
+
+        if players[jugador]["your_turn"]:
+            players[jugador]["your_turn"] = False
+
+            next = (i+1) % len(jugadores)
+            next_player = jugadores[next]
+            players[next_player]["your_turn"] = True
+            print(f"Turno del jugador {next_player}")
+            break #El break es para que no lo imprima constantemente
+
 
 # Fer càlculs
 def app_run():
-    global lista, clicked, draw_chips, dragging, dragging_chip, mouse_pos
+    global lista, clicked, draw_chips, dragging, dragging_chip, mouse_pos, key_space
 
     if  show_numbers: lista = "OCULTAR LISTA" 
     if not show_numbers: lista = "MOSTRAR LISTA"
@@ -253,7 +284,7 @@ def app_run():
         - En este punto se tiene que ejecutar la ruleta
         - Una vez ejecutada la ruleta las fichas vuelven a su posicón original
     """
-    for ficha in draw_chips:
+    for ficha in draw_chips_purple:
 
         puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)#--> es la formula para poder clickar encima de la redonda
 
@@ -274,7 +305,7 @@ def app_run():
 
         elif not clicked and dragging:
 
-            for ficha in draw_chips:
+            for ficha in draw_chips_purple:
 
                 if bet_even.collidepoint(ficha["x"],ficha["y"]):
                     registrar_apuestas("par", ficha["value"])
@@ -361,7 +392,7 @@ def app_draw():
     button_rect2 = draw_button2(mouse_pos)
     table() #Función dibujar tabla
     banca() #Función dibujar banca
-    tablero_fichas() #Función dibujar fichas
+    tablero_fichas()
     draw_win_number() #Función dibuja número elegido
     #tablero_fichas() #Función fichas tablero
     
@@ -445,8 +476,7 @@ def draw_button2(mouse_pos):
     screen.blit(text2, text_rect)
 
     return button_rect2
-    
-           
+
 def draw_button(mouse_pos):
     button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
 
@@ -686,6 +716,7 @@ def banca():
 def tablero_fichas():
 
     y_offset = 0
+    font_text_cantidad = pygame.font.SysFont("Arial", 14, bold=True)
 
     for player in players:
 
@@ -702,13 +733,12 @@ def tablero_fichas():
             font_text = pygame.font.SysFont(None, 27)
             text_fichas = font_text.render(str("FICHAS"), True, BLACK)
             text_player = font_text.render(str(player),True, BLACK)
-            font_text_cantidad = pygame.font.SysFont("Arial", 14, bold=True)
             text_rect = (520, 520)
             player_rect = (640,517)
             screen.blit(text_fichas, text_rect)
             screen.blit(text_player,player_rect)
 
-            for ficha in draw_chips:
+            for ficha in draw_chips_purple:
 
                 chip_type = f"fitxa_{ficha['value']}" #--> Aquí lo que hago es, el valor de las fihcas en value, lo inserto a la cadena de string de fitxa_... // Es decir, si el value = 100, se formarà la cadena de strings de "fitxa_100"
                 chip_cantidad = players[player]["chips"].get(chip_type)#--> con esto obtengo las cantidades de el valor de la ficha  
@@ -734,8 +764,31 @@ def tablero_fichas():
                         pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
                         screen.blit(valor_ficha, pos_ficha)
 
-            
-            #players[player]["your_turn"] = False
+                elif player == "player_blue":
+                    chip_type = f"fitxa_{ficha['value']}" #--> Aquí lo que hago es, el valor de las fihcas en value, lo inserto a la cadena de string de fitxa_... // Es decir, si el value = 100, se formarà la cadena de strings de "fitxa_100"
+                    chip_cantidad = players[player]["chips"].get(chip_type)#--> con esto obtengo las cantidades de el valor de la ficha  
+                    color = players[player]["color"]
+
+                if chip_cantidad > 0:
+
+                #for i in range(chip_cantidad): 
+                #icha["y"]- i * (ficha["radius"] * 1.2 + 2)
+
+                        #--> este es bloque de codigo que haga que salgan apiladas por cada moneda del mismo tipo que tengamos
+
+                        y_offset = ficha["y"]
+                        text_cantidad = font_text_cantidad.render("x"+ str(chip_cantidad),True, WHITE)
+                        text_cantidad_rect = (ficha["x"]+30, y_offset)
+
+                        pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset), ficha["radius"])
+                        pygame.draw.circle(screen, color, (ficha["x"], y_offset), ficha["radius"],ficha["width"])
+                        screen.blit(text_cantidad,text_cantidad_rect)
+
+                        
+                        valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
+                        pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
+                        screen.blit(valor_ficha, pos_ficha)
+
 
 
 
