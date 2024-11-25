@@ -213,6 +213,7 @@ def app_events():
             button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
             button_rect2 = pygame.Rect(button_x, button_y - 50, button_width, button_height)
             click(event.pos, button_rect)
+
             clicked = True
 
             if button_rect2.collidepoint(mouse_pos):
@@ -386,6 +387,9 @@ def surface_numbers():
 
 def is_click_on_button(pos, button_rect):
     return button_rect.collidepoint(pos)
+
+def is_click_on_button2(pos, button_rect2):
+    return button_rect2.collidepoint(pos)
 
 def click(pos, button_rect):
     global spinning, spin_speed, show_win_number
