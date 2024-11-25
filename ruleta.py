@@ -173,6 +173,15 @@ roulette_numbers2 = [0, 32, 15, 19, 4, 21, 2, 25,
                     33, 1, 20, 14, 31, 9, 22, 
                     18, 29, 7, 28, 12, 35, 3, 26]
 
+bet_even = pygame.Rect(850, 100, 100, 100)
+bet_odd = pygame.Rect(850, 555, 100, 100)
+bet_red = pygame.Rect(850, 200, 100, 180)
+bet_black = pygame.Rect(850, 380, 100, 180)
+bet_column_1 = pygame.Rect(950, 650, 50, 50)
+bet_column_2 = pygame.Rect(1050, 650, 50, 50)
+bet_column_3 = pygame.Rect(1150, 650, 50, 50)
+    
+
                 
 # Bucle de l'aplicació
 def main():
@@ -214,7 +223,7 @@ def app_events():
 
 # Fer càlculs
 def app_run():
-    global lista
+    global lista, clicked, draw_chips, dragging, dragging_chip
 
     if show_numbers:
         lista = "OCULTAR LISTA"
@@ -226,6 +235,113 @@ def app_run():
         surface_x = 10
         surface_y = 100
         screen.blit(surface, (surface_x, surface_y))
+    
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+
+    offset_x = 0
+    offset_y = 0
+    height_casilla = (600 / 13)
+    width_casilla = (300 / 3)
+    apuesta_done = {} #--> Para guardar las apuestas
+
+    """Aqui tengo que hacer varias cosas para mejorar la logica:
+    ***3***
+        - En este punto se tiene que ejecutar la ruleta
+        - Una vez ejecutada la ruleta las fichas vuelven a su posicón original
+    
+    """
+    for ficha in draw_chips:
+
+        puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)#--> es la formula para poder clickar encima de la redonda
+
+        if clicked and puntero <= ficha["radius"]:
+            
+            if not dragging:
+
+                dragging = True
+                dragging_chip = ficha
+                offset_x = mouse_x - ficha["x"]
+                offset_y = mouse_y - ficha["y"]
+
+                print(f"Has clickado la ficha {ficha["value"]}")
+
+            if dragging and dragging_chip == ficha:
+                dragging_chip["x"] = mouse_x - offset_x
+                dragging_chip["y"] = mouse_y - offset_y
+
+        elif not clicked and dragging:
+
+            for ficha in draw_chips:
+
+                if bet_even.collidepoint(ficha["x"],ficha["y"]):
+                    registrar_apuestas("par", ficha["value"])
+                    apuesta_done["par"] = ficha
+                
+                elif bet_odd.collidepoint(ficha["x"],ficha["y"]):
+                    registrar_apuestas("impar", ficha["value"])
+                    apuesta_done["impar"] = ficha
+                
+                elif bet_red.collidepoint(ficha["x"],ficha["y"]):
+                    registrar_apuestas("rojo", ficha["value"])
+                    apuesta_done["rojo"] = ficha
+                
+                elif bet_black.collidepoint(ficha["x"],ficha["y"]):
+                    registrar_apuestas("negro", ficha["value"])
+                    apuesta_done["negro"] = ficha
+                
+                elif bet_column_1.collidepoint(ficha["x"],ficha["y"]):
+                    registrar_apuestas("columna_1", ficha["value"])
+                    apuesta_done["columna_1"] = ficha
+                
+                elif bet_column_2.collidepoint(ficha["x"],ficha["y"]):
+                    registrar_apuestas("columna_2", ficha["value"])
+                    apuesta_done["columna_2"] = ficha
+
+                elif bet_column_3.collidepoint(ficha["x"],ficha["y"]):
+                    registrar_apuestas("columna_3", ficha["value"])
+                    apuesta_done["columna_3"] = ficha
+
+                else:
+
+                    bet_number = None
+
+                    for columna in range(3):
+                        for fila in range(12):
+
+                            pos_x = 950 + columna*width_casilla
+                            pos_y = 100 + fila*height_casilla
+                            rect_casilla = pygame.Rect(pos_x, pos_y, width_casilla, height_casilla)
+
+                            if rect_casilla.collidepoint(ficha["x"], ficha["y"]):
+                                ficha["x"] = pos_x + width_casilla // 2
+                                ficha["y"] = pos_y + height_casilla // 2
+                                bet_number = chips[columna][fila]
+                                break#--> aquí paro el bucle cuando bet_number tiene un valor
+                        
+                        if bet_number is not None:#--> Lo pongo asi porque sin ome continuaria el bucle aun que ya tubiera valor
+                            print(f"Has apostado al numero: {bet_number}")
+                            registrar_apuestas("numbers",ficha["value"])
+                            break
+
+                    if bet_number is None and ficha == dragging_chip:
+
+                        if ficha["value"] == 100:
+                            ficha["x"], ficha["y"] = 545, 650
+                        
+                        elif ficha["value"] == 50:
+                            ficha["x"], ficha["y"] = 645, 650
+                        
+                        elif ficha["value"] == 20:
+                            ficha["x"], ficha["y"] = 745, 650
+                        
+                        elif ficha["value"] == 10:
+                            ficha["x"], ficha["y"] = 595, 595
+
+                        elif ficha["value"] == 5:
+                            ficha["x"], ficha["y"] = 695, 595
+
+            dragging = False
+            dragging_chip = None
 
         
 # Dibuixar
@@ -566,7 +682,18 @@ def fichas():
     text = font.render(str("FICHAS"), True, BLACK)
     text_rect = (520, 520)
     screen.blit(text, text_rect)
+
+def registrar_apuestas(tipo_apuesta, tipo_ficha):
+
+    if tipo_ficha not in registro_apuestas[tipo_apuesta]:
+        registro_apuestas[tipo_apuesta][tipo_ficha] = 0
     
+    elif tipo_ficha in registro_apuestas[tipo_apuesta]:
+        registro_apuestas[tipo_apuesta][tipo_ficha] +=1
+    
+    print(f"Has apostado {registro_apuestas[tipo_apuesta][tipo_ficha]+1} fichas de valor {tipo_ficha} a {tipo_apuesta.capitalize()}")
+
+
 
 #graellas
 def draw_grid():
