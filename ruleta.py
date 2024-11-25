@@ -307,6 +307,9 @@ def spin_ruleta ():
 
     return random.choice(roulette_numbers)
 
+def red_black_event(player):
+
+    quantity = int(input("Cuantas fichas deseas apostar ?: "))
 #Roulette
 def draw_roulette():
     global rad_first, rad_second
@@ -536,6 +539,7 @@ def tablero_fichas(player):
             font_text = pygame.font.SysFont(None, 27)
             text_fichas = font_text.render(str("FICHAS"), True, BLACK)
             text_player = font_text.render(str(player),True, BLACK)
+            font_text_cantidad = pygame.font.SysFont("Arial", 14)
             text_rect = (520, 520)
             player_rect = (640,517)
             screen.blit(text_fichas, text_rect)
@@ -544,22 +548,26 @@ def tablero_fichas(player):
             for ficha in draw_chips:
 
                 chip_type = f"fitxa_{ficha['value']}" #--> Aquí lo que hago es, el valor de las fihcas en value, lo inserto a la cadena de string de fitxa_... // Es decir, si el value = 100, se formarà la cadena de strings de "fitxa_100"
-                chip_cantidad = players[player]["chips"].get(chip_type)#--> con esto obtengo el valor de la ficha  
+                chip_cantidad = players[player]["chips"].get(chip_type)#--> con esto obtengo las cantidades de el valor de la ficha  
                 color = players[player]["color"]
 
                 if chip_cantidad > 0:
+
+                    #for i in range(chip_cantidad): 
+                    #- i * (ficha["radius"] * 1.2 + 2) --> este es bloque de codigo que haga que salgan apiladas por cada moneda del mismo tipo que tengamos
+
+                    y_offset = ficha["y"]
+                    text_cantidad = font_text_cantidad.render("x"+ str(chip_cantidad),True, BLACK)
+                    text_cantidad_rect = (ficha["x"]+30, y_offset)
+
+                    pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset), ficha["radius"])
+                    pygame.draw.circle(screen, color, (ficha["x"], y_offset), ficha["radius"],ficha["width"])
+                    screen.blit(text_cantidad,text_cantidad_rect)
+
                     
-                    for i in range(chip_cantidad):
-
-                        y_offset = ficha["y"] - i * (ficha["radius"] * 1.2 + 2)
-
-                        pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset), ficha["radius"])
-                        pygame.draw.circle(screen, color, (ficha["x"], y_offset), ficha["radius"],ficha["width"])
-
-                        
-                        valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
-                        pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
-                        screen.blit(valor_ficha, pos_ficha)
+                    valor_ficha = font_chip.render(str(ficha["value"]), True, BLACK)
+                    pos_ficha = valor_ficha.get_rect(center=(ficha["x"], y_offset))
+                    screen.blit(valor_ficha, pos_ficha)
 
             
             #players[player]["your_turn"] = False
