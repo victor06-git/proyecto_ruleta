@@ -374,7 +374,7 @@ def table():
     text_rect2 = (((865) , 595))
     screen.blit(text2, text_rect2)  
 
-
+    #FILAS--COLUMNAS TABLERO APUESTAS
     for  columna in range(3):
         for fila in range(12):
             
@@ -413,7 +413,8 @@ def table():
             text = font.render(str(numbers), True, WHITE)
             text_rect = (950 + (columna * width_casella) + 50, 100 + ( fila * height_casella) + 15) #Posicion de texto
             screen.blit(text, text_rect)
-    
+
+#FÚNCION FICHAS
 def banca():    
     pygame.draw.rect(screen, DARK_GREEN, (50, 550, 350, 150))
     pygame.draw.rect(screen, YELLOW, (50, 550, 350, 150), 3)
@@ -425,6 +426,7 @@ def banca():
     pygame.draw.line(screen, YELLOW, (50, 600), (150, 600), 3)
     pygame.draw.line(screen, YELLOW, (150, 550), (150, 600), 3)
 
+#FÚNCION FICHAS
 def fichas():
     pygame.draw.rect(screen, DARK_GREEN, (500, 500, 300, 200))
     pygame.draw.rect(screen, YELLOW, (500, 500, 300, 200), 3)
