@@ -388,9 +388,8 @@ def app_draw():
     
     pygame.display.update()
 
-
+#Dibujar surface a partir de botón
 def draw_surface():
-    
     surface_width = screen_width // 2
     surface_height = screen_height 
     overlay_surface = pygame.Surface((surface_width, surface_height))
