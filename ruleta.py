@@ -55,7 +55,7 @@ show_win_number = False #Enseñar número ganador
 spinning = False #Verdadero/Falso inicio spin
 spin_angle = random.randint(0, 360) #ángulo de rotación (Hacer que salga según la probabilidad de 1.27%)
 spin_speed = 0 #Velocidad de rotación
-friction = 0.98 #Número para que la ruleta se detenga
+friction = 0.97 #Número para que la ruleta se detenga
 min_speed = 0.01 #Mínima velocidad para que la ruleta siga girando
 initial_speed = 15 #Velocidad inicial de giro
 
@@ -67,6 +67,7 @@ button_y = 100
 button_color = RED
 button_hover_color = YELLOW
 
+#surface lista
 surface = pygame.Surface((screen_width - 20, 400))
 show_numbers = False
 numbers = []
@@ -74,6 +75,12 @@ numbers = []
 
 #lista números ruleta
 roulette_numbers = [32, 15, 19, 4, 21, 2, 25,
+                    17, 34, 6, 27, 13, 36, 11,
+                    30, 8, 23, 10, 5, 24, 16, 
+                    33, 1, 20, 14, 31, 9, 22, 
+                    18, 29, 7, 28, 12, 35, 3, 26]
+
+roulette_numbers2 = [0, 32, 15, 19, 4, 21, 2, 25,
                     17, 34, 6, 27, 13, 36, 11,
                     30, 8, 23, 10, 5, 24, 16, 
                     33, 1, 20, 14, 31, 9, 22, 
@@ -97,7 +104,7 @@ def main():
 # Gestionar events
 # Gestionar events
 def app_events():
-    global clicked, mouse_pos, button_rect, button_rect2
+    global clicked, mouse_pos, button_rect, button_rect2, show_numbers
 
     for event in pygame.event.get():
         mouse_pos = pygame.mouse.get_pos()
@@ -108,6 +115,7 @@ def app_events():
             button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
             button_rect2 = pygame.Rect(button_x, button_y - 50, button_width, button_height)
             click(event.pos, button_rect)
+            clicked = True
             
             if button_rect2.collidepoint(mouse_pos):
                 show_numbers = not show_numbers
@@ -119,13 +127,18 @@ def app_events():
 # Fer càlculs
 def app_run():
     global lista
+
     if show_numbers:
         lista = "OCULTAR LISTA"
     else:
         lista = "MOSTRAR LISTA"
 
     if show_numbers: #Mostrar surface con lista números orden
-        pass
+        surface_numbers()
+        surface_x = 10
+        surface_y = 100
+        screen.blit(surface, (surface_x, surface_y))
+
         
 # Dibuixar
 def app_draw():
@@ -145,6 +158,21 @@ def app_draw():
     draw_win_number() #Función dibuja número elegido
     
     pygame.display.update()
+
+def surface_numbers():
+    surface.fill(GREEN)
+
+    if len(numbers) >= 1:
+        space = 30
+        height = len(numbers) * space
+        start_y = int((surface.get_height() - height) // 2)
+        font = pygame.font.SysFont(None, 24)
+        for j in range(len(numbers)):
+            text = font.render(str(j), True, WHITE)
+            text_x = (surface.get_width() - text.get_width()) // 2
+            text_y = start_y + (j * space)
+            surface.blit(text, (text_x, text_y))
+
 def is_click_on_button(pos, button_rect):
     return button_rect.collidepoint(pos)
 
@@ -167,7 +195,7 @@ def draw_win_number():
         pygame.draw.rect(screen, YELLOW, panel_rect, 2)
 
         screen.blit(text, text_rect)
-
+#Gira la ruleta con la velocidad inicial y muestra el número ganador
 def update_spin():
     global spinning, spin_angle, spin_speed, winning_number, show_win_number
     if spinning:
@@ -180,7 +208,7 @@ def update_spin():
 
             current_angle = spin_angle % 360
             sector = int((current_angle / (360 / 37)) % 37)
-            winning_number = roulette_numbers[sector - 2]
+            winning_number = roulette_numbers2[sector - 1]
             show_win_number = True
             
 def draw_button2(mouse_pos):
