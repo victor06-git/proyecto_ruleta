@@ -118,7 +118,11 @@ def app_events():
 
 # Fer càlculs
 def app_run():
-    pass
+    global lista
+    if show_numbers:
+        lista = "OCULTAR LISTA"
+    else:
+        lista = "MOSTRAR LISTA"
 
         
 # Dibuixar
@@ -178,6 +182,7 @@ def update_spin():
             show_win_number = True
             
 def draw_button2(mouse_pos):
+    global lista
     button_rect2 = pygame.Rect(button_x, button_y - 55, button_width, button_height)
 
     if button_rect2.collidepoint(mouse_pos):
@@ -187,9 +192,9 @@ def draw_button2(mouse_pos):
     
     pygame.draw.rect(screen, color, button_rect2) #Draw button
     pygame.draw.rect(screen, WHITE, button_rect2, 2) #Draw border
-    
+    lista = "MOSTRAR LISTA"
     font = pygame.font.Font(None, 36)
-    text2 = font.render("LISTA", True, WHITE)
+    text2 = font.render(lista, True, WHITE)
     text_rect = text2.get_rect(center=(button_x + button_width / 2, button_y + button_height / 2 - 50))
     screen.blit(text2, text_rect)
 
@@ -328,7 +333,7 @@ def table():
     height_casella = (600 / 13)
     width_casella = (300 / 3)
 
-    #Casillas apuesta columna
+    #Casillas apuesta columna (números)
     pygame.draw.rect(screen, DARK_GREEN, (950 + (width_casella), 100 + (600 / 13) * 12, width_casella, height_casella))
     pygame.draw.rect(screen, DARK_GREEN, (950 - 3 , 100 + (600 / 13) * 12, width_casella + 3, height_casella))
     pygame.draw.rect(screen, DARK_GREEN, (950 + (2 * width_casella), 100 + (600 / 13) * 12, width_casella, height_casella))
