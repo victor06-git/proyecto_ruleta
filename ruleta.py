@@ -156,7 +156,7 @@ def draw_win_number():
         text_rect = text.get_rect(center=(350, 150))
 
         panel_rect = text_rect.copy()
-        panel_rect.inflate_ip(20, 20)
+        panel_rect.inflate_ip(20, 20) #Aumentar el rectángulo para que se vea mejor el texto
         pygame.draw.rect(screen, BLACK, panel_rect)
         pygame.draw.rect(screen, YELLOW, panel_rect, 2)
 
