@@ -117,6 +117,17 @@ draw_chips = [
     {"x": 695, "y":595, "radius":25, "color":"", "value":5, "width":5}
 ]
 
+registro_apuestas = {
+    "par":{},
+    "impar":{},
+    "rojo":{},
+    "negro":{},
+    "columna_1":{},
+    "columna_2":{},
+    "columna_3":{},
+    "numbers":{}
+}
+
 font_chip = pygame.font.SysFont("Arial",18,bold=True) #--> El bold=True es para hacerlo en negrita
 
 
@@ -166,6 +177,16 @@ def app_events():
             clicked = False
     return True
 
+def registrar_apuestas(tipo_apuesta, tipo_ficha):
+
+    if tipo_ficha not in registro_apuestas[tipo_apuesta]:
+        registro_apuestas[tipo_apuesta][tipo_ficha] = 0
+    
+    elif tipo_ficha in registro_apuestas[tipo_apuesta]:
+        registro_apuestas[tipo_apuesta][tipo_ficha] +=1
+    
+    print(f"Has apostado {registro_apuestas[tipo_apuesta][tipo_ficha]+1} fichas de valor {tipo_ficha} a {tipo_apuesta.capitalize()}")
+
 # Fer càlculs
 def app_run():
     global rad_first, rad_second, clicked, draw_chips, dragging, dragging_chip
@@ -175,6 +196,7 @@ def app_run():
     offset_y = 0
     height_casilla = (600 / 13)
     width_casilla = (300 / 3)
+    apuesta_done = {} #--> Para guardar las apuestas
 
     """Aqui tengo que hacer varias cosas para mejorar la logica:
 
@@ -218,25 +240,32 @@ def app_run():
             for ficha in draw_chips:
 
                 if bet_even.collidepoint(ficha["x"],ficha["y"]):
-                    print("Has apostado a par")
+                    registrar_apuestas("par", ficha["value"])
+                    apuesta_done["par"] = ficha
                 
                 elif bet_odd.collidepoint(ficha["x"],ficha["y"]):
-                    print("Has apostado a impar")
+                    registrar_apuestas("impar", ficha["value"])
+                    apuesta_done["impar"] = ficha
                 
                 elif bet_red.collidepoint(ficha["x"],ficha["y"]):
-                    print("Has apostado al rojo")
+                    registrar_apuestas("rojo", ficha["value"])
+                    apuesta_done["rojo"] = ficha
                 
                 elif bet_black.collidepoint(ficha["x"],ficha["y"]):
-                    print("Has apostado al negro")
+                    registrar_apuestas("negro", ficha["value"])
+                    apuesta_done["negro"] = ficha
                 
                 elif bet_column_1.collidepoint(ficha["x"],ficha["y"]):
-                    print("Has apostado a la primera columna")
+                    registrar_apuestas("columna_1", ficha["value"])
+                    apuesta_done["columna_1"] = ficha
                 
                 elif bet_column_2.collidepoint(ficha["x"],ficha["y"]):
-                    print("Has apostado a la segunda columna")
+                    registrar_apuestas("columna_2", ficha["value"])
+                    apuesta_done["columna_2"] = ficha
 
                 elif bet_column_3.collidepoint(ficha["x"],ficha["y"]):
-                    print("Has apostado a la tercera columna")
+                    registrar_apuestas("columna_3", ficha["value"])
+                    apuesta_done["columna_3"] = ficha
 
                 else:
 
@@ -257,6 +286,7 @@ def app_run():
                         
                         if bet_number is not None:#--> Lo pongo asi porque sin ome continuaria el bucle aun que ya tubiera valor
                             print(f"Has apostado al numero: {bet_number}")
+                            registrar_apuestas("numbers",ficha["value"])
                             break
 
                     if bet_number is None and ficha == dragging_chip:
@@ -306,11 +336,7 @@ def spin_ruleta ():
                         18, 29, 7, 28, 12, 35, 3, 26]
 
     return random.choice(roulette_numbers)
-
-def red_black_event(player):
-
-    quantity = int(input("Cuantas fichas deseas apostar ?: "))
-#Roulette
+        
 def draw_roulette():
     global rad_first, rad_second
     
@@ -539,7 +565,7 @@ def tablero_fichas(player):
             font_text = pygame.font.SysFont(None, 27)
             text_fichas = font_text.render(str("FICHAS"), True, BLACK)
             text_player = font_text.render(str(player),True, BLACK)
-            font_text_cantidad = pygame.font.SysFont("Arial", 14)
+            font_text_cantidad = pygame.font.SysFont("Arial", 14, bold=True)
             text_rect = (520, 520)
             player_rect = (640,517)
             screen.blit(text_fichas, text_rect)
@@ -557,7 +583,7 @@ def tablero_fichas(player):
                     #- i * (ficha["radius"] * 1.2 + 2) --> este es bloque de codigo que haga que salgan apiladas por cada moneda del mismo tipo que tengamos
 
                     y_offset = ficha["y"]
-                    text_cantidad = font_text_cantidad.render("x"+ str(chip_cantidad),True, BLACK)
+                    text_cantidad = font_text_cantidad.render("x"+ str(chip_cantidad),True, WHITE)
                     text_cantidad_rect = (ficha["x"]+30, y_offset)
 
                     pygame.draw.circle(screen, WHITE, (ficha["x"], y_offset), ficha["radius"])
