@@ -108,7 +108,8 @@ def app_events():
             button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
             button_rect2 = pygame.Rect(button_x, button_y - 50, button_width, button_height)
             click(event.pos, button_rect)
-            if button_rect.collidepoint(mouse_pos):
+            
+            if button_rect2.collidepoint(mouse_pos):
                 show_numbers = not show_numbers
 
     update_spin()
@@ -117,8 +118,7 @@ def app_events():
 
 # Fer càlculs
 def app_run():
-    global button
-    button = "NUMBERS" if show_numbers else "OCULTAR"
+    pass
 
         
 # Dibuixar
