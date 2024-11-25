@@ -225,8 +225,10 @@ def app_events():
 def app_run():
     global lista, clicked, draw_chips, dragging, dragging_chip, mouse_pos
 
-    if  show_numbers: lista = "OCULTAR LISTA" 
-    if not show_numbers: lista = "MOSTRAR LISTA"
+    if  show_numbers == True: 
+        lista = "OCULTAR LISTA" 
+    elif show_numbers == False: 
+        lista = "MOSTRAR LISTA"
     
 
     if show_numbers: #Mostrar surface con lista números orden
@@ -437,7 +439,7 @@ def draw_button2(mouse_pos):
     
     pygame.draw.rect(screen, color, button_rect2) #Draw button
     pygame.draw.rect(screen, WHITE, button_rect2, 2) #Draw border
-    lista = "MOSTRAR LISTA"
+    lista = None
     font = pygame.font.Font(None, 36)
     text2 = font.render(lista, True, WHITE)
     text_rect = text2.get_rect(center=(button_x + button_width / 2, button_y + button_height / 2 - 50))
