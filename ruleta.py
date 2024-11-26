@@ -331,25 +331,25 @@ def app_run():
                     #dragging_chip = None
                     print("Hellow")
 
-                    if bet_even.collidepoint(dragging_chip["x"], dragging_chip["y"]):
+                    if bet_even.collidepoint(ficha["x"], ficha["y"]):
                             #registrar_apuestas("par", ficha["value"])
                             print(f"EL jugador {player} ha apostado a 'PAR'")
                             #apuesta_done["par"] = ficha
                             jugador["bet"]["odd_even"] = "par"
                             jugador["bet_chips"].append(
                                 {
-                                    "x": dragging_chip["x"],
-                                    "y": dragging_chip["y"],
-                                    "radius": dragging_chip["radius"],
-                                    "color": dragging_chip["color"],
-                                    "value": dragging_chip["value"],
-                                    "width": dragging_chip["width"],
+                                    "x": ficha["x"],
+                                    "y": ficha["y"],
+                                    "radius": ficha["radius"],
+                                    "color": ficha["color"],
+                                    "value": ficha["value"],
+                                    "width": ficha["width"],
                                     "type_bet": "par"
                                 }
                             )
-
+                            print(ficha)
                             print(jugador["bet_chips"])
-                        
+                
                     elif bet_odd.collidepoint(dragging_chip["x"], dragging_chip["y"]):
                             #registrar_apuestas("impar", ficha["value"])
                             print("Has apostado a 'Impar'")
@@ -487,7 +487,7 @@ def app_run():
                             if ficha["value"] == 100:
                                 ficha["x"], ficha["y"] = 545, 650
                             elif ficha["value"] == 50:
-                                ficha["x"], ficha["y"] = 645, 650
+                                dragging_chip["x"], dragging_chip["y"] = 645, 650
                             elif ficha["value"] == 20:
                                 ficha["x"], ficha["y"] = 745, 650
                             elif ficha["value"] == 10:
