@@ -46,7 +46,7 @@ players = {
                     {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
                 ],
         "chips":{
-            "fitxa_100":90,
+            "fitxa_100":0,
             "fitxa_50":1,
             "fitxa_20":1,
             "fitxa_10":2,
@@ -519,38 +519,6 @@ def surface_numbers(numbers3):
 
     return numbers_surface
 
-def par_impar_event():
-
-    global winning_number
-    #Aqui tengo que juntar el numero ganador con algo para que se me pueda relacionar con par o impar
-    for player in players:
-        jugador = players[player]
-
-        if jugador["bet"]["odd_even"] == "impar":
-            for ficha in jugador["draw_chips"]:
-                chip_type = f"fitxa_{ficha['value']}"
-                chip_cantidad = 1*jugador["chip"].get(chip_type)
-                if chip_type in jugador["chips"]:
-                    jugador["chip"][chip_type] += chip_cantidad
-                else:
-                    jugador["chip"][chip_type] = chip_cantidad
-                
-                jugador["draw_chips"].append({
-                    "x": ficha["x"]+5,
-                    "y": ficha["y"]+5,
-                    "radius": 25,
-                    "color": jugador["color"],
-                    "value": ficha["value"],
-                    "width": 5
-                })
-        else:
-            chip_type = f"fitxa_{ficha['value']}"
-            chip_cantidad = 1*jugador["chips"].get(chip_type)
-            if chip_type in jugador["chips"]:
-                jugador["chips"][chip_type] -= chip_cantidad
-
-
-
 def is_click_on_button(pos, button_rect):
     return button_rect.collidepoint(pos)
 
@@ -967,6 +935,19 @@ def black_red_event(player):
                             "width": ficha["width"]
                         }
                     )
+
+                    """if ficha["value"] == 5:
+                        for i in range(players[player]["chips"]["fitxa_5"]):
+                            players[player]["draw_chips"].append(
+                                                                {
+                                                                    "x": ficha["x"],
+                                                                    "y": ficha["y"],
+                                                                    "radius" : ficha["radius"],
+                                                                    "value": ficha["value"],
+                                                                    "width": ficha["width"]
+                                                                }
+                                                            )
+                        """
                 
                 elif ficha["bet_type"] == "negro":
                     contador_black += 1
@@ -1191,12 +1172,7 @@ def draw_grid():
         text = font.render(str(y), True, (200, 200, 200))
         screen.blit(text, (2, y + 2))
 
-
-
-
-
 if __name__ == "__main__":
     main()
-
 
 
