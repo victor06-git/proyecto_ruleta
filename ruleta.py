@@ -983,7 +983,7 @@ def black_red_event(player):
                     players[player]["chips"][chip_type] -= (1*contador_black)
                     #Faltaria hacer una variable banca o algo que fuese un diccionario para dibujar todas las fichas que tienen que ir a la banca
 
-def column_1_bet(player):
+def column_bet(player):
 
     global winning_number, chips
 
@@ -1040,7 +1040,7 @@ def column_1_bet(player):
                         }
                     )
                 else:
-                    if ficha["type_bet"] != "column1":
+                    if ficha["type_bet"] != "column_2":
                         contador_1 -= 1
                         valor_add = ficha["value"]
                         chip_type = f"fitxa_{valor_add}"
@@ -1066,7 +1066,7 @@ def column_1_bet(player):
                         }
                     )
                 else:
-                    if ficha["type_bet"] != "column1":
+                    if ficha["type_bet"] != "column_3":
                         contador_1 -= 1
                         valor_add = ficha["value"]
                         chip_type = f"fitxa_{valor_add}"
