@@ -910,14 +910,14 @@ def impar_event(player):
         numero_ganador = dictColor[i]
         print(numero_ganador)
 
-        if numero_ganador == winning_number and numero_ganador % 2 != 0:
+        if numero_ganador["numero"] == winning_number and numero_ganador["numero"] % 2 != 0:
             print("Has ganado la apuesta !")
 
             for ficha in players[player]["bet_chips"]:
                 if ficha["type_bet"] == "impar":
                     contador += 1
-                    valor_añadir = ficha["value"]
-                    chip_type = f"fitxa_{valor_añadir}"
+                    valor_add = ficha["value"]
+                    chip_type = f"fitxa_{valor_add}"
                     #players[player]["chips"][chyp_type] += (1*contador)
                     players[player]["chips"][chip_type] += (1*len(ficha["type_bet"]))
                     players[player]["draw_chips"].append(
@@ -933,6 +933,58 @@ def impar_event(player):
                     #players[player]["chips"][chyp_type] -= (1*contador)
                     players[player]["chips"][chip_type] -= (1*len(ficha["type_bet"]))
                     #Faltaria hacer una variable banca o algo que fuese un diccionario para dibujar todas las fichas que tienen que ir a la banca
+
+def black_red_event(player):
+
+    global winning_number
+    contador_red = 0
+    contador_black = 0
+    dictColor = table()
+
+    for i in range(len(dictColor)):
+        numero_ganador = dictColor[i]
+        
+        if numero_ganador["numero"] == winning_number and numero_ganador["color"] == RED:
+
+            for ficha in players[player]["bet_chips"]:
+                if ficha["bet_type"] == "rojo":
+                    contador_red += 1
+                    valor_add = ficha["value"]
+                    chip_type = f"fitxa_{valor_add}"
+                    players[player]["chips"][chip_type] += (1*contador_red)
+                    players[player]["draw_chips"].append(
+                        {
+                            "x": ficha["x"],
+                            "y": ficha["y"],
+                            "radius" : ficha["radius"],
+                            "value": ficha["value"],
+                            "width": ficha["width"]
+                        }
+                    )
+                
+                elif ficha["bet_type"] == "negro":
+                    contador_black += 1
+                    valor_add = ficha["value"]
+                    chip_type = f"fitxa_{valor_add}"
+                    players[player]["chips"][chip_type] += (1*contador_black)
+                    players[player]["draw_chips"].append(
+                        {
+                            "x": ficha["x"],
+                            "y": ficha["y"],
+                            "radius" : ficha["radius"],
+                            "value": ficha["value"],
+                            "width": ficha["width"]
+                        }
+                    )
+                
+                else:
+                    """SERIA MEJOR SEPARAR EN UNA FUNCIÓN EL ROJO Y EN OTRA EL NEGRO ?????"""
+                    players[player]["chips"][chip_type] -= (1*contador_red)
+                    players[player]["chips"][chip_type] -= (1*contador_black)
+                    #Faltaria hacer una variable banca o algo que fuese un diccionario para dibujar todas las fichas que tienen que ir a la banca
+
+
+print(black_red_event("player_purple"))
 #FÚNCION FICHAS
 def banca():    
     pygame.draw.rect(screen, DARK_GREEN, (50, 550, 350, 150))
