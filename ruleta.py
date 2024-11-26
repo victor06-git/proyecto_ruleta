@@ -513,36 +513,6 @@ def surface_numbers(numbers3):
 
     return numbers_surface
 
-def par_par_event():
-
-    global winning_number
-    
-    for player in players:
-        jugador = players[player]
-
-        if jugador["bet"]["odd_even"] == "par":
-            for ficha in jugador["draw_chips"]:
-                chip_type = f"fitxa_{ficha['value']}"
-                chip_cantidad = 1*jugador["chip"].get(chip_type)
-                if chip_type in jugador["chips"]:
-                    jugador["chip"][chip_type] += chip_cantidad
-                else:
-                    jugador["chip"][chip_type] = chip_cantidad
-                
-                jugador["draw_chips"].append({
-                    "x": ficha["x"]+5,
-                    "y": ficha["y"]+5,
-                    "radius": 25,
-                    "color": jugador["color"],
-                    "value": ficha["value"],
-                    "width": 5
-                })
-        else:
-            chip_type = f"fitxa_{ficha['value']}"
-            chip_cantidad = 1*jugador["chips"].get(chip_type)
-            if chip_type in jugador["chips"]:
-                jugador["chips"][chip_type] -= chip_cantidad
-
 def par_impar_event():
 
     global winning_number
@@ -869,6 +839,68 @@ def table():
 
             tablero.append({"numero": numbers, "color": color})
 
+    return tablero
+
+def par_par_event(player):
+
+    global winning_number
+    
+    dictColor = table()
+
+    for i in range(len(dictColor)):
+        numero_ganador = dictColor[i]
+        print(numero_ganador)
+
+        if numero_ganador == winning_number and numero_ganador % 2 == 0:
+            print("Has ganado la apuesta !")
+
+            for ficha in players[player]["bet_chips"]:
+                if ficha["type_bet"] == "par":
+                    valor_añadir = ficha["value"]
+                    chyp_type = f"fitxa_{valor_añadir}"
+                    players[player]["chips"][chyp_type] += (1*len(ficha["type_bet"]))
+                    players[player]["draw_chips"].append(
+                        {
+                            "x": ficha["x"],
+                            "y": ficha["y"],
+                            "radius" : ficha["radius"],
+                            "value": ficha["value"],
+                            "width": ficha["width"]
+                        }
+                    )
+                else:
+                    players[player]["chips"][chyp_type] -= (1*len(ficha["type_bet"]))
+                    #Faltaria hacer una variable banca o algo que fuese un diccionario para dibujar todas las fichas que tienen que ir a la banca
+
+            
+    """for player in players:
+        jugador = players[player]
+
+        if jugador["bet"]["odd_even"] == "par":
+            for ficha in jugador["draw_chips"]:
+                chip_type = f"fitxa_{ficha['value']}"
+                chip_cantidad = 1*jugador["chip"].get(chip_type)
+                if chip_type in jugador["chips"]:
+                    jugador["chip"][chip_type] += chip_cantidad
+                else:
+                    jugador["chip"][chip_type] = chip_cantidad
+                
+                jugador["draw_chips"].append({
+                    "x": ficha["x"]+5,
+                    "y": ficha["y"]+5,
+                    "radius": 25,
+                    "color": jugador["color"],
+                    "value": ficha["value"],
+                    "width": 5
+                })
+        else:
+            chip_type = f"fitxa_{ficha['value']}"
+            chip_cantidad = 1*jugador["chips"].get(chip_type)
+            if chip_type in jugador["chips"]:
+                jugador["chips"][chip_type] -= chip_cantidad"""
+    print(dictColor)
+
+print(par_par_event())
 #FÚNCION FICHAS
 def banca():    
     pygame.draw.rect(screen, DARK_GREEN, (50, 550, 350, 150))
