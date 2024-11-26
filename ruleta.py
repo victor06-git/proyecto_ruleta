@@ -288,9 +288,10 @@ def app_run():
     width_casilla = 300 / 3
     apuesta_done = {}  # Registro de apuestas
 
+    
     for player in players:
         jugador = players[player]
-
+     
         if jugador["your_turn"]:
             for ficha in jugador["draw_chips"]:
                 puntero = math.sqrt((mouse_x - ficha["x"]) ** 2 + (mouse_y - ficha["y"])**2)
@@ -308,9 +309,8 @@ def app_run():
                         dragging_chip["y"] = mouse_y - offset_y
                 
                 elif not clicked and dragging:
-
-                    for ficha in jugador["draw_chips"]:
-                        if bet_even.collidepoint(ficha["x"], ficha["y"]):
+                    bet_number = None
+                    if bet_even.collidepoint(ficha["x"], ficha["y"]):
                             #registrar_apuestas("par", ficha["value"])
                             print("Has apostado a 'PAR'")
                             apuesta_done["par"] = ficha
@@ -329,7 +329,7 @@ def app_run():
 
                             print(jugador["bet_chips"])
                         
-                        elif bet_odd.collidepoint(ficha["x"], ficha["y"]):
+                    elif bet_odd.collidepoint(ficha["x"], ficha["y"]):
                             #registrar_apuestas("impar", ficha["value"])
                             print("Has apostado a 'Impar'")
                             apuesta_done["impar"] = ficha
@@ -346,7 +346,7 @@ def app_run():
                                 }
                             )
                         
-                        elif bet_red.collidepoint(ficha["x"], ficha["y"]):
+                    elif bet_red.collidepoint(ficha["x"], ficha["y"]):
                             #registrar_apuestas("rojo", ficha["value"])
                             print("Has apostado al color 'ROJO'")
                             apuesta_done["rojo"] = ficha
@@ -363,7 +363,7 @@ def app_run():
                                 }
                             )
                         
-                        elif bet_black.collidepoint(ficha["x"], ficha["y"]):
+                    elif bet_black.collidepoint(ficha["x"], ficha["y"]):
                             #registrar_apuestas("negro", ficha["value"])
                             print("Has apostado al color 'NEGRO'")
                             jugador["bet"]["color"] = "black"
@@ -379,7 +379,7 @@ def app_run():
                                 }
                             )
                         
-                        elif bet_column_1.collidepoint(ficha["x"], ficha["y"]):
+                    elif bet_column_1.collidepoint(ficha["x"], ficha["y"]):
                             #registrar_apuestas("columna_1", ficha["value"])
                             print("Has apostado a la 'PRIMERA COLUMNA'")
                             apuesta_done["columna_1"] = ficha
@@ -396,7 +396,7 @@ def app_run():
                                 }
                             )
                         
-                        elif bet_column_2.collidepoint(ficha["x"], ficha["y"]):
+                    elif bet_column_2.collidepoint(ficha["x"], ficha["y"]):
                             #registrar_apuestas("columna_2", ficha["value"])
                             print("Has apostado a la 'SEGUNDA COLUMNA'")
                             apuesta_done["columna_2"] = ficha
@@ -413,7 +413,7 @@ def app_run():
                                 }
                             )
                         
-                        elif bet_column_3.collidepoint(ficha["x"], ficha["y"]):
+                    elif bet_column_3.collidepoint(ficha["x"], ficha["y"]):
                             #registrar_apuestas("columna_3", ficha["value"])
                             print("Has apostado a la 'TERCERA COLUMNA'")
                             apuesta_done["columna_3"] = ficha
@@ -430,7 +430,7 @@ def app_run():
                                 }
                             )
                         
-                        else:
+                    else:
                             bet_number = None
                             for columna in range(3):
                                 for fila in range(12):
@@ -841,7 +841,7 @@ def table():
 
     return tablero
 
-def par_par_event(player):
+def par_event(player):
 
     global winning_number
     
@@ -1074,8 +1074,6 @@ def column_bet(player):
                         #Añadir fichas a la banca y actualizar .appen(draw_chips_banca)
 
 
-        
-
 #FÚNCION FICHAS
 def banca():    
     pygame.draw.rect(screen, DARK_GREEN, (50, 550, 350, 150))
@@ -1092,7 +1090,7 @@ def banca():
 def tablero_fichas():
     font_text_cantidad = pygame.font.SysFont("Arial", 14, bold=True)
     font_text = pygame.font.SysFont(None, 27)
-
+    
     for player in players:
         info = players[player]
         if info["your_turn"]:
