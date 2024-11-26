@@ -1041,7 +1041,7 @@ def column_bet(player):
                     )
                 else:
                     if ficha["type_bet"] != "column_2":
-                        contador_1 -= 1
+                        contador_2 -= 1
                         valor_add = ficha["value"]
                         chip_type = f"fitxa_{valor_add}"
                         players[player]["chips"][chip_type] -= (1*contador_2)
@@ -1052,7 +1052,7 @@ def column_bet(player):
             for ficha in players[player]["bet_chips"]:
 
                 if ficha["type_bet"] == "column_3":
-                    contador_2 += 1
+                    contador_3 += 1
                     valor_add = ficha["value"]
                     chip_type = f"fitxa_{valor_add}"
                     players[player]["chips"][chip_type] += (1*contador_3)
@@ -1067,7 +1067,7 @@ def column_bet(player):
                     )
                 else:
                     if ficha["type_bet"] != "column_3":
-                        contador_1 -= 1
+                        contador_3 += 1
                         valor_add = ficha["value"]
                         chip_type = f"fitxa_{valor_add}"
                         players[player]["chips"][chip_type] -= (1*contador_3)
