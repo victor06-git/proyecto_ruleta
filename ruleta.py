@@ -1124,13 +1124,13 @@ def tablero_fichas():
                     text_cantidad = font_text_cantidad.render(f"x{chip_cantidad}", True, WHITE)
                     #text_cantidad_rect = (650,650)
 
-                    """pygame.draw.circle(screen, WHITE, (ficha["x"], ficha["y"]), ficha["radius"])
+                    pygame.draw.circle(screen, WHITE, (ficha["x"], ficha["y"]), ficha["radius"])
                     pygame.draw.circle(screen, info["color"], (ficha["x"], ficha["y"]), ficha["radius"], ficha["width"])
                     #screen.blit(text_cantidad, text_cantidad_rect)
 
                     valor_ficha = font_text_cantidad.render(str(ficha["value"]), True, BLACK)
                     pos_ficha = valor_ficha.get_rect(center=(ficha["x"], ficha["y"]))
-                    screen.blit(valor_ficha, pos_ficha)"""
+                    screen.blit(valor_ficha, pos_ficha)
                 
                 if ficha["value"] == 5 and chip_cantidad > 0:
                     text_cantidad_rect = (725,600)
