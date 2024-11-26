@@ -900,7 +900,36 @@ def par_par_event(player):
                 jugador["chips"][chip_type] -= chip_cantidad"""
     print(dictColor)
 
-print(par_par_event())
+def impar_event(player):
+
+    global winning_number
+    
+    dictColor = table()
+
+    for i in range(len(dictColor)):
+        numero_ganador = dictColor[i]
+        print(numero_ganador)
+
+        if numero_ganador == winning_number and numero_ganador % 2 != 0:
+            print("Has ganado la apuesta !")
+
+            for ficha in players[player]["bet_chips"]:
+                if ficha["type_bet"] == "impar":
+                    valor_añadir = ficha["value"]
+                    chyp_type = f"fitxa_{valor_añadir}"
+                    players[player]["chips"][chyp_type] += (1*len(ficha["type_bet"]))
+                    players[player]["draw_chips"].append(
+                        {
+                            "x": ficha["x"],
+                            "y": ficha["y"],
+                            "radius" : ficha["radius"],
+                            "value": ficha["value"],
+                            "width": ficha["width"]
+                        }
+                    )
+                else:
+                    players[player]["chips"][chyp_type] -= (1*len(ficha["type_bet"]))
+                    #Faltaria hacer una variable banca o algo que fuese un diccionario para dibujar todas las fichas que tienen que ir a la banca
 #FÚNCION FICHAS
 def banca():    
     pygame.draw.rect(screen, DARK_GREEN, (50, 550, 350, 150))
