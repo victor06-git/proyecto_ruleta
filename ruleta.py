@@ -165,7 +165,7 @@ button_hover_color = YELLOW
 
 #surface lista
 show_numbers = False
-numbers3 = []
+numbers3 = [] #Lista numbers
 show_surface = False
 
 
@@ -445,6 +445,7 @@ def draw_win_number():
         font = pygame.font.Font(None, 32)
         text = font.render(f"Número ganador: {winning_number}", True, WHITE)
         text_rect = text.get_rect(center=(350, 150))
+        add_number()
         
 
         panel_rect = text_rect.copy()
