@@ -223,6 +223,7 @@ def app_events():
             click(event.pos, button_rect) #click botón girar ruleta
             click2(event.pos) #click botón mostrar lista números rondas
             clicked = True
+            
 
         elif event.type == pygame.MOUSEBUTTONUP:
             clicked = False
@@ -374,14 +375,14 @@ def app_draw():
 
     draw_grid()
     
-    """draw_roulette() #Función draw ruleta
-    draw_flecha() #Función dibujar flecha"""
+    #draw_roulette() #Función draw ruleta
+    #draw_flecha() #Función dibujar flecha
     button_rect = draw_button(mouse_pos)
     button_rect2 = draw_button2(mouse_pos)
     table() #Función dibujar tabla
     banca() #Función dibujar banca
     tablero_fichas()
-    draw_win_number() #Función dibuja número elegido
+    #draw_win_number() #Función dibuja número elegido
 
     #Si premó el botó es mostra la llista
     if show_surface:
@@ -390,7 +391,7 @@ def app_draw():
     else: 
         draw_roulette()
         draw_flecha()
-    
+        draw_win_number() #Función dibuja número elegido
     pygame.display.update()
 
 #Dibujar surface a partir de botón
@@ -430,14 +431,17 @@ def click(pos, button_rect):
         show_win_number = False
         spin_speed = initial_speed
 
+added = False
+def add_number():
+    global added
+   
+    if winning_number is not None and added == False:
+        numbers3.append(winning_number)
+        added = True
+
 def draw_win_number():
 
-
-    if winning_number is not None:
-        numbers3.append(winning_number)
-        
-
-    if show_win_number and winning_number is not None:
+    if show_win_number == True and winning_number is not None:
         font = pygame.font.Font(None, 32)
         text = font.render(f"Número ganador: {winning_number}", True, WHITE)
         text_rect = text.get_rect(center=(350, 150))
@@ -452,7 +456,7 @@ def draw_win_number():
     
 #Gira la ruleta con la velocidad inicial y muestra el número ganador
 def update_spin():
-    global spinning, spin_angle, spin_speed, winning_number, show_win_number
+    global spinning, spin_angle, spin_speed, winning_number, show_win_number, added
     if spinning:
         spin_angle += spin_speed
         spin_speed *= friction
@@ -465,6 +469,7 @@ def update_spin():
             sector = int((current_angle / (360 / 37)) % 37)
             winning_number = roulette_numbers2[sector - 1]
             show_win_number = True
+            added = False
     
             
 def draw_button2(mouse_pos):
