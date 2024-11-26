@@ -383,9 +383,10 @@ def app_draw():
     tablero_fichas()
     draw_win_number() #Función dibuja número elegido
 
-    
+    #Si premó el botó es mostra la llista
     if show_surface:
         draw_surface()
+    #Si no el premó o el premó un altre vegada es dibuixa la ruleta amb la flecha que apunta els números
     else: 
         draw_roulette()
         draw_flecha()
@@ -431,10 +432,14 @@ def click(pos, button_rect):
 
 def draw_win_number():
 
+
+    if winning_number is not None:
+        numbers3.append(winning_number)
+        
+
     if show_win_number and winning_number is not None:
         font = pygame.font.Font(None, 32)
         text = font.render(f"Número ganador: {winning_number}", True, WHITE)
-        numbers3.append(winning_number)
         text_rect = text.get_rect(center=(350, 150))
         
 
