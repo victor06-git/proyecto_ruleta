@@ -20,6 +20,7 @@ GREY = (120,120,120)
 YELLOW = (243,228,67)
 BROWN = (98,52,18)
 GRAY = (128,128,128)
+DARK_GRAY = (80,80,80)
 
 
 
@@ -396,21 +397,21 @@ def app_draw():
 
 #Dibujar surface a partir de botón
 def draw_surface():
-    surface_width = screen_width // 2
-    surface_height = screen_height 
+    surface_width = 500
+    surface_height = 450 
     overlay_surface = pygame.Surface((surface_width, surface_height))
-    overlay_surface.fill(GREEN)
+    overlay_surface.fill(DARK_GRAY)
 
     screen.blit(overlay_surface, (50, 50))  #Donde se inician las coordenadas de la surface
 
-    font = pygame.font.SysFont(None, 36)
+    font = pygame.font.SysFont(None, 30)
     text = font.render("Lista", True, WHITE)
-    text_rect = text.get_rect(center=(150,  100))
+    text_rect = text.get_rect(center=(200, 100))
     screen.blit(text, text_rect)
 
     for j, number in enumerate(numbers3):
-        text_number = font.render(str(number), True, WHITE)
-        text_rect_number = text_number.get_rect(center=(150, 150 + (j * 30)))
+        text_number = font.render((f"Número  guanyador: {number}"), True, WHITE)
+        text_rect_number = text_number.get_rect(center=(190, 125 + (j * 25)))
         screen.blit(text_number, text_rect_number)
 
 
