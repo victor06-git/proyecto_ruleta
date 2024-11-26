@@ -320,6 +320,7 @@ def app_run():
                     dragging_chip = ficha
                     offset_x = mouse_x - ficha["x"]
                     offset_y = mouse_y - ficha["y"]
+                    jugador["chips"][f"fitxa_{ficha["value"]}"] -= 1
 
                     print(f"Has pulsado sobre la ficha {ficha['value']}")
 
@@ -494,18 +495,23 @@ def app_run():
 
                             if ficha["value"] == 100:
                                 ficha["x"], ficha["y"] = 545, 650
+                                jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
 
                             elif ficha["value"] == 50:
                                 ficha["x"], ficha["y"] = 645, 650
+                                jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
 
                             elif ficha["value"] == 20:
                                 ficha["x"], ficha["y"] = 745, 650
+                                jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
 
                             elif ficha["value"] == 10:
                                 ficha["x"], ficha["y"] = 595, 595
+                                jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
 
                             elif ficha["value"] == 5:
                                 ficha["x"], ficha["y"] = 695, 595
+                                jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
 
                 dragging = False
                 dragging_chip = None
@@ -1164,35 +1170,35 @@ def tablero_fichas():
                 chip_type = f"fitxa_{ficha['value']}"
                 chip_cantidad = info["chips"].get(chip_type, 0)
 
-                if chip_cantidad > 0:
-                    text_cantidad = font_text_cantidad.render(f"x{chip_cantidad}", True, WHITE)
-                    #text_cantidad_rect = (650,650)
-
-                    pygame.draw.circle(screen, WHITE, (ficha["x"], ficha["y"]), ficha["radius"])
-                    pygame.draw.circle(screen, info["color"], (ficha["x"], ficha["y"]), ficha["radius"], ficha["width"])
-                    #screen.blit(text_cantidad, text_cantidad_rect)
-
-                    valor_ficha = font_text_cantidad.render(str(ficha["value"]), True, BLACK)
-                    pos_ficha = valor_ficha.get_rect(center=(ficha["x"], ficha["y"]))
-                    screen.blit(valor_ficha, pos_ficha)
                 
-                if ficha["value"] == 5 and chip_cantidad > 0:
+                text_cantidad = font_text_cantidad.render(f"x{chip_cantidad}", True, WHITE)
+                #text_cantidad_rect = (650,650)
+
+                pygame.draw.circle(screen, WHITE, (ficha["x"], ficha["y"]), ficha["radius"])
+                pygame.draw.circle(screen, info["color"], (ficha["x"], ficha["y"]), ficha["radius"], ficha["width"])
+                #screen.blit(text_cantidad, text_cantidad_rect)
+
+                valor_ficha = font_text_cantidad.render(str(ficha["value"]), True, BLACK)
+                pos_ficha = valor_ficha.get_rect(center=(ficha["x"], ficha["y"]))
+                screen.blit(valor_ficha, pos_ficha)
+            
+                if ficha["value"] == 5 :
                     text_cantidad_rect = (725,600)
                     screen.blit(text_cantidad, text_cantidad_rect)
 
-                elif ficha["value"] == 10 and chip_cantidad > 0:
+                elif ficha["value"] == 10 :
                     text_cantidad_rect = (625,600)
                     screen.blit(text_cantidad, text_cantidad_rect)
                 
-                elif ficha["value"] == 20 and chip_cantidad > 0:
+                elif ficha["value"] == 20:
                     text_cantidad_rect = (775,655)
                     screen.blit(text_cantidad, text_cantidad_rect)
                 
-                elif ficha["value"] == 50 and chip_cantidad > 0:
+                elif ficha["value"] == 50 :
                     text_cantidad_rect = (675,655)
                     screen.blit(text_cantidad, text_cantidad_rect)
 
-                elif ficha["value"] == 100 and chip_cantidad > 0:
+                elif ficha["value"] == 100 :
                     text_cantidad_rect = (575,655)
                     screen.blit(text_cantidad, text_cantidad_rect)
 
