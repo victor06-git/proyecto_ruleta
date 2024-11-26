@@ -903,7 +903,7 @@ def par_par_event(player):
 def impar_event(player):
 
     global winning_number
-    
+    contador = 0
     dictColor = table()
 
     for i in range(len(dictColor)):
@@ -915,9 +915,11 @@ def impar_event(player):
 
             for ficha in players[player]["bet_chips"]:
                 if ficha["type_bet"] == "impar":
+                    contador += 1
                     valor_añadir = ficha["value"]
-                    chyp_type = f"fitxa_{valor_añadir}"
-                    players[player]["chips"][chyp_type] += (1*len(ficha["type_bet"]))
+                    chip_type = f"fitxa_{valor_añadir}"
+                    #players[player]["chips"][chyp_type] += (1*contador)
+                    players[player]["chips"][chip_type] += (1*len(ficha["type_bet"]))
                     players[player]["draw_chips"].append(
                         {
                             "x": ficha["x"],
@@ -928,7 +930,8 @@ def impar_event(player):
                         }
                     )
                 else:
-                    players[player]["chips"][chyp_type] -= (1*len(ficha["type_bet"]))
+                    #players[player]["chips"][chyp_type] -= (1*contador)
+                    players[player]["chips"][chip_type] -= (1*len(ficha["type_bet"]))
                     #Faltaria hacer una variable banca o algo que fuese un diccionario para dibujar todas las fichas que tienen que ir a la banca
 #FÚNCION FICHAS
 def banca():    
