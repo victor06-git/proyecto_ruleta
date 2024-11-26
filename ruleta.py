@@ -442,10 +442,23 @@ def app_run():
                                         ficha["x"] = pos_x + width_casilla // 2
                                         ficha["y"] = pos_y + height_casilla // 2
                                         bet_number = chips[columna][fila]
+                                        jugador["bet_chips"].append(
+                                                                {
+                                                                    "x": ficha["x"],
+                                                                    "y": ficha["y"],
+                                                                    "radius": ficha["radius"],
+                                                                    "color": ficha["color"],
+                                                                    "value": ficha["value"],
+                                                                    "width": ficha["width"],
+                                                                    "type_bet": "number",
+                                                                    "value_number": bet_number
+                                                                }
+                                                            )
+                                        print(jugador["bet_chips"])
                                 
                                 if bet_number is not None:
                                     print(f"Has apostado al número: {bet_number}")
-                                    registrar_apuestas("numbers", ficha["value"])
+                                    #registrar_apuestas("numbers", ficha["value"])
                                     break
 
                     if bet_number is None and ficha == dragging_chip:
