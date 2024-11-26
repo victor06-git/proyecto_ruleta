@@ -983,8 +983,99 @@ def black_red_event(player):
                     players[player]["chips"][chip_type] -= (1*contador_black)
                     #Faltaria hacer una variable banca o algo que fuese un diccionario para dibujar todas las fichas que tienen que ir a la banca
 
+def column_1_bet(player):
 
-print(black_red_event("player_purple"))
+    global winning_number, chips
+
+    contador_1 = 0
+    contador_2 = 0
+    contador_3 = 0
+    dictColor = table()
+
+    for i in range(len(dictColor)):
+        numero_ganador = dictColor[i]
+
+        if numero_ganador["numero"] == winning_number and numero_ganador["numero"] in chips[0]:
+
+            for ficha in players[player]["bet_chips"]:
+
+                if ficha["type_bet"] == "column_1":
+                    contador_1 += 1
+                    valor_add = ficha["value"]
+                    chip_type = f"fitxa_{valor_add}"
+                    players[player]["chips"][chip_type] += (1*contador_1)
+                    players[player]["draw_chips"].append(
+                        {
+                            "x": ficha["x"],
+                            "y": ficha["y"],
+                            "radius" : ficha["radius"],
+                            "value": ficha["value"],
+                            "width": ficha["width"]
+                        }
+                    )
+                else:
+                    if ficha["type_bet"] != "column1":
+                        contador_1 -= 1
+                        valor_add = ficha["value"]
+                        chip_type = f"fitxa_{valor_add}"
+                        players[player]["chips"][chip_type] -= (1*contador_1)
+                        #Añadir fichas a la banca y actualizar .appen(draw_chips_banca)
+        
+        elif numero_ganador["numero"] == winning_number and numero_ganador["numero"] in chips[1]:
+
+            for ficha in players[player]["bet_chips"]:
+
+                if ficha["type_bet"] == "column_1":
+                    contador_2 += 1
+                    valor_add = ficha["value"]
+                    chip_type = f"fitxa_{valor_add}"
+                    players[player]["chips"][chip_type] += (1*contador_2)
+                    players[player]["draw_chips"].append(
+                        {
+                            "x": ficha["x"],
+                            "y": ficha["y"],
+                            "radius" : ficha["radius"],
+                            "value": ficha["value"],
+                            "width": ficha["width"]
+                        }
+                    )
+                else:
+                    if ficha["type_bet"] != "column1":
+                        contador_1 -= 1
+                        valor_add = ficha["value"]
+                        chip_type = f"fitxa_{valor_add}"
+                        players[player]["chips"][chip_type] -= (1*contador_2)
+                        #Añadir fichas a la banca y actualizar .appen(draw_chips_banca)
+        
+        elif numero_ganador["numero"] == winning_number and numero_ganador["numero"] in chips[2]:
+
+            for ficha in players[player]["bet_chips"]:
+
+                if ficha["type_bet"] == "column_3":
+                    contador_2 += 1
+                    valor_add = ficha["value"]
+                    chip_type = f"fitxa_{valor_add}"
+                    players[player]["chips"][chip_type] += (1*contador_3)
+                    players[player]["draw_chips"].append(
+                        {
+                            "x": ficha["x"],
+                            "y": ficha["y"],
+                            "radius" : ficha["radius"],
+                            "value": ficha["value"],
+                            "width": ficha["width"]
+                        }
+                    )
+                else:
+                    if ficha["type_bet"] != "column1":
+                        contador_1 -= 1
+                        valor_add = ficha["value"]
+                        chip_type = f"fitxa_{valor_add}"
+                        players[player]["chips"][chip_type] -= (1*contador_3)
+                        #Añadir fichas a la banca y actualizar .appen(draw_chips_banca)
+
+
+        
+
 #FÚNCION FICHAS
 def banca():    
     pygame.draw.rect(screen, DARK_GREEN, (50, 550, 350, 150))
