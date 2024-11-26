@@ -41,6 +41,8 @@ players = {
                     {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
                     {"x": 745, "y": 650, "radius": 25, "color": "", "value": 20, "width": 5},
                     {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
+                    {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
+                    {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5},
                     {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
                 ],
         "chips":{
@@ -67,6 +69,8 @@ players = {
                     {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
                     {"x": 745, "y": 650, "radius": 25, "color": "", "value": 20, "width": 5},
                     {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
+                    {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
+                    {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5},
                     {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
                 ],
         "chips":{
@@ -93,6 +97,8 @@ players = {
                     {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
                     {"x": 745, "y": 650, "radius": 25, "color": "", "value": 20, "width": 5},
                     {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
+                    {"x": 595, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
+                    {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5},
                     {"x": 695, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}
                 ],
         "chips":{
@@ -1116,19 +1122,35 @@ def tablero_fichas():
 
                 if chip_cantidad > 0:
                     text_cantidad = font_text_cantidad.render(f"x{chip_cantidad}", True, WHITE)
-                    text_cantidad_rect = (ficha["x"] + 30, ficha["y"])
+                    #text_cantidad_rect = (650,650)
 
-                    pygame.draw.circle(screen, WHITE, (ficha["x"], ficha["y"]), ficha["radius"])
+                    """pygame.draw.circle(screen, WHITE, (ficha["x"], ficha["y"]), ficha["radius"])
                     pygame.draw.circle(screen, info["color"], (ficha["x"], ficha["y"]), ficha["radius"], ficha["width"])
-                    screen.blit(text_cantidad, text_cantidad_rect)
+                    #screen.blit(text_cantidad, text_cantidad_rect)
 
                     valor_ficha = font_text_cantidad.render(str(ficha["value"]), True, BLACK)
                     pos_ficha = valor_ficha.get_rect(center=(ficha["x"], ficha["y"]))
-                    screen.blit(valor_ficha, pos_ficha)
+                    screen.blit(valor_ficha, pos_ficha)"""
+                
+                if ficha["value"] == 5 and chip_cantidad > 0:
+                    text_cantidad_rect = (725,600)
+                    screen.blit(text_cantidad, text_cantidad_rect)
 
+                elif ficha["value"] == 10 and chip_cantidad > 0:
+                    text_cantidad_rect = (625,600)
+                    screen.blit(text_cantidad, text_cantidad_rect)
+                
+                elif ficha["value"] == 20 and chip_cantidad > 0:
+                    text_cantidad_rect = (775,655)
+                    screen.blit(text_cantidad, text_cantidad_rect)
+                
+                elif ficha["value"] == 50 and chip_cantidad > 0:
+                    text_cantidad_rect = (675,655)
+                    screen.blit(text_cantidad, text_cantidad_rect)
 
-
-
+                elif ficha["value"] == 100 and chip_cantidad > 0:
+                    text_cantidad_rect = (575,655)
+                    screen.blit(text_cantidad, text_cantidad_rect)
 
 def registrar_apuestas(tipo_apuesta, tipo_ficha):
 
