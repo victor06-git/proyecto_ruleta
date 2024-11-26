@@ -856,6 +856,16 @@ def par_event(player):
                         })
                 else:
                     players[player]["chips"][chip_type] -= (1*contador)
+                    chips_banca.append({
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius": ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                    })
+
+                    contador_chips_banca[ficha["value"]] += 1
+                    
                     if ficha["value"] == 5:
                         players[player]["draw_chips"].remove(ficha)
                     elif ficha["value"] == 10:
