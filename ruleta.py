@@ -374,17 +374,21 @@ def app_draw():
 
     draw_grid()
     
-    draw_roulette() #Función draw ruleta
-    draw_flecha() #Función dibujar flecha
+    """draw_roulette() #Función draw ruleta
+    draw_flecha() #Función dibujar flecha"""
     button_rect = draw_button(mouse_pos)
     button_rect2 = draw_button2(mouse_pos)
     table() #Función dibujar tabla
     banca() #Función dibujar banca
     tablero_fichas()
     draw_win_number() #Función dibuja número elegido
+
     
     if show_surface:
         draw_surface()
+    else: 
+        draw_roulette()
+        draw_flecha()
     
     pygame.display.update()
 
