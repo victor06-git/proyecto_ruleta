@@ -438,14 +438,15 @@ def draw_surface():
 
     sub_surface = surface.subsurface((0, scroll["surface_offset"], surface.get_width(), scroll["visible_height"]))
    
-    font = pygame.font.SysFont(None, 22)
+    font = pygame.font.SysFont(None, 24)
+    font_2 = pygame.font.SysFont(None, 21)
     text = font.render("Número            Jugador           Saldo          Apuestas", True, WHITE)
-    text_rect = text.get_rect(center=(200, 50))
+    text_rect = text.get_rect(center=(210, 50))
     surface.blit(text, text_rect)
 
     for j, number in enumerate(numbers3):
-        text_number = font.render((f"{number}                  Jugador                Saldo             Apuestas "), True, WHITE)
-        text_rect_number = text_number.get_rect(center=(200, 100 + (j * 30)))
+        text_number = font_2.render((f"{number}                  Naranja                120             20 "), True, WHITE)
+        text_rect_number = text_number.get_rect(center=(210, 100 + (j * 30)))
         surface.blit(text_number, text_rect_number)
 
     screen.blit(sub_surface, (50, 100))
