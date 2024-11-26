@@ -206,7 +206,7 @@ bet_column_3 = pygame.Rect(1150, 650, 50, 50)
     
 key_space = False
 
-surface = pygame.Surface((420, 500), pygame.SRCALPHA)
+surface = pygame.Surface((430, 1000), pygame.SRCALPHA)
                 
 # Bucle de l'aplicació
 def main():
@@ -438,14 +438,14 @@ def draw_surface():
 
     sub_surface = surface.subsurface((0, scroll["surface_offset"], surface.get_width(), scroll["visible_height"]))
    
-    font = pygame.font.SysFont(None, 28)
-    text = font.render("Número        Saldo         Apuestas", True, WHITE)
+    font = pygame.font.SysFont(None, 22)
+    text = font.render("Número            Jugador           Saldo          Apuestas", True, WHITE)
     text_rect = text.get_rect(center=(200, 50))
     surface.blit(text, text_rect)
 
     for j, number in enumerate(numbers3):
-        text_number = font.render((f"Número: {number} / " ), True, WHITE)
-        text_rect_number = text_number.get_rect(center=(120, 100 + (j * 30)))
+        text_number = font.render((f"{number}                  Jugador                Saldo             Apuestas "), True, WHITE)
+        text_rect_number = text_number.get_rect(center=(200, 100 + (j * 30)))
         surface.blit(text_number, text_rect_number)
 
     screen.blit(sub_surface, (50, 100))
