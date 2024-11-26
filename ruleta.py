@@ -21,6 +21,7 @@ YELLOW = (243,228,67)
 BROWN = (98,52,18)
 GRAY = (128,128,128)
 DARK_GRAY = (80,80,80)
+DARK_DARK_GRAY=(45,45,45)
 
 
 
@@ -169,6 +170,18 @@ show_numbers = False
 numbers3 = [] #Lista numbers
 show_surface = False
 
+#scroll
+scroll = {
+    "percentage": 0,
+    "dragging": False,
+    "x": 500,
+    "y": 100,
+    "width": 5,
+    "height": 350,
+    "radius": 10,
+    "surface_offset": 0,
+    "visible_height": 350
+}
 
 #lista números ruleta
 roulette_numbers = [32, 15, 19, 4, 21, 2, 25,
@@ -193,6 +206,7 @@ bet_column_3 = pygame.Rect(1150, 650, 50, 50)
     
 key_space = False
 
+surface = pygame.Surface((420, 500), pygame.SRCALPHA)
                 
 # Bucle de l'aplicació
 def main():
@@ -218,6 +232,8 @@ def app_events():
         if event.type == pygame.QUIT:  # Botón cerrar ventana
             pygame.quit()
             sys.exit()
+        elif event.type == pygame.MOUSEMOTION:
+            mouse_x, mouse_y = event.pos
         elif event.type == pygame.MOUSEBUTTONDOWN:
             button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
             button_rect2 = pygame.Rect(button_x, button_y - 50, button_width, button_height)
@@ -238,26 +254,11 @@ def app_events():
         
     return True
 
-def cambiar_turno(players):
-
-    jugadores = list(players.keys())
-
-    for i in range(len(jugadores)):
-        jugador = jugadores[i]
-
-        if players[jugador]["your_turn"]:
-            players[jugador]["your_turn"] = False
-
-            next = (i+1) % len(jugadores)
-            next_player = jugadores[next]
-            players[next_player]["your_turn"] = True
-            print(f"Turno del jugador {next_player}")
-            break #El break es para que no lo imprima constantemente
-
+scroll_dragging = False
 
 # Fer càlculs
 def app_run():
-    global clicked, dragging, dragging_chip, mouse_pos, key_space
+    global clicked, dragging, dragging_chip, mouse_pos, key_space, scroll, scroll_dragging
     
     mouse_pos = pygame.mouse.get_pos()
     mouse_x = mouse_pos[0]
@@ -269,6 +270,23 @@ def app_run():
     width_casilla = (300 / 3)
     apuesta_done = {} #--> Para guardar las apuestas
 
+    #Scroll
+    circle_center = {
+            "x": int(scroll["x"] + scroll["width"] / 2),
+            "y": int(scroll["y"] + (scroll["percentage"] / 100) * scroll["height"])
+    }
+
+    if clicked and not scroll_dragging:
+        scroll_dragging = True
+
+    if scroll_dragging:
+        y_2 = max(min(mouse_y, scroll["y"] + scroll["height"]), scroll["y"])
+        scroll["percentage"] = ((y_2 - scroll["y"]) / scroll["height"]) * 100
+    
+    if not clicked:
+        scroll_dragging = False
+
+    scroll["surface_offset"] = int((scroll["percentage"] / 100) * (surface.get_height() - scroll["visible_height"]))
     """Aqui tengo que hacer varias cosas para mejorar la logica:
     ***3***
         - En este punto se tiene que ejecutar la ruleta
@@ -388,32 +406,58 @@ def app_draw():
     #Si premó el botó es mostra la llista
     if show_surface:
         draw_surface()
+        scroll_slide()
     #Si no el premó o el premó un altre vegada es dibuixa la ruleta amb la flecha que apunta els números
     else: 
         draw_roulette()
         draw_flecha()
         draw_win_number() #Función dibuja número elegido
+        
     pygame.display.update()
+
+
+def cambiar_turno(players):
+
+    jugadores = list(players.keys())
+
+    for i in range(len(jugadores)):
+        jugador = jugadores[i]
+
+        if players[jugador]["your_turn"]:
+            players[jugador]["your_turn"] = False
+
+            next = (i+1) % len(jugadores)
+            next_player = jugadores[next]
+            players[next_player]["your_turn"] = True
+            print(f"Turno del jugador {next_player}")
+            break #El break es para que no lo imprima constantemente
 
 #Dibujar surface a partir de botón
 def draw_surface():
-    surface_width = 500
-    surface_height = 450 
-    overlay_surface = pygame.Surface((surface_width, surface_height))
-    overlay_surface.fill(DARK_GRAY)
+    surface.fill(DARK_GRAY)
 
-    screen.blit(overlay_surface, (50, 50))  #Donde se inician las coordenadas de la surface
-
-    font = pygame.font.SysFont(None, 30)
-    text = font.render("Lista", True, WHITE)
-    text_rect = text.get_rect(center=(200, 100))
-    screen.blit(text, text_rect)
+    sub_surface = surface.subsurface((0, scroll["surface_offset"], surface.get_width(), scroll["visible_height"]))
+   
+    font = pygame.font.SysFont(None, 28)
+    text = font.render("Número        Saldo         Apuestas", True, WHITE)
+    text_rect = text.get_rect(center=(200, 50))
+    surface.blit(text, text_rect)
 
     for j, number in enumerate(numbers3):
-        text_number = font.render((f"Número  guanyador: {number}"), True, WHITE)
-        text_rect_number = text_number.get_rect(center=(190, 125 + (j * 25)))
-        screen.blit(text_number, text_rect_number)
+        text_number = font.render((f"Número: {number} / " ), True, WHITE)
+        text_rect_number = text_number.get_rect(center=(120, 100 + (j * 30)))
+        surface.blit(text_number, text_rect_number)
 
+    screen.blit(sub_surface, (50, 100))
+
+def scroll_slide():
+    rect = (scroll["x"], scroll["y"], scroll["width"], scroll["height"])
+    pygame.draw.rect(screen, DARK_DARK_GRAY, rect)
+
+    circle_x = int(scroll["x"] + scroll["width"] / 2)
+    circle_y = int(scroll["y"] + (scroll["percentage"] / 100) * scroll["height"])
+    circle_tuple = (circle_x, circle_y)
+    pygame.draw.circle(screen, BLUE, circle_tuple, scroll["radius"])
 
 def is_click_on_button(pos, button_rect):
     return button_rect.collidepoint(pos)
