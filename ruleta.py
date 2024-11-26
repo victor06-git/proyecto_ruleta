@@ -305,7 +305,6 @@ def app_run():
     height_casilla = 600 / 13
     width_casilla = 300 / 3
     apuesta_done = {}  # Registro de apuestas
-    bet_number= None
     
     for player in players:
         jugador = players[player]
@@ -318,7 +317,6 @@ def app_run():
                     if not dragging:
                         dragging = True
                         dragging_chip = ficha
-                        print(dragging_chip)
                         offset_x = mouse_x - ficha["x"]
                         offset_y = mouse_y - ficha["y"]
                         print(f"Has pulsado sobre la ficha {ficha['value']}")
@@ -329,191 +327,173 @@ def app_run():
                         break
                 
                 elif not clicked and dragging:
-                    bet_number = None
                     dragging = False
-                    dragging_chip = None
+                    #dragging_chip = None
+                    print("Hellow")
 
-                if bet_number is not None:
-                    print(f"Has apostado al número: {bet_number}")
-                    #registrar_apuestas("numbers", ficha["value"])
-                    break
+                    if bet_even.collidepoint(dragging_chip["x"], dragging_chip["y"]):
+                            #registrar_apuestas("par", ficha["value"])
+                            print(f"EL jugador {player} ha apostado a 'PAR'")
+                            #apuesta_done["par"] = ficha
+                            jugador["bet"]["odd_even"] = "par"
+                            jugador["bet_chips"].append(
+                                {
+                                    "x": dragging_chip["x"],
+                                    "y": dragging_chip["y"],
+                                    "radius": dragging_chip["radius"],
+                                    "color": dragging_chip["color"],
+                                    "value": dragging_chip["value"],
+                                    "width": dragging_chip["width"],
+                                    "type_bet": "par"
+                                }
+                            )
 
-                if bet_number is None and ficha == dragging_chip:
-                    if ficha["value"] == 100:
-                        ficha["x"], ficha["y"] = 545, 650
-                    elif ficha["value"] == 50:
-                        ficha["x"], ficha["y"] = 645, 650
-                    elif ficha["value"] == 20:
-                        ficha["x"], ficha["y"] = 745, 650
-                    elif ficha["value"] == 10:
-                        ficha["x"], ficha["y"] = 595, 595
-                    elif ficha["value"] == 5:
-                        ficha["x"], ficha["y"] = 695, 595
-    
-                if bet_even.collidepoint(ficha["x"], ficha["y"]):
-                        #registrar_apuestas("par", ficha["value"])
-                        print(f"EL jugador {player} ha apostado a 'PAR'")
-                        apuesta_done["par"] = ficha
-                        jugador["bet"]["odd_even"] = "par"
-                        jugador["bet_chips"].append(
-                            {
-                                "x": ficha["x"],
-                                "y": ficha["y"],
-                                "radius": ficha["radius"],
-                                "color": ficha["color"],
-                                "value": ficha["value"],
-                                "width": ficha["width"],
-                                "type_bet": "par"
-                            }
-                        )
-
-                        print(jugador["bet_chips"])
-                    
-                elif bet_odd.collidepoint(ficha["x"], ficha["y"]):
-                        #registrar_apuestas("impar", ficha["value"])
-                        print("Has apostado a 'Impar'")
-                        apuesta_done["impar"] = ficha
-                        jugador["bet"]["odd_even"] = "impar"
-                        jugador["bet_chips"].append(
-                            {
-                                "x": ficha["x"],
-                                "y": ficha["y"],
-                                "radius": ficha["radius"],
-                                "color": ficha["color"],
-                                "value": ficha["value"],
-                                "width": ficha["width"],
-                                "type_bet": "impar"
-                            }
-                        )
-                    
-                elif bet_red.collidepoint(ficha["x"], ficha["y"]):
-                        #registrar_apuestas("rojo", ficha["value"])
-                        print("Has apostado al color 'ROJO'")
-                        apuesta_done["rojo"] = ficha
-                        jugador["bet"]["color"] = "red"
-                        jugador["bet_chips"].append(
-                            {
-                                "x": ficha["x"],
-                                "y": ficha["y"],
-                                "radius": ficha["radius"],
-                                "color": ficha["color"],
-                                "value": ficha["value"],
-                                "width": ficha["width"],
-                                "type_bet": "rojo"
-                            }
-                        )
+                            print(jugador["bet_chips"])
                         
-                    
-                elif bet_black.collidepoint(ficha["x"], ficha["y"]):
-                        #registrar_apuestas("negro", ficha["value"])
-                        print("Has apostado al color 'NEGRO'")
-                        jugador["bet"]["color"] = "black"
-                        jugador["bet_chips"].append(
-                            {
-                                "x": ficha["x"],
-                                "y": ficha["y"],
-                                "radius": ficha["radius"],
-                                "color": ficha["color"],
-                                "value": ficha["value"],
-                                "width": ficha["width"],
-                                "type_bet": "negro"
-                            }
-                        )
+                    elif bet_odd.collidepoint(dragging_chip["x"], dragging_chip["y"]):
+                            #registrar_apuestas("impar", ficha["value"])
+                            print("Has apostado a 'Impar'")
+                            apuesta_done["impar"] = ficha
+                            jugador["bet"]["odd_even"] = "impar"
+                            jugador["bet_chips"].append(
+                                {
+                                    "x": dragging_chip["x"],
+                                    "y": dragging_chip["y"],
+                                    "radius": dragging_chip["radius"],
+                                    "color": dragging_chip["color"],
+                                    "value": dragging_chip["value"],
+                                    "width": dragging_chip["width"],
+                                    "type_bet": "impar"
+                                }
+                            )
                         
-                    
-                elif bet_column_1.collidepoint(ficha["x"], ficha["y"]):
-                        #registrar_apuestas("columna_1", ficha["value"])
-                        print("Has apostado a la 'PRIMERA COLUMNA'")
-                        apuesta_done["columna_1"] = ficha
-                        jugador["bet"]["column"] = "1"
-                        jugador["bet_chips"].append(
-                            {
-                                "x": ficha["x"],
-                                "y": ficha["y"],
-                                "radius": ficha["radius"],
-                                "color": ficha["color"],
-                                "value": ficha["value"],
-                                "width": ficha["width"],
-                                "type_bet": "columna_1"
-                            }
-                        )
+                    elif bet_red.collidepoint(dragging_chip["x"], dragging_chip["y"]):
+                            #registrar_apuestas("rojo", ficha["value"])
+                            print("Has apostado al color 'ROJO'")
+                            apuesta_done["rojo"] = ficha
+                            jugador["bet"]["color"] = "red"
+                            jugador["bet_chips"].append(
+                                {
+                                    "x": dragging_chip["x"],
+                                    "y": dragging_chip["y"],
+                                    "radius": dragging_chip["radius"],
+                                    "color": dragging_chip["color"],
+                                    "value": dragging_chip["value"],
+                                    "width": dragging_chip["width"],
+                                    "type_bet": "rojo"
+                                }
+                            )
+                            
                         
-                elif bet_column_2.collidepoint(ficha["x"], ficha["y"]):
-                        #registrar_apuestas("columna_2", ficha["value"])
-                        print("Has apostado a la 'SEGUNDA COLUMNA'")
-                        apuesta_done["columna_2"] = ficha
-                        jugador["bet"]["column"] = "2"
-                        jugador["bet_chips"].append(
-                            {
-                                "x": ficha["x"],
-                                "y": ficha["y"],
-                                "radius": ficha["radius"],
-                                "color": ficha["color"],
-                                "value": ficha["value"],
-                                "width": ficha["width"],
-                                "type_bet": "columna_2"
-                            }
-                        )
-                    
-                elif bet_column_3.collidepoint(ficha["x"], ficha["y"]):
-                        #registrar_apuestas("columna_3", ficha["value"])
-                        print("Has apostado a la 'TERCERA COLUMNA'")
-                        apuesta_done["columna_3"] = ficha
-                        jugador["bet"]["column_3"] = "1"
-                        jugador["bet_chips"].append(
-                            {
-                                "x": ficha["x"],
-                                "y": ficha["y"],
-                                "radius": ficha["radius"],
-                                "color": ficha["color"],
-                                "value": ficha["value"],
-                                "width": ficha["width"],
-                                "type_bet": "columna_3"
-                            }
-                        )
-                    
-                else:
-                        #bet_number = None
+                    elif bet_black.collidepoint(dragging_chip["x"], dragging_chip["y"]):
+                            #registrar_apuestas("negro", ficha["value"])
+                            print("Has apostado al color 'NEGRO'")
+                            jugador["bet"]["color"] = "black"
+                            jugador["bet_chips"].append(
+                                {
+                                    "x": dragging_chip["x"],
+                                    "y": dragging_chip["y"],
+                                    "radius": dragging_chip["radius"],
+                                    "color": dragging_chip["color"],
+                                    "value": dragging_chip["value"],
+                                    "width": dragging_chip["width"],
+                                    "type_bet": "par"
+                                }
+                            )
+                            
+                        
+                    elif bet_column_1.collidepoint(dragging_chip["x"], dragging_chip["y"]):
+                            #registrar_apuestas("columna_1", ficha["value"])
+                            print("Has apostado a la 'PRIMERA COLUMNA'")
+                            apuesta_done["columna_1"] = ficha
+                            jugador["bet"]["column"] = "1"
+                            jugador["bet_chips"].append(
+                                {
+                                    "x": dragging_chip["x"],
+                                    "y": dragging_chip["y"],
+                                    "radius": dragging_chip["radius"],
+                                    "color": dragging_chip["color"],
+                                    "value": dragging_chip["value"],
+                                    "width": dragging_chip["width"],
+                                    "type_bet": "column_1"
+                                }
+                            )
+                            
+                    elif bet_column_2.collidepoint(dragging_chip["x"], dragging_chip["y"]):
+                            #registrar_apuestas("columna_2", ficha["value"])
+                            print("Has apostado a la 'SEGUNDA COLUMNA'")
+                            apuesta_done["columna_2"] = ficha
+                            jugador["bet"]["column"] = "2"
+                            jugador["bet_chips"].append(
+                                {
+                                    "x": dragging_chip["x"],
+                                    "y": dragging_chip["y"],
+                                    "radius": dragging_chip["radius"],
+                                    "color": dragging_chip["color"],
+                                    "value": dragging_chip["value"],
+                                    "width": dragging_chip["width"],
+                                    "type_bet": "column_2"
+                                }
+                            )
+                        
+                    elif bet_column_3.collidepoint(dragging_chip["x"], dragging_chip["y"]):
+                            #registrar_apuestas("columna_3", ficha["value"])
+                            print("Has apostado a la 'TERCERA COLUMNA'")
+                            apuesta_done["columna_3"] = ficha
+                            jugador["bet"]["column_3"] = "1"
+                            jugador["bet_chips"].append(
+                                {
+                                    "x": dragging_chip["x"],
+                                    "y": dragging_chip["y"],
+                                    "radius": dragging_chip["radius"],
+                                    "color": dragging_chip["color"],
+                                    "value": dragging_chip["value"],
+                                    "width": dragging_chip["width"],
+                                    "type_bet": "column_3"
+                                }
+                            )
+                        
+                    else:
+                        bet_number = None
                         for columna in range(3):
                             for fila in range(12):
                                 pos_x = 950 + columna * width_casilla
                                 pos_y = 100 + fila * height_casilla
                                 rect_casilla = pygame.Rect(pos_x, pos_y, width_casilla, height_casilla)
 
-                                if rect_casilla.collidepoint(ficha["x"], ficha["y"]):
+                                if rect_casilla.collidepoint(dragging_chip["x"], dragging_chip["y"]):
                                     ficha["x"] = pos_x + width_casilla // 2
                                     ficha["y"] = pos_y + height_casilla // 2
                                     bet_number = chips[columna][fila]
                                     jugador["bet_chips"].append(
                                                             {
-                                                                "x": ficha["x"],
-                                                                "y": ficha["y"],
-                                                                "radius": ficha["radius"],
-                                                                "color": ficha["color"],
-                                                                "value": ficha["value"],
-                                                                "width": ficha["width"],
+                                                                "x": dragging_chip["x"],
+                                                                "y": dragging_chip["y"],
+                                                                "radius": dragging_chip["radius"],
+                                                                "color": dragging_chip["color"],
+                                                                "value": dragging_chip["value"],
+                                                                "width": dragging_chip["width"],
                                                                 "type_bet": "number",
                                                                 "value_number": bet_number
                                                             }
                                                         )
-                                    print(jugador["bet_chips"])
-                            
+                                    print(f"Esto son bet_chips:{jugador["bet_chips"]}")
                             if bet_number is not None:
                                 print(f"Has apostado al número: {bet_number}")
                                 #registrar_apuestas("numbers", ficha["value"])
                                 break
 
-                            if bet_number is None and ficha == dragging_chip:
-                                if ficha["value"] == 100:
-                                    ficha["x"], ficha["y"] = 545, 650
-                                elif ficha["value"] == 50:
-                                    ficha["x"], ficha["y"] = 645, 650
-                                elif ficha["value"] == 20:
-                                    ficha["x"], ficha["y"] = 745, 650
-                                elif ficha["value"] == 10:
-                                    ficha["x"], ficha["y"] = 595, 595
-                                elif ficha["value"] == 5:
-                                    ficha["x"], ficha["y"] = 695, 595
+                        if bet_number is None and ficha == dragging_chip:
+                            if ficha["value"] == 100:
+                                ficha["x"], ficha["y"] = 545, 650
+                            elif ficha["value"] == 50:
+                                ficha["x"], ficha["y"] = 645, 650
+                            elif ficha["value"] == 20:
+                                ficha["x"], ficha["y"] = 745, 650
+                            elif ficha["value"] == 10:
+                                ficha["x"], ficha["y"] = 595, 595
+                            elif ficha["value"] == 5:
+                                ficha["x"], ficha["y"] = 695, 595
 
     
 # Dibuixar
