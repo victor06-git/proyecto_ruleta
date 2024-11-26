@@ -401,7 +401,7 @@ def draw_surface():
     overlay_surface = pygame.Surface((surface_width, surface_height))
     overlay_surface.fill(GREEN)
 
-    screen.blit(overlay_surface, (50, 50))
+    screen.blit(overlay_surface, (50, 50))  #Donde se inician las coordenadas de la surface
 
     font = pygame.font.SysFont(None, 36)
     text = font.render("Lista", True, WHITE)
