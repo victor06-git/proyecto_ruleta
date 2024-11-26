@@ -117,6 +117,18 @@ players = {
 
     }
 }
+chips_banca = [{"x": 100, "y": 650, "radius": 25, "color": "", "value": 100, "width": 5},
+               {"x": 200, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
+               {"x": 300, "y": 650, "radius": 25, "color": "", "value": 20, "width": 5},
+               {"x": 200, "y": 595, "radius": 25, "color": "", "value": 10, "width": 5},
+               {"x": 300, "y": 595, "radius": 25, "color": "", "value": 5, "width": 5}]
+contador_chips_banca = {
+    100 : 1,
+    50 : 0,
+    20 : 1,
+    10 : 0,
+    5 : 0
+}
 
 chips = [[1,4,7,10,13,16,19,22,25,28,31,34],
          [2,5,8,11,14,17,20,23,26,29,32,35],
@@ -318,7 +330,7 @@ def app_run():
                     bet_number = None
                     if bet_even.collidepoint(ficha["x"], ficha["y"]):
                             #registrar_apuestas("par", ficha["value"])
-                            print("Has apostado a 'PAR'")
+                            print(f"EL jugador {player} ha apostado a 'PAR'")
                             apuesta_done["par"] = ficha
                             jugador["bet"]["odd_even"] = "par"
                             jugador["bet_chips"].append(
@@ -467,20 +479,20 @@ def app_run():
                                     #registrar_apuestas("numbers", ficha["value"])
                                     break
 
-                    if bet_number is None and ficha == dragging_chip:
-                        if ficha["value"] == 100:
-                            ficha["x"], ficha["y"] = 545, 650
-                        elif ficha["value"] == 50:
-                            ficha["x"], ficha["y"] = 645, 650
-                        elif ficha["value"] == 20:
-                            ficha["x"], ficha["y"] = 745, 650
-                        elif ficha["value"] == 10:
-                            ficha["x"], ficha["y"] = 595, 595
-                        elif ficha["value"] == 5:
-                            ficha["x"], ficha["y"] = 695, 595
+                            if bet_number is None and ficha == dragging_chip:
+                                if ficha["value"] == 100:
+                                    ficha["x"], ficha["y"] = 545, 650
+                                elif ficha["value"] == 50:
+                                    ficha["x"], ficha["y"] = 645, 650
+                                elif ficha["value"] == 20:
+                                    ficha["x"], ficha["y"] = 745, 650
+                                elif ficha["value"] == 10:
+                                    ficha["x"], ficha["y"] = 595, 595
+                                elif ficha["value"] == 5:
+                                    ficha["x"], ficha["y"] = 695, 595
 
-                    dragging = False
-                    dragging_chip = None
+                            dragging = False
+                            dragging_chip = None
     
 # Dibuixar
 def app_draw():
@@ -497,6 +509,7 @@ def app_draw():
     table() #Función dibujar tabla
     banca() #Función dibujar banca
     tablero_fichas()
+    tablero_banca()
     draw_win_number() #Función dibuja número elegido
     
     
@@ -817,8 +830,8 @@ def table():
 
 def par_event(player):
 
-    global winning_number
-    
+    global winning_number, contador_chips_banca, chips_banca
+    contador = 0
     dictColor = table()
 
     for i in range(len(dictColor)):
@@ -830,49 +843,31 @@ def par_event(player):
 
             for ficha in players[player]["bet_chips"]:
                 if ficha["type_bet"] == "par":
+                    contador += 1
                     valor_añadir = ficha["value"]
-                    chyp_type = f"fitxa_{valor_añadir}"
-                    players[player]["chips"][chyp_type] += (1*len(ficha["type_bet"]))
-                    players[player]["draw_chips"].append(
-                        {
+                    chip_type = f"fitxa_{valor_añadir}"
+                    players[player]["chips"][chip_type] += (1*contador)
+                    players[player]["draw_chips"].append({
                             "x": ficha["x"],
                             "y": ficha["y"],
                             "radius" : ficha["radius"],
                             "value": ficha["value"],
                             "width": ficha["width"]
-                        }
-                    )
+                        })
                 else:
-                    players[player]["chips"][chyp_type] -= (1*len(ficha["type_bet"]))
+                    players[player]["chips"][chip_type] -= (1*contador)
+                    if ficha["value"] == 5:
+                        players[player]["draw_chips"].remove(ficha)
+                    elif ficha["value"] == 10:
+                        players[player]["draw_chips"].remove(ficha)
+                    elif ficha["value"] == 20:
+                        players[player]["draw_chips"].remove(ficha)
+                    elif ficha["value"] == 50:
+                        players[player]["draw_chips"].remove(ficha)
+                    elif ficha["value"] == 100:
+                        players[player]["draw_chips"].remove(ficha)
+
                     #Faltaria hacer una variable banca o algo que fuese un diccionario para dibujar todas las fichas que tienen que ir a la banca
-
-            
-    """for player in players:
-        jugador = players[player]
-
-        if jugador["bet"]["odd_even"] == "par":
-            for ficha in jugador["draw_chips"]:
-                chip_type = f"fitxa_{ficha['value']}"
-                chip_cantidad = 1*jugador["chip"].get(chip_type)
-                if chip_type in jugador["chips"]:
-                    jugador["chip"][chip_type] += chip_cantidad
-                else:
-                    jugador["chip"][chip_type] = chip_cantidad
-                
-                jugador["draw_chips"].append({
-                    "x": ficha["x"]+5,
-                    "y": ficha["y"]+5,
-                    "radius": 25,
-                    "color": jugador["color"],
-                    "value": ficha["value"],
-                    "width": 5
-                })
-        else:
-            chip_type = f"fitxa_{ficha['value']}"
-            chip_cantidad = 1*jugador["chips"].get(chip_type)
-            if chip_type in jugador["chips"]:
-                jugador["chips"][chip_type] -= chip_cantidad"""
-    print(dictColor)
 
 def impar_event(player):
 
@@ -1073,6 +1068,48 @@ def banca():
     pygame.draw.line(screen, YELLOW, (50, 600), (150, 600), 3)
     pygame.draw.line(screen, YELLOW, (150, 550), (150, 600), 3)
 
+def tablero_banca():
+
+    global chips_banca, contador_chips_banca
+
+    font_text_cantidad = pygame.font.SysFont("Arial", 14, bold=True)
+
+    color_banca = BLACK
+
+    for ficha in chips_banca:
+        chip_value = ficha["value"]
+        chip_cantidad = contador_chips_banca.get(chip_value)
+         
+        text_cantidad = font_text_cantidad.render(f"x{chip_cantidad}", True, WHITE)
+
+
+        pygame.draw.circle(screen, WHITE, (ficha["x"], ficha["y"]), ficha["radius"])
+        pygame.draw.circle(screen, color_banca, (ficha["x"], ficha["y"]), ficha["radius"], ficha["width"])
+
+        valor_ficha = font_text_cantidad.render(str(ficha["value"]), True, BLACK)
+        pos_ficha = valor_ficha.get_rect(center=(ficha["x"], ficha["y"]))
+        screen.blit(valor_ficha, pos_ficha)
+        
+        if ficha["value"] == 5:
+            text_cantidad_rect = (330,595)
+            screen.blit(text_cantidad, text_cantidad_rect)
+
+        elif ficha["value"] == 10:
+            text_cantidad_rect = (230,595)
+            screen.blit(text_cantidad, text_cantidad_rect)
+        
+        elif ficha["value"] == 20:
+            text_cantidad_rect = (330,650)
+            screen.blit(text_cantidad, text_cantidad_rect)
+        
+        elif ficha["value"] == 50:
+            text_cantidad_rect = (230,650)
+            screen.blit(text_cantidad, text_cantidad_rect)
+
+        elif ficha["value"] == 100:
+            text_cantidad_rect = (130,650)
+            screen.blit(text_cantidad, text_cantidad_rect)
+
 #FÚNCION tablero fichas (cambiar)
 def tablero_fichas():
     font_text_cantidad = pygame.font.SysFont("Arial", 14, bold=True)
@@ -1142,8 +1179,6 @@ def registrar_apuestas(tipo_apuesta, tipo_ficha):
         registro_apuestas[tipo_apuesta][tipo_ficha] +=1
     
     print(f"Has apostado {registro_apuestas[tipo_apuesta][tipo_ficha]+1} fichas de valor {tipo_ficha} a {tipo_apuesta.capitalize()}")
-
-
 
 #graellas
 def draw_grid():
