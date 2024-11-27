@@ -600,6 +600,7 @@ def cambiar_turno(players):
             next_player = jugadores[next]
             players[next_player]["your_turn"] = True
             print(f"Turno del jugador {next_player}")
+
             if next_player == "player_purple":#--> Cuando llega al jugador lila empieza a contar los turnos
                 contador_turnos += 1
                 print(f"Turno: {contador_turnos}")
@@ -944,10 +945,21 @@ def table():
 
     return tablero
 
+def winning_number_bet():
+
+    global numbers3, contador_turnos
+
+    if contador_turnos < len(numbers3):
+        winning_number = numbers3[contador_turnos]
+        print(f"El numero que ha salido ha sido el: {winning_number}")
+
+    return winning_number
 #EVENTOS DE APUESTAS
 def par_event(player):
 
-    global winning_number, numbers3, contador_numbers3
+    global numbers3, contador_numbers3
+
+    winning_number = winning_number_bet()
     contador = 0
     dictColor = table()
 
@@ -1004,7 +1016,7 @@ def par_event(player):
 
 def impar_event(player):
 
-    global winning_number
+    winning_number = winning_number_bet()
     contador = 0
     dictColor = table()
 
@@ -1061,7 +1073,7 @@ def impar_event(player):
 
 def red_event(player):
 
-    global winning_number
+    winning_number = winning_number_bet()
     contador_red = 0
     dictColor = table()
 
@@ -1118,7 +1130,7 @@ def red_event(player):
                     
 def black_event(player):
 
-    global winning_number
+    winning_number = winning_number_bet()
     contador_red = 0
     dictColor = table()
 
@@ -1175,7 +1187,7 @@ def black_event(player):
 
 def column_1_bet(player):
 
-    global winning_number, chips
+    winning_number = winning_number_bet()
 
     contador_1 = 0
     dictColor = table()
@@ -1246,9 +1258,11 @@ def column_1_bet(player):
                         if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
                             lista_actualizada.append(chip)
 
+                    players[player]["draw_chips"] = lista_actualizada
+
 def column_2_bet(player):
 
-    global winning_number, chips
+    winning_number = winning_number_bet()
 
     contador_2 = 0
     dictColor = table()
@@ -1319,9 +1333,11 @@ def column_2_bet(player):
                         if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
                             lista_actualizada.append(chip)
 
-def column_3_bet(player):
-    global winning_number, chips
+                    players[player]["draw_chips"] = lista_actualizada
 
+def column_3_bet(player):
+
+    winning_number = winning_number_bet()
     contador_3 = 0
     dictColor = table()
 
@@ -1391,10 +1407,13 @@ def column_3_bet(player):
                         if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
                             lista_actualizada.append(chip)
 
+                    players[player]["draw_chips"] = lista_actualizada
+
 def number_bet(player):
 
-    global winning_number, chips
-    lista_numeros_apostados = []
+    global chips
+
+    winning_number = winning_number_bet()
     
     for player in players:
         if players[player]["your_turn"]:
@@ -1416,7 +1435,7 @@ def number_bet(player):
                                 "width": ficha["width"]
                             })
                         players[player]["bet_chips"].remove(ficha)
-                        
+
                     else:
                         players[player]["chips"][chip_type] -= 1
                         chips_banca.append({
@@ -1428,14 +1447,13 @@ def number_bet(player):
                         })
                         contador_chips_banca[ficha["value"]] += 1
                         lista_actualizada = []
-
+                        #Esto es lo que elimina la ficha dr draw_chips para que no se dibuje en el tablero, si alg
                         for chip in players[player]["draw_chips"]:
 
                             if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
                                 lista_actualizada.append(chip)
+                        players[player]["draw_chips"] = lista_actualizada
                         
-
-print(number_bet("player_purple"))
 #FÚNCION FICHAS
 def banca():    
     pygame.draw.rect(screen, DARK_GREEN, (50, 550, 350, 150))
