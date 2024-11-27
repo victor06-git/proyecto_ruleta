@@ -861,64 +861,21 @@ def table():
 
 def par_event(player):
 
-    global winning_number, contador_chips_banca, chips_banca
-    contador = 0
-    dictColor = table()
-
-    for i in range(len(dictColor)):
-        numero_ganador = dictColor[i]
-        print(numero_ganador)
-
-        if numero_ganador == winning_number and numero_ganador % 2 == 0:
-            print("Has ganado la apuesta !")
-
-            for ficha in players[player]["bet_chips"]:
-                valor_añadir = ficha["value"]
-                chip_type = f"fitxa_{valor_añadir}"
-                if ficha["type_bet"] == "par":
-                    contador += 1
-                    players[player]["chips"][chip_type] += (1*contador)
-                    players[player]["draw_chips"].append({
-                            "x": ficha["x"],
-                            "y": ficha["y"],
-                            "radius" : ficha["radius"],
-                            "value": ficha["value"],
-                            "width": ficha["width"]
-                        })
-                    #players[player]["draw_chips"].remove(ficha) --> Para remover la ficha de draw_chips ??
-                else:
-                    players[player]["chips"][chip_type] -= (1*contador)
-                    chips_banca.append({
-                        "x": ficha["x"],
-                        "y": ficha["y"],
-                        "radius": ficha["radius"],
-                        "value": ficha["value"],
-                        "width": ficha["width"]
-                    })
-
-                    contador_chips_banca[ficha["value"]] += 1
-                    players[player]["draw_chips"].remove(ficha)
-
-def impar_event(player):
-
     global winning_number
     contador = 0
     dictColor = table()
 
     for i in range(len(dictColor)):
         numero_ganador = dictColor[i]
-        print(numero_ganador)
-
-        if numero_ganador["numero"] == winning_number and numero_ganador["numero"] % 2 != 0:
-            print("Has ganado la apuesta !")
+        
+        if numero_ganador["numero"] == winning_number and numero_ganador["numero"] % 2 == 0:
 
             for ficha in players[player]["bet_chips"]:
-                if ficha["type_bet"] == "impar":
+                if ficha["bet_type"] == "par":
                     contador += 1
                     valor_add = ficha["value"]
                     chip_type = f"fitxa_{valor_add}"
-                    #players[player]["chips"][chyp_type] += (1*contador)
-                    players[player]["chips"][chip_type] += (1*len(ficha["type_bet"]))
+                    players[player]["chips"][chip_type] += 2
                     players[player]["draw_chips"].append(
                         {
                             "x": ficha["x"],
@@ -928,10 +885,93 @@ def impar_event(player):
                             "width": ficha["width"]
                         }
                     )
+                    players[player]["draw_chips"].append(
+                        {
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius" : ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                        }
+                    )
+
+                    players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
+
                 else:
-                    #players[player]["chips"][chyp_type] -= (1*contador)
-                    players[player]["chips"][chip_type] -= (1*len(ficha["type_bet"]))
-                    #Faltaria hacer una variable banca o algo que fuese un diccionario para dibujar todas las fichas que tienen que ir a la banca
+                    players[player]["chips"][chip_type] -= 2
+                    chips_banca.append({
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius": ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                    })
+                    contador_chips_banca[ficha["value"]] += 2
+                    lista_actualizada = []
+
+                    for chip in players[player]["draw_chips"]:
+
+                        if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
+                            lista_actualizada.append(chip)
+
+                    players[player]["draw_chips"] = lista_actualizada
+
+def impar_event(player):
+
+    global winning_number
+    contador = 0
+    dictColor = table()
+
+    for i in range(len(dictColor)):
+        numero_ganador = dictColor[i]
+        
+        if numero_ganador["numero"] == winning_number and numero_ganador["numero"] % 2 != 0:
+
+            for ficha in players[player]["bet_chips"]:
+                if ficha["bet_type"] == "impar":
+                    contador += 1
+                    valor_add = ficha["value"]
+                    chip_type = f"fitxa_{valor_add}"
+                    players[player]["chips"][chip_type] += 2
+                    players[player]["draw_chips"].append(
+                        {
+                            "x": ficha["x"],
+                            "y": ficha["y"],
+                            "radius" : ficha["radius"],
+                            "value": ficha["value"],
+                            "width": ficha["width"]
+                        }
+                    )
+                    players[player]["draw_chips"].append(
+                        {
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius" : ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                        }
+                    )
+
+                    players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
+
+                else:
+                    players[player]["chips"][chip_type] -= 2
+                    chips_banca.append({
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius": ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                    })
+                    contador_chips_banca[ficha["value"]] += 2
+                    lista_actualizada = []
+
+                    for chip in players[player]["draw_chips"]:
+
+                        if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
+                            lista_actualizada.append(chip)
+
+                    players[player]["draw_chips"] = lista_actualizada
 
 def red_event(player):
 
@@ -989,6 +1029,7 @@ def red_event(player):
                             lista_actualizada.append(chip)
 
                     players[player]["draw_chips"] = lista_actualizada
+                    
 def black_event(player):
 
     global winning_number
