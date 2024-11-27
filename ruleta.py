@@ -1699,6 +1699,8 @@ def reiniciar_fichas(player):
         elif ficha["value"] == 100:
             ficha["x"], ficha["y"] = initial_x_100, initial_y_100
 
+        players[player]["draw_fichas"].append(ficha) #--> Se añaden a draw chips para que se dibujen
+        players[player]["bet_chips"].remove(ficha) #--> Se elimina de bet_chips una vez dibujada en draw_chips
 
 
 if __name__ == "__main__":
