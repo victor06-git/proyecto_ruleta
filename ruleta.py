@@ -1581,6 +1581,7 @@ def tablero_banca():
         elif ficha["value"] == 100:
             text_cantidad_rect = (130,650)
             screen.blit(text_cantidad, text_cantidad_rect)
+
 #FÚNCION tablero fichas (cambiar)
 def tablero_fichas():
     font_text_cantidad = pygame.font.SysFont("Arial", 14, bold=True)
