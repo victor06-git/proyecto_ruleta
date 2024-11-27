@@ -333,6 +333,7 @@ def app_run():
             column_2_bet(player)
             column_3_bet(player)
             number_bet(player)
+            reiniciar_fichas(player) #Retornar las fichas a su destino
             evento = False
 
      
