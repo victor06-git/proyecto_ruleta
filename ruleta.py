@@ -325,7 +325,6 @@ def app_run():
         jugador = players[player]
 
         if show_win_number == True and evento == True:
-            print("par")
             par_event(player)
             impar_event(player)
             red_event(player)
