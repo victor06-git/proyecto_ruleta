@@ -727,6 +727,7 @@ def add_number():
 def draw_win_number():
 
     if show_win_number == True and winning_number is not None:
+        
         font = pygame.font.Font(None, 32)
         text = font.render(f"Número ganador: {winning_number}", True, WHITE)
         text_rect = text.get_rect(center=(350, 150))
