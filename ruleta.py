@@ -323,6 +323,19 @@ def app_run():
     """
     for player in players:
         jugador = players[player]
+
+        if show_win_number == True and evento == True:
+            print("par")
+            par_event(player)
+            impar_event(player)
+            red_event(player)
+            black_event(player)
+            column_1_bet(player)
+            column_2_bet(player)
+            column_3_bet(player)
+            number_bet(player)
+            evento = False
+
      
         if jugador["your_turn"]:
             for ficha in jugador["draw_chips"]:
@@ -355,11 +368,6 @@ def app_run():
                         if bet_even.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("par", ficha["value"])
                                 print(f"EL jugador {player} ha apostado a 'PAR'")
-                                
-                                if show_win_number == True and evento == True:
-                                    par_event(player)
-                                    print("par")
-                                    evento = False
 
                                 #apuesta_done["par"] = ficha
                                 jugador["bet"]["odd_even"] = "par"
@@ -394,11 +402,7 @@ def app_run():
                                         "width": ficha["width"],
                                         "type_bet": "impar"
                                     }
-                                )
-                                
-                                if show_win_number == True and evento == True:
-                                    impar_event(player)
-                                    
+                                )                                  
                                 
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
@@ -418,10 +422,7 @@ def app_run():
                                         "width": ficha["width"],
                                         "type_bet": "rojo"
                                     }
-                                )
-                                if show_win_number == True and evento == True:
-                                    red_event(player)
-                                    
+                                )                                  
 
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
@@ -443,10 +444,6 @@ def app_run():
                                     }
                                 )
                                 
-                                
-                                if show_win_number == True and evento == True:
-                                    black_event(player)
-
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 
@@ -466,11 +463,7 @@ def app_run():
                                         "width": ficha["width"],
                                         "type_bet": "column_1"
                                     }
-                                )
-                                
-                                if show_win_number == True and evento == True:
-                                    column_1_bet(player)
-                                    
+                                )                                    
 
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
@@ -490,10 +483,7 @@ def app_run():
                                         "width": ficha["width"],
                                         "type_bet": "column_2"
                                     }
-                                )
-                                if show_win_number == True and evento == True:
-                                    column_2_bet(player)
-                                    
+                                )                                  
 
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
@@ -513,10 +503,7 @@ def app_run():
                                         "width":ficha["width"],
                                         "type_bet": "column_3"
                                     }
-                                )
-                                if show_win_number == True and evento == True:
-                                    column_3_bet(player)
-                                    
+                                )                                   
 
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
@@ -556,10 +543,6 @@ def app_run():
                                 if bet_number is not None:
                                     print(f"Has apostado al número: {bet_number}")
                                     #registrar_apuestas("numbers", ficha["value"])
-                                   
-                                    if show_win_number == True and evento == True:
-                                        number_bet(player)
-
                                     break
 
                             if bet_number is None and ficha == dragging_chip:
