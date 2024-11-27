@@ -288,7 +288,7 @@ def app_events():
                 impar_event(player)
                 red_event(player)
                 black_event(player)
-                column_1_bet(player)
+                #column_1_bet(player)
                 column_2_bet(player)
                 column_3_bet(player)
                 number_bet(player)
@@ -673,7 +673,7 @@ def draw_surface():
     for ficha in players["player_purple"]["bet_chips"]:
         total_valor_fichas += ficha["value"]
     for ficha in players["player_blue"]["bet_chips"]:
-        total_valor_fichas3 += ficha["value"]
+        total_valor_fichas2 += ficha["value"]
     for ficha in players["player_orange"]["bet_chips"]:
         total_valor_fichas3 += ficha["value"]
 
@@ -1258,7 +1258,7 @@ def black_event(player):
                 contador_chips_banca[ficha["value"]] += 1  # Incrementa el contador de la banca
                 
 
-def column_1_bet(player):
+"""def column_1_bet(player):
 
     winning_number_1 = winning_number_bet()
 
@@ -1331,7 +1331,7 @@ def column_1_bet(player):
                         if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
                             lista_actualizada.append(chip)
 
-                    players[player]["draw_chips"] = lista_actualizada
+                    players[player]["draw_chips"] = lista_actualizada"""
 
 def column_2_bet(player):
 
@@ -1711,7 +1711,7 @@ def reiniciar_fichas(player):
             # Eliminar la ficha de bet_chips
             players[player]["bet_chips"].remove(ficha)
 
-            #players[player]["chips"][f"fitxa_{ficha['value']}"] += 1
+            players[player]["chips"][f"fitxa_{ficha['value']}"] += 1
             
     # Opcional: Si quieres que las fichas que no se han apostado también vuelvan a su posición inicial
     for ficha in players[player]["draw_chips"]:
