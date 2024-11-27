@@ -615,6 +615,20 @@ def app_draw():
         
     pygame.display.update()
 
+def eventos():
+    for player in players:
+
+            if show_win_number == True and evento == True:
+                par_event(player)
+                #impar_event(player)
+                red_event(player)
+                #black_event(player)
+                #column_1_bet(player)
+                #column_2_bet(player)
+                #column_3_bet(player)
+                #number_bet(player)
+                reiniciar_fichas(player) #Retornar las fichas a su destino
+                evento = False
 
 def cambiar_turno(players):
     global contador_turnos
@@ -1072,7 +1086,6 @@ def par_event(player):
 
     winning_number_par = winning_number_bet()
     #contador = 0
-    dictColor = table()
     print(winning_number_par)
     print(numbers3)
 
@@ -1181,119 +1194,48 @@ def impar_event(player):
 
 def red_event(player):
 
-    
-    red = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
-    contador_red = 0
-   
+    red_numbers = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
+    winning_number = winning_number_bet()  # Obtén el número ganador
 
-    #for i in range(len(dictColor)):
-        #numero_ganador = dictColor[i]
-        
-        #if numero_ganador["numero"] == winning_number_red and numero_ganador["color"] == RED:
-    if players[player]["bet"]["color"] == RED and players[player]["bet"]["number"] in red:
-
+    if players[player]["bet"]["color"] == "red":  # Verifica si el jugador apostó al rojo
+       
+        if winning_number in red_numbers:  # Verifica si el número ganador es rojo
             for ficha in players[player]["bet_chips"]:
-                if ficha["bet_type"] == "rojo":
-                    contador_red += 1
+                if ficha["type_bet"] == "rojo":  # Verifica si la ficha es de tipo rojo
                     valor_add = ficha["value"]
                     chip_type = f"fitxa_{valor_add}"
-                    players[player]["chips"][chip_type] += 2
-                    players[player]["draw_chips"].append(
-                        {
-                            "x": ficha["x"],
-                            "y": ficha["y"],
-                            "radius" : ficha["radius"],
-                            "value": ficha["value"],
-                            "width": ficha["width"]
-                        }
-                    )
-                    players[player]["draw_chips"].append(
-                        {
-                        "x": ficha["x"],
-                        "y": ficha["y"],
-                        "radius" : ficha["radius"],
-                        "value": ficha["value"],
-                        "width": ficha["width"]
-                        }
-                    )
-
-                    players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
-
-                else:
-                    players[player]["chips"][chip_type] -= 1
-                    chips_banca.append({
-                        "x": ficha["x"],
-                        "y": ficha["y"],
-                        "radius": ficha["radius"],
-                        "value": ficha["value"],
-                        "width": ficha["width"]
-                    })
-                    contador_chips_banca[ficha["value"]] += 1
-                    lista_actualizada = []
-
-                    for chip in players[player]["draw_chips"]:
-
-                        if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
-                            lista_actualizada.append(chip)
-
-                    players[player]["draw_chips"] = lista_actualizada
+                    players[player]["chips"][chip_type] += 2  # Duplica la apuesta
+                    players[player]["draw_chips"].append(ficha)  # Agrega la ficha al draw_chips
+                    
+        else:
+            # Si el número no es rojo, pierde la apuesta
+            for ficha in players[player]["bet_chips"]:
+                players[player]["chips"][f"fitxa_{ficha['value']}"] -= 1  # Resta la apuesta
+                chips_banca.append(ficha)  # Agrega la ficha a la banca
+                contador_chips_banca[ficha["value"]] += 1  # Incrementa el contador de la banca
+                
                     
 def black_event(player):
 
-    winning_number_black = winning_number_bet()
-    contador_red = 0
-    dictColor = table()
+    black_numbers = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35]
+    winning_number = winning_number_bet()  # Obtén el número ganador
 
-    for i in range(len(dictColor)):
-        numero_ganador = dictColor[i]
-        
-        if numero_ganador["numero"] == winning_number_black and numero_ganador["color"] == BLACK:
-
+    if players[player]["bet"]["color"] == "black":  # Verifica si el jugador apostó al negro
+        if winning_number in black_numbers:  # Verifica si el número ganador es negro
             for ficha in players[player]["bet_chips"]:
-                if ficha["bet_type"] == "negro":
-                    contador_red += 1
+                if ficha["type_bet"] == "negro":  # Verifica si la ficha es de tipo negro
                     valor_add = ficha["value"]
                     chip_type = f"fitxa_{valor_add}"
-                    players[player]["chips"][chip_type] += 2
-                    players[player]["draw_chips"].append(
-                        {
-                            "x": ficha["x"],
-                            "y": ficha["y"],
-                            "radius" : ficha["radius"],
-                            "value": ficha["value"],
-                            "width": ficha["width"]
-                        }
-                    )
-                    players[player]["draw_chips"].append(
-                        {
-                        "x": ficha["x"],
-                        "y": ficha["y"],
-                        "radius" : ficha["radius"],
-                        "value": ficha["value"],
-                        "width": ficha["width"]
-                        }
-                    )
-
-                    players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
-
-                else:
-                    players[player]["chips"][chip_type] -= 1
-                    chips_banca.append({
-                        "x": ficha["x"],
-                        "y": ficha["y"],
-                        "radius": ficha["radius"],
-                        "value": ficha["value"],
-                        "width": ficha["width"]
-                    })
-                    contador_chips_banca[ficha["value"]] += 1
-                    lista_actualizada = []
-
-                    for chip in players[player]["draw_chips"]:
-
-                        if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
-                            lista_actualizada.append(chip)
-
-                    players[player]["draw_chips"] = lista_actualizada
+                    players[player]["chips"][chip_type] += 2  # Duplica la apuesta
+                    players[player]["draw_chips"].append(ficha)  # Agrega la ficha al draw_chips
+                    players[player]["bet_chips"].remove(ficha)  # Elimina la ficha de las apuestas
+        else:
+            # Si el número no es negro, pierde la apuesta
+            for ficha in players[player]["bet_chips"]:
+                players[player]["chips"][f"fitxa_{ficha['value']}"] -= 1  # Resta la apuesta
+                chips_banca.append(ficha)  # Agrega la ficha a la banca
+                contador_chips_banca[ficha["value"]] += 1  # Incrementa el contador de la banca
+                
 
 def column_1_bet(player):
 
