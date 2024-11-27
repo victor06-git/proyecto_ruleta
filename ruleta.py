@@ -604,6 +604,7 @@ def cambiar_turno(players):
                 contador_turnos += 1
                 print(f"Turno: {contador_turnos}")
             break #El break es para que no lo imprima constantemente
+
 #Dibujar surface a partir de botón
 def draw_surface():
     surface.fill(DARK_GRAY)
@@ -651,10 +652,12 @@ def click(pos, button_rect):
 added = False
 def add_number():
     global added
-   
+
     if winning_number is not None and added == False:
         numbers3.append(winning_number)
         added = True
+    
+    return numbers3
 
 def draw_win_number():
 
@@ -1399,9 +1402,37 @@ def number_bet(player):
 
                 if ficha["type_bet"] == "number":
                     numero_apostado = ficha["value_number"]
-                    lista_numeros_apostados.append(numero_apostado)
+                    chip_type = f"fitxa_{ficha["value"]}"
 
-                """if winning_number in """
+                    if numero_apostado == winning_number:
+                        players[player]["chips"][chip_type] += 35
+
+                        for _ in range(35):
+                            players[player]["draw_chips"].append({
+                                "x": ficha["x"],
+                                "y": ficha["y"],
+                                "radius": ficha["radius"],
+                                "value": ficha["value"],
+                                "width": ficha["width"]
+                            })
+                        players[player]["bet_chips"].remove(ficha)
+                        
+                    else:
+                        players[player]["chips"][chip_type] -= 1
+                        chips_banca.append({
+                            "x": ficha["x"],
+                            "y": ficha["y"],
+                            "radius": ficha["radius"],
+                            "value": ficha["value"],
+                            "width": ficha["width"]
+                        })
+                        contador_chips_banca[ficha["value"]] += 1
+                        lista_actualizada = []
+
+                        for chip in players[player]["draw_chips"]:
+
+                            if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
+                                lista_actualizada.append(chip)
                         
 
 print(number_bet("player_purple"))
