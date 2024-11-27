@@ -255,7 +255,7 @@ def main():
 
 # Gestionar events
 def app_events():
-    global clicked, button_rect, button_rect2, show_numbers, mouse_x, mouse_y
+    global clicked, button_rect, button_rect2, show_numbers, mouse_x, mouse_y, evento
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  # Botón cerrar ventana
@@ -280,6 +280,20 @@ def app_events():
 
 
     update_spin()
+
+    for player in players:
+
+            if show_win_number == True and evento == True:
+                par_event(player)
+                impar_event(player)
+                red_event(player)
+                black_event(player)
+                column_1_bet(player)
+                column_2_bet(player)
+                column_3_bet(player)
+                number_bet(player)
+                reiniciar_fichas(player) #Retornar las fichas a su destino
+                evento = False
         
     return True
 
@@ -287,7 +301,7 @@ scroll_dragging = False
 
 # Fer càlculs
 def app_run():
-    global clicked, dragging, dragging_chip, mouse_pos, key_space, scroll, scroll_dragging, evento
+    global clicked, dragging, dragging_chip, mouse_pos, key_space, scroll, scroll_dragging
     
     mouse_pos = pygame.mouse.get_pos()
     mouse_x = mouse_pos[0]
@@ -322,21 +336,10 @@ def app_run():
         - En este punto se tiene que ejecutar la ruleta
         - Una vez ejecutada la ruleta las fichas vuelven a su posicón original
     """
+    update_spin()
+
     for player in players:
         jugador = players[player]
-
-        if show_win_number == True and evento == True:
-            par_event(player)
-            #impar_event(player)
-            red_event(player)
-            #black_event(player)
-            #column_1_bet(player)
-            #column_2_bet(player)
-            #column_3_bet(player)
-            #number_bet(player)
-            reiniciar_fichas(player) #Retornar las fichas a su destino
-            evento = False
-
      
         if jugador["your_turn"]:
             for ficha in jugador["draw_chips"]:
@@ -615,20 +618,7 @@ def app_draw():
         
     pygame.display.update()
 
-def eventos():
-    for player in players:
 
-            if show_win_number == True and evento == True:
-                par_event(player)
-                #impar_event(player)
-                red_event(player)
-                #black_event(player)
-                #column_1_bet(player)
-                #column_2_bet(player)
-                #column_3_bet(player)
-                #number_bet(player)
-                reiniciar_fichas(player) #Retornar las fichas a su destino
-                evento = False
 
 def cambiar_turno(players):
     global contador_turnos
@@ -1691,8 +1681,6 @@ def reiniciar_fichas(player):
 
             #players[player]["chips"][f"fitxa_{ficha['value']}"] += 1
             
-            red_event(player)
-
     # Opcional: Si quieres que las fichas que no se han apostado también vuelvan a su posición inicial
     for ficha in players[player]["draw_chips"]:
         valor_ficha = ficha["value"]
