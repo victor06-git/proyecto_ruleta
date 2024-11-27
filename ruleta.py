@@ -978,7 +978,7 @@ def par_event(player):
                     players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
 
                 else:
-                    players[player]["chips"][chip_type] -= 2
+                    players[player]["chips"][chip_type] -= 1
                     chips_banca.append({
                         "x": ficha["x"],
                         "y": ficha["y"],
@@ -986,7 +986,7 @@ def par_event(player):
                         "value": ficha["value"],
                         "width": ficha["width"]
                     })
-                    contador_chips_banca[ficha["value"]] += 2
+                    contador_chips_banca[ficha["value"]] += 1
                     lista_actualizada = []
 
                     for chip in players[player]["draw_chips"]:
@@ -1035,7 +1035,7 @@ def impar_event(player):
                     players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
 
                 else:
-                    players[player]["chips"][chip_type] -= 2
+                    players[player]["chips"][chip_type] -= 1
                     chips_banca.append({
                         "x": ficha["x"],
                         "y": ficha["y"],
@@ -1043,7 +1043,7 @@ def impar_event(player):
                         "value": ficha["value"],
                         "width": ficha["width"]
                     })
-                    contador_chips_banca[ficha["value"]] += 2
+                    contador_chips_banca[ficha["value"]] += 1
                     lista_actualizada = []
 
                     for chip in players[player]["draw_chips"]:
@@ -1092,7 +1092,7 @@ def red_event(player):
                     players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
 
                 else:
-                    players[player]["chips"][chip_type] -= 2
+                    players[player]["chips"][chip_type] -= 1
                     chips_banca.append({
                         "x": ficha["x"],
                         "y": ficha["y"],
@@ -1100,7 +1100,7 @@ def red_event(player):
                         "value": ficha["value"],
                         "width": ficha["width"]
                     })
-                    contador_chips_banca[ficha["value"]] += 2
+                    contador_chips_banca[ficha["value"]] += 1
                     lista_actualizada = []
 
                     for chip in players[player]["draw_chips"]:
@@ -1149,7 +1149,7 @@ def black_event(player):
                     players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
 
                 else:
-                    players[player]["chips"][chip_type] -= 2
+                    players[player]["chips"][chip_type] -= 1
                     chips_banca.append({
                         "x": ficha["x"],
                         "y": ficha["y"],
@@ -1157,7 +1157,7 @@ def black_event(player):
                         "value": ficha["value"],
                         "width": ficha["width"]
                     })
-                    contador_chips_banca[ficha["value"]] += 2
+                    contador_chips_banca[ficha["value"]] += 1
                     lista_actualizada = []
 
                     for chip in players[player]["draw_chips"]:
@@ -1224,7 +1224,7 @@ def column_1_bet(player):
                     players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
 
                 else:
-                    players[player]["chips"][chip_type] -= 4
+                    players[player]["chips"][chip_type] -= 1
                     chips_banca.append({
                         "x": ficha["x"],
                         "y": ficha["y"],
@@ -1232,7 +1232,7 @@ def column_1_bet(player):
                         "value": ficha["value"],
                         "width": ficha["width"]
                     })
-                    contador_chips_banca[ficha["value"]] += 4
+                    contador_chips_banca[ficha["value"]] += 1
                     lista_actualizada = []
 
                     for chip in players[player]["draw_chips"]:
@@ -1297,7 +1297,7 @@ def column_2_bet(player):
                     players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
 
                 else:
-                    players[player]["chips"][chip_type] -= 4
+                    players[player]["chips"][chip_type] -= 1
                     chips_banca.append({
                         "x": ficha["x"],
                         "y": ficha["y"],
@@ -1305,7 +1305,7 @@ def column_2_bet(player):
                         "value": ficha["value"],
                         "width": ficha["width"]
                     })
-                    contador_chips_banca[ficha["value"]] += 4
+                    contador_chips_banca[ficha["value"]] += 1
                     lista_actualizada = []
 
                     for chip in players[player]["draw_chips"]:
@@ -1369,7 +1369,7 @@ def column_3_bet(player):
                     players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
 
                 else:
-                    players[player]["chips"][chip_type] -= 4
+                    players[player]["chips"][chip_type] -= 1
                     chips_banca.append({
                         "x": ficha["x"],
                         "y": ficha["y"],
@@ -1377,7 +1377,7 @@ def column_3_bet(player):
                         "value": ficha["value"],
                         "width": ficha["width"]
                     })
-                    contador_chips_banca[ficha["value"]] += 4
+                    contador_chips_banca[ficha["value"]] += 1
                     lista_actualizada = []
 
                     for chip in players[player]["draw_chips"]:
