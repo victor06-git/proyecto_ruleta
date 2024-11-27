@@ -378,7 +378,6 @@ def app_run():
                         elif bet_odd.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("impar", ficha["value"])
                                 print("Has apostado a 'Impar'")
-                                #jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 apuesta_done["impar"] = ficha
                                 jugador["bet"]["odd_even"] = "impar"
                                 jugador["bet_chips"].append(
@@ -399,7 +398,6 @@ def app_run():
                         elif bet_red.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("rojo", ficha["value"])
                                 print("Has apostado al color 'ROJO'")
-                                #jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 apuesta_done["rojo"] = ficha
                                 jugador["bet"]["color"] = "red"
                                 jugador["bet_chips"].append(
@@ -421,7 +419,6 @@ def app_run():
                         elif bet_black.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("negro", ficha["value"])
                                 print("Has apostado al color 'NEGRO'")
-                                #jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 jugador["bet"]["color"] = "black"
                                 jugador["bet_chips"].append(
                                     {
@@ -442,7 +439,6 @@ def app_run():
                         elif bet_column_1.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("columna_1", ficha["value"])
                                 print("Has apostado a la 'PRIMERA COLUMNA'")
-                                #jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 apuesta_done["columna_1"] = ficha
                                 jugador["bet"]["column"] = "1"
                                 jugador["bet_chips"].append(
@@ -463,7 +459,6 @@ def app_run():
                         elif bet_column_2.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("columna_2", ficha["value"])
                                 print("Has apostado a la 'SEGUNDA COLUMNA'")
-                                #jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 apuesta_done["columna_2"] = ficha
                                 jugador["bet"]["column"] = "2"
                                 jugador["bet_chips"].append(
@@ -484,7 +479,6 @@ def app_run():
                         elif bet_column_3.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("columna_3", ficha["value"])
                                 print("Has apostado a la 'TERCERA COLUMNA'")
-                                #jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 apuesta_done["columna_3"] = ficha
                                 jugador["bet"]["column_3"] = "1"
                                 jugador["bet_chips"].append(
@@ -529,18 +523,17 @@ def app_run():
                                                                     "value_number": bet_number
                                                                 }
                                                             )
-                                        print(f"Esto son bet_chips:{jugador["bet_chips"]}")
+                                        if ficha == dragging_chip:
+                                            jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                         break #--> Se para el bucle cuando bet_number tiene un valor
+
                                 if bet_number is not None:
                                     print(f"Has apostado al número: {bet_number}")
-                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                     #registrar_apuestas("numbers", ficha["value"])
                                     break
 
                             if bet_number is None and ficha == dragging_chip:
-                                """if (ficha["x"], ficha["y"]) == (ficha["first_x"], ficha["first_y"]):
-                                    jugador["chips"][f"fitxa_{ficha['value']}"] += 1"""
-
+                        
                                 if ficha["value"] == 100:
                                     ficha["x"], ficha["y"] = 545, 650
 
