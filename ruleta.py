@@ -358,6 +358,7 @@ def app_run():
                                 
                                 if show_win_number == True and evento == True:
                                     par_event(player)
+                                    print("par")
                                     evento = False
 
                                 #apuesta_done["par"] = ficha
@@ -397,7 +398,7 @@ def app_run():
                                 
                                 if show_win_number == True and evento == True:
                                     impar_event(player)
-                                    evento = False
+                                    
                                 
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
@@ -420,7 +421,7 @@ def app_run():
                                 )
                                 if show_win_number == True and evento == True:
                                     red_event(player)
-                                    evento = False
+                                    
 
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
@@ -441,9 +442,10 @@ def app_run():
                                         "type_bet": "par"
                                     }
                                 )
+                                
+                                
                                 if show_win_number == True and evento == True:
                                     black_event(player)
-                                    evento = False
 
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
@@ -468,7 +470,7 @@ def app_run():
                                 
                                 if show_win_number == True and evento == True:
                                     column_1_bet(player)
-                                    evento = False
+                                    
 
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
@@ -491,7 +493,7 @@ def app_run():
                                 )
                                 if show_win_number == True and evento == True:
                                     column_2_bet(player)
-                                    evento = False
+                                    
 
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
@@ -514,7 +516,7 @@ def app_run():
                                 )
                                 if show_win_number == True and evento == True:
                                     column_3_bet(player)
-                                    evento = False
+                                    
 
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
@@ -557,7 +559,6 @@ def app_run():
                                    
                                     if show_win_number == True and evento == True:
                                         number_bet(player)
-                                        evento = False
 
                                     break
 
@@ -726,11 +727,12 @@ def click2(pos):
         show_surface = show_numbers
 
 def click(pos, button_rect):
-    global spinning, spin_speed, show_win_number
+    global spinning, spin_speed, show_win_number, evento
     if is_click_on_button(pos, button_rect):
         spinning = True
         show_win_number = False
         spin_speed = initial_speed
+        evento = True
 
 #Añade el número que sale en la ruleta a una lista
 added = False
