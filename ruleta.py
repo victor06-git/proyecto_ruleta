@@ -1063,6 +1063,7 @@ def winning_number_bet():
         return winning_number
     else:
         return None
+
     
 #EVENTOS DE APUESTAS
 def par_event(player):
@@ -1073,6 +1074,7 @@ def par_event(player):
     #contador = 0
     dictColor = table()
     print(winning_number_par)
+    print(numbers3)
 
     
     if players[player]["bet"]["odd_even"] == "par" and winning_number_par % 2 == 0:
@@ -1128,57 +1130,54 @@ def impar_event(player):
     winning_number_impar = winning_number_bet()
     contador = 0
     dictColor = table()
+  
+    if players[player]["bet"]["odd_even"] == "par" and winning_number_impar % 2 != 0:
 
-    for i in range(len(dictColor)):
-        numero_ganador = dictColor[i]
-        
-        if numero_ganador["numero"] == winning_number_impar and numero_ganador["numero"] % 2 != 0:
-
-            for ficha in players[player]["bet_chips"]:
-                if ficha["bet_type"] == "impar":
-                    contador += 1
-                    valor_add = ficha["value"]
-                    chip_type = f"fitxa_{valor_add}"
-                    players[player]["chips"][chip_type] += 2
-                    players[player]["draw_chips"].append(
-                        {
-                            "x": ficha["x"],
-                            "y": ficha["y"],
-                            "radius" : ficha["radius"],
-                            "value": ficha["value"],
-                            "width": ficha["width"]
-                        }
-                    )
-                    players[player]["draw_chips"].append(
-                        {
+        for ficha in players[player]["bet_chips"]:
+            if ficha["bet_type"] == "impar":
+                contador += 1
+                valor_add = ficha["value"]
+                chip_type = f"fitxa_{valor_add}"
+                players[player]["chips"][chip_type] += 2
+                players[player]["draw_chips"].append(
+                    {
                         "x": ficha["x"],
                         "y": ficha["y"],
                         "radius" : ficha["radius"],
                         "value": ficha["value"],
                         "width": ficha["width"]
-                        }
-                    )
+                    }
+                )
+                players[player]["draw_chips"].append(
+                    {
+                    "x": ficha["x"],
+                    "y": ficha["y"],
+                    "radius" : ficha["radius"],
+                    "value": ficha["value"],
+                    "width": ficha["width"]
+                    }
+                )
 
-                    players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
+                players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
 
-                else:
-                    players[player]["chips"][chip_type] -= 1
-                    chips_banca.append({
-                        "x": ficha["x"],
-                        "y": ficha["y"],
-                        "radius": ficha["radius"],
-                        "value": ficha["value"],
-                        "width": ficha["width"]
-                    })
-                    contador_chips_banca[ficha["value"]] += 1
-                    lista_actualizada = []
+            else:
+                players[player]["chips"][chip_type] -= 1
+                chips_banca.append({
+                    "x": ficha["x"],
+                    "y": ficha["y"],
+                    "radius": ficha["radius"],
+                    "value": ficha["value"],
+                    "width": ficha["width"]
+                })
+                contador_chips_banca[ficha["value"]] += 1
+                lista_actualizada = []
 
-                    for chip in players[player]["draw_chips"]:
+                for chip in players[player]["draw_chips"]:
 
-                        if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
-                            lista_actualizada.append(chip)
+                    if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
+                        lista_actualizada.append(chip)
 
-                    players[player]["draw_chips"] = lista_actualizada
+                players[player]["draw_chips"] = lista_actualizada
 
 def red_event(player):
 
