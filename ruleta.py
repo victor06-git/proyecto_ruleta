@@ -332,7 +332,7 @@ def app_run():
             #column_1_bet(player)
             #column_2_bet(player)
             #column_3_bet(player)
-            number_bet(player)
+            #number_bet(player)
             reiniciar_fichas(player) #Retornar las fichas a su destino
             evento = False
 
@@ -649,9 +649,9 @@ def draw_surface():
         player_1 = "Purple"
         player_2 = "Blue"
         player_3 = "Orange"
-        saldo = 100
-        saldo_2 = 100
-        saldo_3 = 100
+        saldo = players["player_purple"]["money"]
+        saldo_2 = players["player_blue"]["money"]
+        saldo_3 = players["player_orange"]["money"]
         apuestas = 20
         apuestas_2 = 20
         apuestas_3 = 20
@@ -1677,32 +1677,36 @@ def draw_grid():
 
 def reiniciar_fichas(player):
 
-    initial_x_5, initial_y_5 = 695,595
-    initial_x_10, initial_y_10 = 595,595
-    initial_x_20, initial_y_20 = 745, 650
-    initial_x_50, initial_y_50 = 645, 650
-    initial_x_100, initial_y_100 = 545, 650
+    initial_positions = {
+        5: (695, 595),
+        10: (595, 595),
+        20: (745, 650),
+        50: (645, 650),
+        100: (545, 650)
+    }
 
     for ficha in players[player]["bet_chips"]:
+        
+        valor_ficha = ficha["value"]
+        
+        # Verificar si el valor de la ficha está en las posiciones iniciales
+        if valor_ficha in initial_positions:
+            # Asignar la posición inicial a la ficha
+            ficha["x"], ficha["y"] = initial_positions[valor_ficha]
+            
+            # Añadir la ficha a draw_chips
+            players[player]["draw_chips"].append(ficha)
 
-        if ficha["value"] == 5:
-            ficha["x"], ficha["y"] = initial_x_5, initial_y_5
-        
-        elif ficha["value"] == 10:
-            ficha["x"], ficha["y"] = initial_x_10, initial_y_10
-        
-        elif ficha["value"] == 20:
-            ficha["x"], ficha["y"] = initial_x_20, initial_y_20
-        
-        elif ficha["value"] == 50:
-            ficha["x"], ficha["y"] = initial_x_50, initial_y_50
-        
-        elif ficha["value"] == 100:
-            ficha["x"], ficha["y"] = initial_x_100, initial_y_100
+            # Eliminar la ficha de bet_chips
+            players[player]["bet_chips"].remove(ficha)
 
-        #players[player]["draw_chips"].append(ficha) #--> Se añaden a draw chips para que se dibujen
-        #players[player]["bet_chips"].remove(ficha) #--> Se elimina de bet_chips una vez dibujada en draw_chips
+            players[player]["chips"][f"fitxa_{ficha['value']}"] += 1
 
+    # Opcional: Si quieres que las fichas que no se han apostado también vuelvan a su posición inicial
+    for ficha in players[player]["draw_chips"]:
+        valor_ficha = ficha["value"]
+        if valor_ficha in initial_positions:
+            ficha["x"], ficha["y"] = initial_positions[valor_ficha]
 
 if __name__ == "__main__":
     main()
