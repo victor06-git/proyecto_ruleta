@@ -328,7 +328,7 @@ def app_run():
         if show_win_number == True and evento == True:
             par_event(player)
             #impar_event(player)
-            #red_event(player)
+            red_event(player)
             #black_event(player)
             #column_1_bet(player)
             #column_2_bet(player)
@@ -1180,14 +1180,16 @@ def impar_event(player):
 
 def red_event(player):
 
-    winning_number_red = winning_number_bet()
+    
+    red = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
     contador_red = 0
-    dictColor = table()
+   
 
-    for i in range(len(dictColor)):
-        numero_ganador = dictColor[i]
+    #for i in range(len(dictColor)):
+        #numero_ganador = dictColor[i]
         
-        if numero_ganador["numero"] == winning_number_red and numero_ganador["color"] == RED:
+        #if numero_ganador["numero"] == winning_number_red and numero_ganador["color"] == RED:
+    if players[player]["bet"]["color"] == RED and players[player]["bet"]["number"] in red:
 
             for ficha in players[player]["bet_chips"]:
                 if ficha["bet_type"] == "rojo":
@@ -1721,7 +1723,7 @@ def reiniciar_fichas(player):
         100: (545, 650)
     }
 
-    banca_positios = {
+    banca_positions = {
         5: (300,595),
         10: (200,595),
         20: (300,650),
@@ -1745,7 +1747,9 @@ def reiniciar_fichas(player):
             # Eliminar la ficha de bet_chips
             players[player]["bet_chips"].remove(ficha)
 
-            players[player]["chips"][f"fitxa_{ficha['value']}"] += 1
+            #players[player]["chips"][f"fitxa_{ficha['value']}"] += 1
+            
+            red_event(player)
 
     # Opcional: Si quieres que las fichas que no se han apostado también vuelvan a su posición inicial
     for ficha in players[player]["draw_chips"]:
