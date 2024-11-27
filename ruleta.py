@@ -584,11 +584,11 @@ def app_draw():
     tablero_banca()
     #draw_win_number() #Función dibuja número elegido
 
-    #Si premó el botó es mostra la llista
+    #Si premo el botó es mostra la llista
     if show_surface:
         draw_surface()
         scroll_slide()
-    #Si no el premó o el premó un altre vegada es dibuixa la ruleta amb la flecha que apunta els números
+    #Si no el premó o el premo un altre vegada es dibuixa la ruleta amb la flecha que apunta els números
     else: 
         draw_roulette()
         draw_flecha()
@@ -713,6 +713,7 @@ def click(pos, button_rect):
         show_win_number = False
         spin_speed = initial_speed
 
+#Añade el número que sale en la ruleta a una lista
 added = False
 def add_number():
     global added
@@ -1512,7 +1513,7 @@ def number_bet(player):
                         })
                         contador_chips_banca[ficha["value"]] += 1
                         lista_actualizada = []
-                        #Esto es lo que elimina la ficha dr draw_chips para que no se dibuje en el tablero, si alg
+                        #Esto es lo que elimina la ficha de draw_chips para que no se dibuje en el tablero, si alg
                         for chip in players[player]["draw_chips"]:
 
                             if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
