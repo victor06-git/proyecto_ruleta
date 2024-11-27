@@ -325,13 +325,13 @@ def app_run():
         jugador = players[player]
 
         if show_win_number == True and evento == True:
-            par_event(player)
-            impar_event(player)
-            red_event(player)
-            black_event(player)
-            column_1_bet(player)
-            column_2_bet(player)
-            column_3_bet(player)
+            #par_event(player)
+            #impar_event(player)
+            #red_event(player)
+            #black_event(player)
+            #column_1_bet(player)
+            #column_2_bet(player)
+            #column_3_bet(player)
             number_bet(player)
             reiniciar_fichas(player) #Retornar las fichas a su destino
             evento = False
@@ -1492,7 +1492,7 @@ def number_bet(player):
 
                 if ficha["type_bet"] == "number":
                     numero_apostado = ficha["value_number"]
-                    chip_type = f"fitxa_{ficha["value"]}"
+                    chip_type = f"fitxa_{ficha['value']}"
 
                     if numero_apostado == winning_number_number:
                         players[player]["chips"][chip_type] += 35
@@ -1700,8 +1700,8 @@ def reiniciar_fichas(player):
         elif ficha["value"] == 100:
             ficha["x"], ficha["y"] = initial_x_100, initial_y_100
 
-        players[player]["draw_chips"].append(ficha) #--> Se añaden a draw chips para que se dibujen
-        players[player]["bet_chips"].remove(ficha) #--> Se elimina de bet_chips una vez dibujada en draw_chips
+        #players[player]["draw_chips"].append(ficha) #--> Se añaden a draw chips para que se dibujen
+        #players[player]["bet_chips"].remove(ficha) #--> Se elimina de bet_chips una vez dibujada en draw_chips
 
 
 if __name__ == "__main__":
