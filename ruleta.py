@@ -555,6 +555,7 @@ def app_draw():
     table() #Función dibujar tabla
     banca() #Función dibujar banca
     tablero_fichas()
+    tablero_banca()
     #draw_win_number() #Función dibuja número elegido
 
     #Si premó el botó es mostra la llista
