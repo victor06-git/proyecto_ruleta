@@ -620,6 +620,8 @@ def cambiar_turno(players):
                 print(f"Turno: {contador_turnos}")
             break #El break es para que no lo imprima constantemente
 
+
+
 #Dibujar surface a partir de botón
 def draw_surface():
     surface.fill(DARK_GRAY)
@@ -644,6 +646,22 @@ def draw_surface():
     surface.blit(text_2, text_rect_2)
     surface.blit(text_3, text_rect_3)
 
+    ficha_100_p = players["player_purple"]["chips"]["fitxa_100"]
+    ficha_100_b = players["player_blue"]["chips"]["fitxa_100"]
+    ficha_100_o = players["player_orange"]["chips"]["fitxa_100"]
+    ficha_50_p = players["player_purple"]["chips"]["fitxa_50"]
+    ficha_50_b = players["player_blue"]["chips"]["fitxa_50"]
+    ficha_50_o = players["player_orange"]["chips"]["fitxa_50"]
+    ficha_20_p = players["player_purple"]["chips"]["fitxa_20"]
+    ficha_20_b = players["player_blue"]["chips"]["fitxa_20"]
+    ficha_20_o = players["player_orange"]["chips"]["fitxa_20"]
+    ficha_10_p = players["player_purple"]["chips"]["fitxa_10"]
+    ficha_10_b = players["player_blue"]["chips"]["fitxa_10"]
+    ficha_10_o = players["player_orange"]["chips"]["fitxa_10"]
+    ficha_5_p = players["player_purple"]["chips"]["fitxa_5"]
+    ficha_5_b = players["player_blue"]["chips"]["fitxa_5"]
+    ficha_5_o = players["player_orange"]["chips"]["fitxa_5"]
+
     for j, number in enumerate(numbers3):
 
         player_1 = "Purple"
@@ -652,9 +670,9 @@ def draw_surface():
         saldo = players["player_purple"]["money"]
         saldo_2 = players["player_blue"]["money"]
         saldo_3 = players["player_orange"]["money"]
-        apuestas = 20
-        apuestas_2 = 20
-        apuestas_3 = 20
+        apuestas = (ficha_100_p * 100) + (ficha_50_p * 50) + (ficha_20_p * 20) + (ficha_10_p * 10) + (ficha_5_p * 5)
+        apuestas_2 = (ficha_100_b * 100) + (ficha_50_b * 50) + (ficha_20_b * 20) + (ficha_10_b * 10) + (ficha_5_b * 5)
+        apuestas_3 = (ficha_100_o * 100) + (ficha_50_o * 50) + (ficha_20_o * 20) + (ficha_10_o * 10) + (ficha_5_o * 5)
 
         text_number = font_2.render((f"{number}"), True, WHITE) #Número
         text_player = font_2.render((f"{player_1}"), True, WHITE) #Player_1
