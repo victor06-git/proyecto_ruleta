@@ -1122,7 +1122,6 @@ def par_event(player):
 
                     if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
                         lista_actualizada.append(chip)
-
                 players[player]["draw_chips"] = lista_actualizada
 
 def impar_event(player):
