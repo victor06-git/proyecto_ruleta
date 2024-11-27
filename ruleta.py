@@ -253,7 +253,7 @@ def main():
 
 # Gestionar events
 def app_events():
-    global clicked, button_rect, button_rect2, show_numbers
+    global clicked, button_rect, button_rect2, show_numbers, mouse_x, mouse_y
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  # Botón cerrar ventana
@@ -613,14 +613,66 @@ def draw_surface():
    
     font = pygame.font.SysFont(None, 24)
     font_2 = pygame.font.SysFont(None, 21)
-    text = font.render("Número            Jugador           Saldo          Apuestas", True, WHITE)
-    text_rect = text.get_rect(center=(210, 50))
+   
+    text = font.render("Número", True, WHITE)
+    text_1 = font.render("Jugador", True, WHITE)
+    text_2 = font.render("Saldo", True, WHITE)
+    text_3 = font.render("Apuesta", True, WHITE)
+    
+    text_rect = text.get_rect(center=(60, 50)) #Número
+    text_rect_1 = text_1.get_rect(center=(160, 50)) #Jugador
+    text_rect_2 = text_2.get_rect(center=(260, 50)) #Saldo
+    text_rect_3 = text_3.get_rect(center=(355, 50)) #Apuesta
+    
     surface.blit(text, text_rect)
+    surface.blit(text_1, text_rect_1)
+    surface.blit(text_2, text_rect_2)
+    surface.blit(text_3, text_rect_3)
 
     for j, number in enumerate(numbers3):
-        text_number = font_2.render((f"{number}                  Naranja                120             20 "), True, WHITE)
-        text_rect_number = text_number.get_rect(center=(210, 100 + (j * 30)))
+
+        player_1 = "Purple"
+        player_2 = "Blue"
+        player_3 = "Orange"
+        saldo = 100
+        saldo_2 = 100
+        saldo_3 = 100
+        apuestas = 20
+        apuestas_2 = 20
+        apuestas_3 = 20
+
+        text_number = font_2.render((f"{number}"), True, WHITE) #Número
+        text_player = font_2.render((f"{player_1}"), True, WHITE) #Player_1
+        text_saldo = font_2.render((f"{saldo}"), True, WHITE) #Saldo_1
+        text_apuesta = font_2.render((f"{apuestas}"), True, WHITE) #Apuestas_1
+        text_player_2 = font_2.render((f"{player_2}"), True, WHITE) #Player_2
+        text_saldo_2 = font_2.render((f"{saldo_2}"), True, WHITE) #Saldo_2
+        text_apuesta_2 = font_2.render((f"{apuestas_2}"), True, WHITE) #Apuestas_2
+        text_player_3 = font_2.render((f"{player_3}"), True, WHITE) #Player_3
+        text_saldo_3 = font_2.render((f"{saldo_3}"), True, WHITE) #Saldo_3
+        text_apuesta_3 = font_2.render((f"{apuestas_3}"), True, WHITE) #Apuestas_3
+        
+        text_rect_number = text_number.get_rect(center=(60, 100 + (j * 90))) #Número
+        text_rect_player = text_player.get_rect(center=(160, 100 + (j * 90))) #Player_1
+        text_rect_saldo = text_saldo.get_rect(center=(260, 100 + (j * 90))) #Saldo_1
+        text_rect_apuesta = text_apuesta.get_rect(center=(355, 100 + (j * 90))) #Apuesta_1
+        text_rect_player_2 = text_player_2.get_rect(center=(160, 130 + (j * 90))) #Player_2
+        text_rect_saldo_2 = text_saldo_2.get_rect(center=(260, 130 + (j * 90))) #Saldo_2
+        text_rect_apuesta_2 = text_apuesta_2.get_rect(center=(355, 130 + (j * 90))) #Apuesta_2
+        text_rect_player_3 = text_player_3.get_rect(center=(160, 160 + (j * 90))) #Player_3
+        text_rect_saldo_3 = text_saldo_3.get_rect(center=(260, 160 + (j * 90))) #Saldo_3
+        text_rect_apuesta_3 = text_apuesta_3.get_rect(center=(355, 160 + (j * 90))) #Apuesta_3
+
         surface.blit(text_number, text_rect_number)
+        surface.blit(text_player, text_rect_player)
+        surface.blit(text_saldo, text_rect_saldo)
+        surface.blit(text_apuesta, text_rect_apuesta)
+        surface.blit(text_player_2, text_rect_player_2)
+        surface.blit(text_saldo_2, text_rect_saldo_2)
+        surface.blit(text_apuesta_2, text_rect_apuesta_2)
+        surface.blit(text_player_3, text_rect_player_3)
+        surface.blit(text_saldo_3, text_rect_saldo_3)
+        surface.blit(text_apuesta_3, text_rect_apuesta_3)
 
     screen.blit(sub_surface, (50, 100))
 
