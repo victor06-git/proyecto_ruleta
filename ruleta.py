@@ -885,6 +885,7 @@ def par_event(player):
                             "value": ficha["value"],
                             "width": ficha["width"]
                         })
+                    #players[player]["draw_chips"].remove(ficha) --> Para remover la ficha de draw_chips ??
                 else:
                     players[player]["chips"][chip_type] -= (1*contador)
                     chips_banca.append({
