@@ -222,7 +222,7 @@ roulette_numbers2 = [0, 32, 15, 19, 4, 21, 2, 25,
                     30, 8, 23, 10, 5, 24, 16, 
                     33, 1, 20, 14, 31, 9, 22, 
                     18, 29, 7, 28, 12, 35, 3, 26]
-
+#Areas de apuestas
 bet_even = pygame.Rect(850, 100, 100, 100)
 bet_odd = pygame.Rect(850, 555, 100, 100)
 bet_red = pygame.Rect(850, 200, 100, 180)
@@ -230,6 +230,7 @@ bet_black = pygame.Rect(850, 380, 100, 180)
 bet_column_1 = pygame.Rect(950, 650, 50, 50)
 bet_column_2 = pygame.Rect(1050, 650, 50, 50)
 bet_column_3 = pygame.Rect(1150, 650, 50, 50)
+bet_0 = pygame.Rect(1050,50,100,100)
     
 key_space = False
 evento = False
@@ -386,7 +387,24 @@ def app_run():
                                 if ficha == dragging_chip:
                                     jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
 
-                    
+                        elif bet_0.collidepoint(ficha["x"], ficha["y"]):
+                            print("Has apostado al numero '0'")
+                            jugador["bet"]["number"] = 0
+                            jugador["bet_chips"].append(
+                                    {
+                                        "x": ficha["x"],
+                                        "y": ficha["y"],
+                                        "radius": ficha["radius"],
+                                        "color": ficha["color"],
+                                        "value": ficha["value"],
+                                        "width": ficha["width"],
+                                        "type_bet": "impar"
+                                    }
+                                )
+
+                            if ficha == dragging_chip:
+                                jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
+                                
                         elif bet_odd.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("impar", ficha["value"])
                                 print("Has apostado a 'Impar'")
@@ -1703,6 +1721,15 @@ def reiniciar_fichas(player):
         100: (545, 650)
     }
 
+    banca_positios = {
+        5: (300,595),
+        10: (200,595),
+        20: (300,650),
+        50: (200,650),
+        100: (100,650),
+    }
+
+    #if players[player]["bet_win"] = True:
     for ficha in players[player]["bet_chips"]:
         
         valor_ficha = ficha["value"]
