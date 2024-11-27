@@ -194,6 +194,7 @@ button_hover_color = YELLOW
 #surface lista
 show_numbers = False
 numbers3 = [] #Lista numbers
+contador_turnos = 0
 show_surface = False
 
 #scroll
@@ -586,6 +587,7 @@ def app_draw():
 
 
 def cambiar_turno(players):
+    global contador_turnos
 
     jugadores = list(players.keys())
 
@@ -594,13 +596,14 @@ def cambiar_turno(players):
 
         if players[jugador]["your_turn"]:
             players[jugador]["your_turn"] = False
-
             next = (i+1) % len(jugadores)
             next_player = jugadores[next]
             players[next_player]["your_turn"] = True
             print(f"Turno del jugador {next_player}")
+            if next_player == "player_purple":#--> Cuando llega al jugador lila empieza a contar los turnos
+                contador_turnos += 1
+                print(f"Turno: {contador_turnos}")
             break #El break es para que no lo imprima constantemente
-
 #Dibujar surface a partir de botón
 def draw_surface():
     surface.fill(DARK_GRAY)
@@ -941,7 +944,7 @@ def table():
 #EVENTOS DE APUESTAS
 def par_event(player):
 
-    global winning_number
+    global winning_number, numbers3, contador_numbers3
     contador = 0
     dictColor = table()
 
@@ -1398,7 +1401,7 @@ def number_bet(player):
                     numero_apostado = ficha["value_number"]
                     lista_numeros_apostados.append(numero_apostado)
 
-                if winning_number in 
+                """if winning_number in """
                         
 
 print(number_bet("player_purple"))
