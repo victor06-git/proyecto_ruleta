@@ -314,7 +314,6 @@ def app_run():
 
     scroll["surface_offset"] = int((scroll["percentage"] / 100) * (surface.get_height() - scroll["visible_height"]))
 
-
     """Aqui tengo que hacer varias cosas para mejorar la logica:
     ***3***
         - En este punto se tiene que ejecutar la ruleta
@@ -330,7 +329,7 @@ def app_run():
                 if clicked and puntero <= ficha["radius"]:
                     
                     if not dragging:
-
+                            
                         dragging = True
                         dragging_chip = ficha
                         offset_x = mouse_x - ficha["x"]
@@ -350,7 +349,7 @@ def app_run():
                 elif not clicked and dragging:
                     #dragging = False
                     #dragging_chip = None
-                    print("Hellow")
+                    
                     for ficha in players[player]["draw_chips"]:
 
                         if bet_even.collidepoint(ficha["x"], ficha["y"]):
@@ -371,10 +370,15 @@ def app_run():
                                 )
                                 print(ficha)
                                 print(jugador["bet_chips"])
+
+                                if ficha == dragging_chip:
+                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
+
                     
                         elif bet_odd.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("impar", ficha["value"])
                                 print("Has apostado a 'Impar'")
+                                #jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 apuesta_done["impar"] = ficha
                                 jugador["bet"]["odd_even"] = "impar"
                                 jugador["bet_chips"].append(
@@ -388,10 +392,14 @@ def app_run():
                                         "type_bet": "impar"
                                     }
                                 )
+
+                                if ficha == dragging_chip:
+                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                             
                         elif bet_red.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("rojo", ficha["value"])
                                 print("Has apostado al color 'ROJO'")
+                                #jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 apuesta_done["rojo"] = ficha
                                 jugador["bet"]["color"] = "red"
                                 jugador["bet_chips"].append(
@@ -405,11 +413,15 @@ def app_run():
                                         "type_bet": "rojo"
                                     }
                                 )
+
+                                if ficha == dragging_chip:
+                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 
                             
                         elif bet_black.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("negro", ficha["value"])
                                 print("Has apostado al color 'NEGRO'")
+                                #jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 jugador["bet"]["color"] = "black"
                                 jugador["bet_chips"].append(
                                     {
@@ -422,11 +434,15 @@ def app_run():
                                         "type_bet": "par"
                                     }
                                 )
+
+                                if ficha == dragging_chip:
+                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 
                             
                         elif bet_column_1.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("columna_1", ficha["value"])
                                 print("Has apostado a la 'PRIMERA COLUMNA'")
+                                #jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 apuesta_done["columna_1"] = ficha
                                 jugador["bet"]["column"] = "1"
                                 jugador["bet_chips"].append(
@@ -440,10 +456,14 @@ def app_run():
                                         "type_bet": "column_1"
                                     }
                                 )
+
+                                if ficha == dragging_chip:
+                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 
                         elif bet_column_2.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("columna_2", ficha["value"])
                                 print("Has apostado a la 'SEGUNDA COLUMNA'")
+                                #jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 apuesta_done["columna_2"] = ficha
                                 jugador["bet"]["column"] = "2"
                                 jugador["bet_chips"].append(
@@ -457,10 +477,14 @@ def app_run():
                                         "type_bet": "column_2"
                                     }
                                 )
+
+                                if ficha == dragging_chip:
+                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                             
                         elif bet_column_3.collidepoint(ficha["x"], ficha["y"]):
                                 #registrar_apuestas("columna_3", ficha["value"])
                                 print("Has apostado a la 'TERCERA COLUMNA'")
+                                #jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                 apuesta_done["columna_3"] = ficha
                                 jugador["bet"]["column_3"] = "1"
                                 jugador["bet_chips"].append(
@@ -474,6 +498,9 @@ def app_run():
                                         "type_bet": "column_3"
                                     }
                                 )
+
+                                if ficha == dragging_chip:
+                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                             
                         else:
 
@@ -506,40 +533,36 @@ def app_run():
                                         break #--> Se para el bucle cuando bet_number tiene un valor
                                 if bet_number is not None:
                                     print(f"Has apostado al número: {bet_number}")
+                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
                                     #registrar_apuestas("numbers", ficha["value"])
                                     break
 
                             if bet_number is None and ficha == dragging_chip:
-                                if (ficha["x"], ficha["y"]) == (ficha["first_x"], ficha["first_y"]):
-                                    jugador["chips"][f"fitxa_{ficha['value']}"] += 1
+                                """if (ficha["x"], ficha["y"]) == (ficha["first_x"], ficha["first_y"]):
+                                    jugador["chips"][f"fitxa_{ficha['value']}"] += 1"""
 
                                 if ficha["value"] == 100:
                                     ficha["x"], ficha["y"] = 545, 650
-                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
 
                                 elif ficha["value"] == 50:
                                     ficha["x"], ficha["y"] = 645, 650
-                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
 
                                 elif ficha["value"] == 20:
                                     ficha["x"], ficha["y"] = 745, 650
-                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
 
                                 elif ficha["value"] == 10:
                                     ficha["x"], ficha["y"] = 595, 595
-                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
 
                                 elif ficha["value"] == 5:
                                     ficha["x"], ficha["y"] = 695, 595
-                                    jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
+                                    
+                                jugador["chips"][f"fitxa_{ficha["value"]}"] += 1
 
                     dragging = False
                     dragging_chip = None
-                    ficha.pop("first_x",None)
+                    ficha.pop("first_x",None) #--> Esto lo que hace es eliminar las entradas de la x e y que uso para hacer que las fichas vuelvan a su posición
                     ficha.pop("first_y",None)
-                
-
-        
+    
 # Dibuixar
 def app_draw():
     global button_rect, button_rect2
@@ -618,7 +641,6 @@ def scroll_slide():
 def is_click_on_button(pos, button_rect):
     return button_rect.collidepoint(pos)
 
-
 def click2(pos):
     global show_numbers,show_surface
     if button_rect2.collidepoint(pos):
@@ -672,8 +694,7 @@ def update_spin():
             winning_number = roulette_numbers2[sector - 1]
             show_win_number = True
             added = False
-    
-            
+
 def draw_button2(mouse_pos):
 
     button_rect2 = pygame.Rect(button_x, button_y - 55, button_width, button_height)
@@ -1441,9 +1462,6 @@ def registrar_apuestas(tipo_apuesta, tipo_ficha):
         registro_apuestas[tipo_apuesta][tipo_ficha] +=1
     
     print(f"Has apostado {registro_apuestas[tipo_apuesta][tipo_ficha]+1} fichas de valor {tipo_ficha} a {tipo_apuesta.capitalize()}")
-
-
-
 #graellas
 def draw_grid():
     
@@ -1470,10 +1488,6 @@ def draw_grid():
         font = pygame.font.Font(None, 20)
         text = font.render(str(y), True, (200, 200, 200))
         screen.blit(text, (2, y + 2))
-
-
-
-
 
 if __name__ == "__main__":
     main()
