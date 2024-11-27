@@ -521,6 +521,8 @@ def app_run():
 
                     dragging = False
                     dragging_chip = None
+                    ficha.pop("first_x",None)
+                    ficha.pop("first_y",None)
                 
     
 # Dibuixar
@@ -871,10 +873,10 @@ def par_event(player):
             print("Has ganado la apuesta !")
 
             for ficha in players[player]["bet_chips"]:
+                valor_añadir = ficha["value"]
+                chip_type = f"fitxa_{valor_añadir}"
                 if ficha["type_bet"] == "par":
                     contador += 1
-                    valor_añadir = ficha["value"]
-                    chip_type = f"fitxa_{valor_añadir}"
                     players[player]["chips"][chip_type] += (1*contador)
                     players[player]["draw_chips"].append({
                             "x": ficha["x"],
@@ -894,19 +896,7 @@ def par_event(player):
                     })
 
                     contador_chips_banca[ficha["value"]] += 1
-                    
-                    if ficha["value"] == 5:
-                        players[player]["draw_chips"].remove(ficha)
-                    elif ficha["value"] == 10:
-                        players[player]["draw_chips"].remove(ficha)
-                    elif ficha["value"] == 20:
-                        players[player]["draw_chips"].remove(ficha)
-                    elif ficha["value"] == 50:
-                        players[player]["draw_chips"].remove(ficha)
-                    elif ficha["value"] == 100:
-                        players[player]["draw_chips"].remove(ficha)
-
-                    #Faltaria hacer una variable banca o algo que fuese un diccionario para dibujar todas las fichas que tienen que ir a la banca
+                    players[player]["draw_chips"].remove(ficha)
 
 def impar_event(player):
 
