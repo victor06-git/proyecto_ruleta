@@ -933,11 +933,10 @@ def impar_event(player):
                     players[player]["chips"][chip_type] -= (1*len(ficha["type_bet"]))
                     #Faltaria hacer una variable banca o algo que fuese un diccionario para dibujar todas las fichas que tienen que ir a la banca
 
-def black_red_event(player):
+def red_event(player):
 
     global winning_number
     contador_red = 0
-    contador_black = 0
     dictColor = table()
 
     for i in range(len(dictColor)):
@@ -950,7 +949,7 @@ def black_red_event(player):
                     contador_red += 1
                     valor_add = ficha["value"]
                     chip_type = f"fitxa_{valor_add}"
-                    players[player]["chips"][chip_type] += (1*contador_red)
+                    players[player]["chips"][chip_type] += 2
                     players[player]["draw_chips"].append(
                         {
                             "x": ficha["x"],
@@ -958,27 +957,55 @@ def black_red_event(player):
                             "radius" : ficha["radius"],
                             "value": ficha["value"],
                             "width": ficha["width"]
+                        }
+                    )
+                    players[player]["draw_chips"].append(
+                        {
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius" : ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
                         }
                     )
 
-                    """if ficha["value"] == 5:
-                        for i in range(players[player]["chips"]["fitxa_5"]):
-                            players[player]["draw_chips"].append(
-                                                                {
-                                                                    "x": ficha["x"],
-                                                                    "y": ficha["y"],
-                                                                    "radius" : ficha["radius"],
-                                                                    "value": ficha["value"],
-                                                                    "width": ficha["width"]
-                                                                }
-                                                            )
-                        """
-                
-                elif ficha["bet_type"] == "negro":
-                    contador_black += 1
+                    players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
+
+                else:
+                    players[player]["chips"][chip_type] -= 2
+                    chips_banca.append({
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius": ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                    })
+                    contador_chips_banca[ficha["value"]] += 2
+                    lista_actualizada = []
+
+                    for chip in players[player]["draw_chips"]:
+
+                        if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
+                            lista_actualizada.append(chip)
+
+                    players[player]["draw_chips"] = lista_actualizada
+def black_event(player):
+
+    global winning_number
+    contador_red = 0
+    dictColor = table()
+
+    for i in range(len(dictColor)):
+        numero_ganador = dictColor[i]
+        
+        if numero_ganador["numero"] == winning_number and numero_ganador["color"] == BLACK:
+
+            for ficha in players[player]["bet_chips"]:
+                if ficha["bet_type"] == "negro":
+                    contador_red += 1
                     valor_add = ficha["value"]
                     chip_type = f"fitxa_{valor_add}"
-                    players[player]["chips"][chip_type] += (1*contador_black)
+                    players[player]["chips"][chip_type] += 2
                     players[player]["draw_chips"].append(
                         {
                             "x": ficha["x"],
@@ -988,12 +1015,36 @@ def black_red_event(player):
                             "width": ficha["width"]
                         }
                     )
-                
+                    players[player]["draw_chips"].append(
+                        {
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius" : ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                        }
+                    )
+
+                    players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
+
                 else:
-                    """SERIA MEJOR SEPARAR EN UNA FUNCIÓN EL ROJO Y EN OTRA EL NEGRO ?????"""
-                    players[player]["chips"][chip_type] -= (1*contador_red)
-                    players[player]["chips"][chip_type] -= (1*contador_black)
-                    #Faltaria hacer una variable banca o algo que fuese un diccionario para dibujar todas las fichas que tienen que ir a la banca
+                    players[player]["chips"][chip_type] -= 2
+                    chips_banca.append({
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius": ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                    })
+                    contador_chips_banca[ficha["value"]] += 2
+                    lista_actualizada = []
+
+                    for chip in players[player]["draw_chips"]:
+
+                        if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
+                            lista_actualizada.append(chip)
+
+                    players[player]["draw_chips"] = lista_actualizada
 
 def column_bet(player):
 
