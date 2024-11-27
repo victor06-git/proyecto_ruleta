@@ -93,7 +93,7 @@ players = {
         "color": "orange",
         "money": 100,
         "your_turn":False,
-        "bet_chips":[],
+        "bet_chips":[{"x": 545, "y": 650, "radius": 25, "color": "", "value": 100, "width": 5, "type_bet":"number", "value_number":34},],
         "draw_chips" : [
                     {"x": 545, "y": 650, "radius": 25, "color": "", "value": 100, "width": 5},
                     {"x": 645, "y": 650, "radius": 25, "color": "", "value": 50, "width": 5},
@@ -347,8 +347,6 @@ def app_run():
                         break
                 
                 elif not clicked and dragging:
-                    #dragging = False
-                    #dragging_chip = None
                     
                     for ficha in players[player]["draw_chips"]:
 
@@ -1185,7 +1183,7 @@ def column_1_bet(player):
                     contador_1 += 1
                     valor_add = ficha["value"]
                     chip_type = f"fitxa_{valor_add}"
-                    players[player]["chips"][chip_type] += 2
+                    players[player]["chips"][chip_type] += 4
                     players[player]["draw_chips"].append(
                         {
                             "x": ficha["x"],
@@ -1204,11 +1202,29 @@ def column_1_bet(player):
                         "width": ficha["width"]
                         }
                     )
+                    players[player]["draw_chips"].append(
+                        {
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius" : ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                        }
+                    )
+                    players[player]["draw_chips"].append(
+                        {
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius" : ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                        }
+                    )
 
                     players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
 
                 else:
-                    players[player]["chips"][chip_type] -= 2
+                    players[player]["chips"][chip_type] -= 4
                     chips_banca.append({
                         "x": ficha["x"],
                         "y": ficha["y"],
@@ -1216,7 +1232,7 @@ def column_1_bet(player):
                         "value": ficha["value"],
                         "width": ficha["width"]
                     })
-                    contador_chips_banca[ficha["value"]] += 2
+                    contador_chips_banca[ficha["value"]] += 4
                     lista_actualizada = []
 
                     for chip in players[player]["draw_chips"]:
@@ -1240,7 +1256,7 @@ def column_2_bet(player):
                     contador_2 += 1
                     valor_add = ficha["value"]
                     chip_type = f"fitxa_{valor_add}"
-                    players[player]["chips"][chip_type] += 2
+                    players[player]["chips"][chip_type] += 4
                     players[player]["draw_chips"].append(
                         {
                             "x": ficha["x"],
@@ -1259,11 +1275,29 @@ def column_2_bet(player):
                         "width": ficha["width"]
                         }
                     )
+                    players[player]["draw_chips"].append(
+                        {
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius" : ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                        }
+                    )
+                    players[player]["draw_chips"].append(
+                        {
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius" : ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                        }
+                    )
 
                     players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
 
                 else:
-                    players[player]["chips"][chip_type] -= 2
+                    players[player]["chips"][chip_type] -= 4
                     chips_banca.append({
                         "x": ficha["x"],
                         "y": ficha["y"],
@@ -1271,7 +1305,7 @@ def column_2_bet(player):
                         "value": ficha["value"],
                         "width": ficha["width"]
                     })
-                    contador_chips_banca[ficha["value"]] += 2
+                    contador_chips_banca[ficha["value"]] += 4
                     lista_actualizada = []
 
                     for chip in players[player]["draw_chips"]:
@@ -1294,7 +1328,7 @@ def column_3_bet(player):
                     contador_3 += 1
                     valor_add = ficha["value"]
                     chip_type = f"fitxa_{valor_add}"
-                    players[player]["chips"][chip_type] += 2
+                    players[player]["chips"][chip_type] += 4
                     players[player]["draw_chips"].append(
                         {
                             "x": ficha["x"],
@@ -1313,11 +1347,29 @@ def column_3_bet(player):
                         "width": ficha["width"]
                         }
                     )
+                    players[player]["draw_chips"].append(
+                        {
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius" : ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                        }
+                    )
+                    players[player]["draw_chips"].append(
+                        {
+                        "x": ficha["x"],
+                        "y": ficha["y"],
+                        "radius" : ficha["radius"],
+                        "value": ficha["value"],
+                        "width": ficha["width"]
+                        }
+                    )
 
                     players[player]["bet_chips"].remove(ficha)#--> Esto elimina las fichas apostadas del jugador
 
                 else:
-                    players[player]["chips"][chip_type] -= 2
+                    players[player]["chips"][chip_type] -= 4
                     chips_banca.append({
                         "x": ficha["x"],
                         "y": ficha["y"],
@@ -1325,13 +1377,31 @@ def column_3_bet(player):
                         "value": ficha["value"],
                         "width": ficha["width"]
                     })
-                    contador_chips_banca[ficha["value"]] += 2
+                    contador_chips_banca[ficha["value"]] += 4
                     lista_actualizada = []
 
                     for chip in players[player]["draw_chips"]:
 
                         if ficha["x"] != chip["x"] or ficha["y"] != chip["y"] or ficha["value"] != chip["value"]:
                             lista_actualizada.append(chip)
+
+def number_bet(player):
+
+    global winning_number, chips
+    lista_numeros_apostados = []
+    
+    for player in players:
+        if players[player]["your_turn"]:
+            for ficha in players[player]["bet_chips"]:
+
+                if ficha["type_bet"] == "number":
+                    numero_apostado = ficha["value_number"]
+                    lista_numeros_apostados.append(numero_apostado)
+
+                if winning_number in 
+                        
+
+print(number_bet("player_purple"))
 #FÚNCION FICHAS
 def banca():    
     pygame.draw.rect(screen, DARK_GREEN, (50, 550, 350, 150))
