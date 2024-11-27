@@ -1674,5 +1674,32 @@ def draw_grid():
         text = font.render(str(y), True, (200, 200, 200))
         screen.blit(text, (2, y + 2))
 
+def reiniciar_fichas(player):
+
+    initial_x_5, initial_y_5 = 695,595
+    initial_x_10, initial_y_10 = 595,595
+    initial_x_20, initial_y_20 = 745, 650
+    initial_x_50, initial_y_50 = 645, 650
+    initial_x_100, initial_y_100 = 545, 650
+
+    for ficha in players[player]["bet_chips"]:
+
+        if ficha["value"] == 5:
+            ficha["x"], ficha["y"] = initial_x_5, initial_y_5
+        
+        elif ficha["value"] == 10:
+            ficha["x"], ficha["y"] = initial_x_10, initial_y_10
+        
+        elif ficha["value"] == 20:
+            ficha["x"], ficha["y"] = initial_x_20, initial_y_20
+        
+        elif ficha["value"] == 50:
+            ficha["x"], ficha["y"] = initial_x_50, initial_y_50
+        
+        elif ficha["value"] == 100:
+            ficha["x"], ficha["y"] = initial_x_100, initial_y_100
+
+
+
 if __name__ == "__main__":
     main()
